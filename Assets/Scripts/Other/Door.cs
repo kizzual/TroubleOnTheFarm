@@ -4,26 +4,13 @@ using UnityEngine;
 
 public class Door : MonoBehaviour
 {
-/*    public enum Side
-    {
-        Left,
-        Right
-    }
-    public Side side;*/
+
     [SerializeField] private GameObject MainDoor;
-    private Animator anim;
+    [SerializeField] private List<Animator> anim;
     private bool isOpen = false;
     void Start()
     {
-        anim = GetComponent<Animator>();
-/*        if (side == Side.Left)
-        {
-            MainDoor.transform.position = new Vector3(0.3f, 0.0001f, 0);
-        }
-        else if (side == Side.Right)
-        {
-            MainDoor.transform.position = new Vector3(-0.3f, 0.0001f, 0);
-        }*/
+
     }
 
     void Update()
@@ -44,19 +31,25 @@ public class Door : MonoBehaviour
             return true;
         }
     }
-    private void OnMouseDown()
+
+
+    public void CloseOpenDoore()
     {
         if (open_CloseDoor())
         {
-            anim.SetBool("IsOpen", true);
+            foreach (var item in anim)
+            {
+                item.SetBool("isOpen", true);
+            }
         }
         else
         {
-            anim.SetBool("IsOpen", false);
-
+            foreach (var item in anim)
+            {
+                item.SetBool("isOpen", false);
+            }
         }
     }
-
 
 
 }

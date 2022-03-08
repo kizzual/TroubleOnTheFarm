@@ -5,20 +5,31 @@ using UnityEngine;
 public class InputDetect : MonoBehaviour
 {
     public float sphere_radius;
-    public LayerMask layer; 
+    public Camera camera;
+    public LayerMask layer;
+    public GameObject target;
+    public GameObject testPref;
+    bool Spawn = true;
 
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray ray = camera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, Mathf.Infinity))
             {
-                if (!hit.collider.CompareTag("Finish"))
+                if (!hit.collider.CompareTag("Gate"))
                 {
                     transform.position = new Vector3(hit.point.x, 0, hit.point.z);
                     CheckAnimals(transform.position);
+                }
+                else if (hit.collider.CompareTag("Gate"))
+                {
+                    if (hit.collider.TryGetComponent(out Door door))
+                    {
+                        door.CloseOpenDoore();
+                    }
                 }
             }
         }
@@ -30,7 +41,7 @@ public class InputDetect : MonoBehaviour
         {
             if (hitCollider.TryGetComponent(out Animal animal))
             {
-                animal.RotateAnimal(transform);
+                animal.FearingAnimal(transform);
             }
         }
     }
@@ -38,4 +49,5 @@ public class InputDetect : MonoBehaviour
     {
         Gizmos.DrawWireSphere(transform.position, sphere_radius);
     }
+
 }
