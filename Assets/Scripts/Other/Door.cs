@@ -51,5 +51,13 @@ public class Door : MonoBehaviour
         }
     }
 
+    public void Close_door()
+    {
+        foreach (var item in anim)
+        {
+            item.SetBool("isOpen", false);
+        }
+        isOpen = false;
+    }
 
 }

@@ -64,11 +64,13 @@ public class Animal : MonoBehaviour, IMoveAnimal
     private float distCur;
     private Quaternion rotation;
     private Vector3 axis;
+    private Vector3 startPos;
 
     [HideInInspector] public bool canFear = true;
     private void Start()
     {
         Initialize();
+        startPos = transform.position;
         Find_First_Point();
     }
     private void Update()
@@ -296,5 +298,14 @@ public class Animal : MonoBehaviour, IMoveAnimal
             _animation.Idle_Animation();
             state = State.stay;
         }
+    }
+    public void ResetAnimal()
+    {
+        inSide = true;
+        ResetAgentDestination();
+        state = Animal.State.start;
+        agent.enabled = false;
+        transform.position = startPos;
+        agent.enabled = true;
     }
 }

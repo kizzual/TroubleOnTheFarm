@@ -5,76 +5,115 @@ using UnityEngine.AI;
 
 public class Game_controller : MonoBehaviour
 {
+    [SerializeField] private Container container;
+
+    [SerializeField] private float radius_walk_zone;
+
     [SerializeField] private int Goose_count;
     [SerializeField] private int Goat_count;
     [SerializeField] private int Ostrich_count;
     [SerializeField] private int Pig_count;
     [SerializeField] private int Cow_count;
-    [SerializeField] private int horse_count;
+    [SerializeField] private int Horse_count;
     [SerializeField] private int Sheep_count;
     [SerializeField] private int Chicken_count;
 
-    [Header("Paddocks")]
-    [SerializeField] private AnimalPaddock Goose_paddock;
-    [SerializeField] private AnimalPaddock Goat_paddock;
-    [SerializeField] private AnimalPaddock Ostrich_paddock;
-    [SerializeField] private AnimalPaddock Pig_paddock;
-    [SerializeField] private AnimalPaddock Cow_paddock;
-    [SerializeField] private AnimalPaddock Horse_paddock;
-    [SerializeField] private AnimalPaddock Sheep_paddock;
-    [SerializeField] private AnimalPaddock Chicken_paddock;
+    [SerializeField] private float Day_length;
 
+    private bool DayIsActive = false;
+    private float timer;
 
-    [Header("Prefabs")]
-    [SerializeField] private Animal Goose_prefab;
-    [SerializeField] private Animal Goat_prefab;
-    [SerializeField] private Animal Ostrich_prefab;
-    [SerializeField] private Animal pig_prefab;
-    [SerializeField] private Animal Cow_prefab;
-    [SerializeField] private Animal horse_prefab;
-    [SerializeField] private Animal Sheep_prefab;
-    [SerializeField] private Animal Chicken_prefab;
-
-
-    [SerializeField] private Transform AnimalsParrent;
-    [SerializeField] private Transform zone_to_walk;
-    [SerializeField] private float radius_walk_zone;
     void Awake()
     {
         SpawnAnimals();
     }
-
-
-    void Update()
+    private void Update()
     {
+        DayActive();
     }
     private void SpawnAnimals()
     {
-        Goose_paddock.SpawnAnimals(Goose_prefab, Goose_count, zone_to_walk, radius_walk_zone, AnimalsParrent);
-        Goat_paddock.SpawnAnimals(Goat_prefab, Goat_count, zone_to_walk, radius_walk_zone, AnimalsParrent);
-        Ostrich_paddock.SpawnAnimals(Ostrich_prefab, Ostrich_count, zone_to_walk, radius_walk_zone, AnimalsParrent);
-        Pig_paddock.SpawnAnimals(pig_prefab, Pig_count, zone_to_walk, radius_walk_zone, AnimalsParrent);
-        Cow_paddock.SpawnAnimals(Cow_prefab, Cow_count, zone_to_walk, radius_walk_zone, AnimalsParrent);
-        Horse_paddock.SpawnAnimals(horse_prefab, horse_count, zone_to_walk, radius_walk_zone, AnimalsParrent);
-        Sheep_paddock.SpawnAnimals(Sheep_prefab, Sheep_count, zone_to_walk, radius_walk_zone, AnimalsParrent);
-        Chicken_paddock.SpawnAnimals(Chicken_prefab, Chicken_count, zone_to_walk, radius_walk_zone, AnimalsParrent);
-
-    }
-    private bool CheckPaddock(AnimalPaddock paddock)
-    {
-        if(paddock.gameObject.activeSelf)
+        if (container.Goose_paddock.isActive)
         {
-            return true;
+            container.Goose_paddock.SpawnAnimals(container.Goose_prefab, Goose_count, container.zone_to_walk, radius_walk_zone, container.AnimalsParrent);
         }
-        else
+        if (container.Goat_paddock.isActive)
         {
-            return false;
+            container.Goat_paddock.SpawnAnimals(container.Goat_prefab, Goat_count, container.zone_to_walk, radius_walk_zone, container.AnimalsParrent);
+        }
+        if (container.Ostrich_paddock.isActive)
+        {
+            container.Ostrich_paddock.SpawnAnimals(container.Ostrich_prefab, Ostrich_count, container.zone_to_walk, radius_walk_zone, container.AnimalsParrent);
+        }
+        if (container.Pig_paddock.isActive)
+        {
+            container.Pig_paddock.SpawnAnimals(container.pig_prefab, Pig_count, container.zone_to_walk, radius_walk_zone, container.AnimalsParrent);
+        }
+        if (container.Cow_paddock.isActive)
+        {
+            container.Cow_paddock.SpawnAnimals(container.Cow_prefab, Cow_count, container.zone_to_walk, radius_walk_zone, container.AnimalsParrent);
+        }
+        if (container.Horse_paddock.isActive)
+        {
+            container.Horse_paddock.SpawnAnimals(container.horse_prefab, Horse_count, container.zone_to_walk, radius_walk_zone, container.AnimalsParrent);
+        }
+        if (container.Sheep_paddock.isActive)
+        {
+            container.Sheep_paddock.SpawnAnimals(container.Sheep_prefab, Sheep_count, container.zone_to_walk, radius_walk_zone, container.AnimalsParrent);
+        }
+        if (container.Chicken_paddock.isActive)
+        {
+            container.Chicken_paddock.SpawnAnimals(container.Chicken_prefab, Chicken_count, container.zone_to_walk, radius_walk_zone, container.AnimalsParrent);
+        }
+    }
+
+    private void Gold_Earned() // вывод заработанного количества денег на экран
+    {
+        container.Result_ui.Gold_earned(Goose_count, Goat_count, Ostrich_count, Pig_count, Cow_count, Horse_count, Sheep_count, Chicken_count);
+    }
+
+    private void Scoring() // сьедаем скот и перемещаем в загон
+    {
+        container.Goose_paddock.Day_result();
+        container.Goat_paddock.Day_result();
+        container.Ostrich_paddock.Day_result();
+        container.Pig_paddock.Day_result();
+        container.Cow_paddock.Day_result();
+        container.Horse_paddock.Day_result();
+        container.Sheep_paddock.Day_result();
+        container.Chicken_paddock.Day_result();
+    }
+
+    private void DisplayScoreDay() // ѕровер€ем количество каждого скота
+    {
+        Goose_count = container.Goose_paddock.In_Side_animals.Count;
+        Goat_count = container.Goat_paddock.In_Side_animals.Count;
+        Ostrich_count = container.Ostrich_paddock.In_Side_animals.Count;
+        Pig_count = container.Pig_paddock.In_Side_animals.Count;
+        Cow_count = container.Cow_paddock.In_Side_animals.Count;
+        Horse_count = container.Horse_paddock.In_Side_animals.Count;
+        Sheep_count = container.Sheep_paddock.In_Side_animals.Count;
+        Chicken_count = container.Chicken_paddock.In_Side_animals.Count;
+    }
+    private void DayActive()
+    {
+        if(DayIsActive)
+        {
+            timer += Time.deltaTime;
+            if(timer >= Day_length)
+            {
+                DayIsActive = false;
+                timer = 0;
+                Scoring();
+                DisplayScoreDay();
+                //вызов финиш панели
+            }
         }
     }
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(zone_to_walk.position, radius_walk_zone);
-
+        Gizmos.DrawWireSphere(container.zone_to_walk.position, radius_walk_zone);
     }
+
 }

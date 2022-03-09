@@ -7,7 +7,8 @@ public class AnimalPaddock : MonoBehaviour
     public bool isActive;
     [SerializeField] private Door door;
     [SerializeField] private float spawnRaduis;
-  //  [SerializeField] private Vector3 spawnRaduisCube;
+    //  [SerializeField] private Vector3 spawnRaduisCube;
+
     public enum Type
     {
         Goose,
@@ -68,10 +69,6 @@ public class AnimalPaddock : MonoBehaviour
             }
         }
     }
-
-    /// <summary>
-    /// ƒописать всех животных перед тестами
-    /// </summary>
     private bool PassAllowed(Type type, Animal animalType)
     {
         if (type == Type.Goose && animalType.animalType != Animal.AnimalType.Goose)
@@ -109,48 +106,83 @@ public class AnimalPaddock : MonoBehaviour
 
         return true;
     }
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, spawnRaduis);
-    //    Gizmos.DrawWireCube(transform.position, spawnRaduisCube);
-    }
     public Vector3 SpawnPos()
     {
         Vector3 randomPos = Random.insideUnitSphere * spawnRaduis + transform.position;
         Vector3 pos = new Vector3(randomPos.x, 0, randomPos.z);
         return pos;
     }
-    public void SpawnAnimals(Animal prefab, int maxCount, Transform zoneToWalk, float walkRadius, Transform parrent )
+    public void SpawnAnimals(Animal prefab, int maxCount, Transform zoneToWalk, float walkRadius, Transform parrent)
+    {
+
+        if (!firstSpawn)
+        {
+            for (int i = In_Side_animals.Count; i < maxCount; i++)
+            {
+                Animal go = Instantiate(prefab, SpawnPos(), Quaternion.identity, parrent);
+                In_Side_animals.Add(go);
+                go.SetPriority(i);
+                go.zone_to_walk = zoneToWalk;
+                go.radius_walk_zone = walkRadius;
+                go.inSide = true;
+            }
+        }
+        else
+        {
+            for (int i = 0; i < maxCount; i++)
+            {
+                Animal go = Instantiate(prefab, SpawnPos(), Quaternion.identity, parrent);
+                In_Side_animals.Add(go);
+                go.SetPriority(i);
+                go.zone_to_walk = zoneToWalk;
+                go.radius_walk_zone = walkRadius;
+                go.inSide = true;
+            }
+            firstSpawn = false;
+        }
+
+
+    }
+
+    public void Day_result()//int minPercent, int maxPercent)
     {
         if (isActive)
         {
-            if (!firstSpawn)
+            door.Close_door();
+        }
+        float rng = Random.Range(10, 50);
+        float tmp = (float)Out_Side_animals.Count / 100;
+        float deadAnimals = tmp * rng;
+
+
+        deadAnimals = Mathf.RoundToInt(deadAnimals);
+        Debug.Log("Dead animal  =   " + deadAnimals);
+        for (int i = Out_Side_animals.Count; i > 0; i--)
+        {
+            Debug.Log(i);
+            Debug.Log(deadAnimals);
+            if (deadAnimals > 0)
             {
-                for (int i = In_Side_animals.Count; i < maxCount; i++)
-                {
-                    Animal go = Instantiate(prefab, SpawnPos(), Quaternion.identity, parrent);
-                    In_Side_animals.Add(go);
-                    go.SetPriority(i);
-                    go.zone_to_walk = zoneToWalk;
-                    go.radius_walk_zone = walkRadius;
-                    go.inSide = true;
-                }
+                Out_Side_animals.RemoveAt(i - 1);
+                deadAnimals--;
             }
             else
             {
-                for (int i = 0; i < maxCount; i++)
-                {
-                    Animal go = Instantiate(prefab, SpawnPos(), Quaternion.identity, parrent);
-                    In_Side_animals.Add(go);
-                    go.SetPriority(i);
-                    go.zone_to_walk = zoneToWalk;
-                    go.radius_walk_zone = walkRadius;
-                    go.inSide = true;
-                }
-                firstSpawn = false;
+                In_Side_animals.Add(Out_Side_animals[i - 1]);
+                Out_Side_animals.RemoveAt(Out_Side_animals.Count - 1);
             }
-            
         }
+        foreach (var item in In_Side_animals)
+        {
+            item.ResetAnimal();
+        }
+    }
+
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, spawnRaduis);
+    //    Gizmos.DrawWireCube(transform.position, spawnRaduisCube);
     }
 }
