@@ -37,7 +37,6 @@ public class Result_ui : MonoBehaviour
     [SerializeField] private Text summ_total_text;
 
 
-    private int summ;
 
     [SerializeField] private AnimalIncome income_settings;
     void Start()
@@ -93,6 +92,7 @@ public class Result_ui : MonoBehaviour
 
 
         summ_total_text.text = totalSumm.ToString();
+        Game_controller.gold += totalSumm;
     }
 
 

@@ -346,6 +346,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animalType: 0
+  Weight: 0
   state: 0
   animalSettings: {fileID: 11400000, guid: 04c5f176256906e4c991f16c27505661, type: 2}
   inSide: 0
@@ -388,6 +389,7 @@ MonoBehaviour:
   zone_to_walk: {fileID: 0}
   patrol_Sphere_Raduis: 1.41
   fear_Sphere_Raduis: 0.28
+  active: 0
   canFear: 1
 --- !u!135 &4709236000890521209
 SphereCollider:

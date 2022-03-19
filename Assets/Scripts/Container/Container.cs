@@ -26,9 +26,25 @@ public class Container : MonoBehaviour
 
     [Header("UI")]
     public Result_ui Result_ui;
+    public Finish_Ui Finish_ui;
+    public InGame_Ui InGame_ui;
+    public Manager_UI Manager_ui;
+    public Inventory_container Inventory_ui;
 
+    [Header("Panel")]
+    public GameObject Ingame_panel;    
+    public Manager_panel Manager_panel;
 
+    [Header("Transfrom")]
     public Transform AnimalsParrent;
     public Transform zone_to_walk;
-    
+
+    [Header("input")]
+    public InputDetect inputMouse;
+
+    [Header("ScriptableObjects")]
+    public AnimalPrice animal_price;
+    public Max_animals max_animals;
+    public PaddockPrice PaddockPrice;
+    public Busters_price busters_price;
 }

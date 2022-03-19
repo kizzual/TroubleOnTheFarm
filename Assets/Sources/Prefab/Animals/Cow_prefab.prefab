@@ -399,7 +399,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4356429064146775737}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -8.69, y: 0.08800006, z: -7.32}
+  m_LocalPosition: {x: 913.4861, y: 469.8483, z: 0}
   m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_Children:
   - {fileID: 4356429064146285215}
@@ -440,6 +440,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animalType: 4
+  Weight: 0
   state: 0
   animalSettings: {fileID: 11400000, guid: 04c5f176256906e4c991f16c27505661, type: 2}
   inSide: 0
@@ -482,6 +483,7 @@ MonoBehaviour:
   zone_to_walk: {fileID: 0}
   patrol_Sphere_Raduis: 1.41
   fear_Sphere_Raduis: 0.28
+  active: 0
   canFear: 1
 --- !u!135 &3302906975885616470
 SphereCollider:

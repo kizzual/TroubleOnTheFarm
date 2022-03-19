@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2382e0ca140c9f5438aa7360a927335a, type: 3}
+  m_Name: Animal_Max_count
+  m_EditorClassIdentifier: 
+  Goose: 5
+  Goat: 5
+  Ostrich: 5
+  Pig: 5
+  Cow: 5
+  Horse: 5
+  Sheep: 5
+  Chicken: 5

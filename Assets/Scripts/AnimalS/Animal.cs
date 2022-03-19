@@ -17,6 +17,8 @@ public class Animal : MonoBehaviour, IMoveAnimal
         Chicken
     }
     public AnimalType animalType;
+
+    public int Weight;
     public enum State
     {
         start,
@@ -66,12 +68,13 @@ public class Animal : MonoBehaviour, IMoveAnimal
     private Vector3 axis;
     private Vector3 startPos;
 
+    public bool active = false;
     [HideInInspector] public bool canFear = true;
     private void Start()
     {
         Initialize();
         startPos = transform.position;
-        Find_First_Point();
+    //    Find_First_Point();
     }
     private void Update()
     {
@@ -239,6 +242,15 @@ public class Animal : MonoBehaviour, IMoveAnimal
         {
         }
     }
+    public void UsedFeedBuster(float time, Vector3 destination)
+    {
+        timeToMove = time;
+        distMax = CheckDistance(transform.position, destination);
+
+        agent.SetDestination(destination);
+        state = State.run;
+        StartCoroutine(Eating(time));
+    }
     public void Patroling_In_Main_zone()
     {
         timeToMove = Random.Range(min_Time_ToStay, max_Time_To_Stay + 1);
@@ -292,20 +304,41 @@ public class Animal : MonoBehaviour, IMoveAnimal
     }
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Animal"))
+        if(other.TryGetComponent(out Animal animal))
         {
-            ResetAgentDestination();
-            _animation.Idle_Animation();
-            state = State.stay;
+            if(active)
+            {
+                if (Weight >= animal.Weight)
+                {
+                    animal.FearingAnimal(transform);
+                }
+                else
+                {
+                    FearingAnimal(animal.transform);
+                }
+            }
+            
+       //     ResetAgentDestination();
+      //      _animation.Idle_Animation();
+      //      state = State.stay;
         }
     }
+
     public void ResetAnimal()
     {
         inSide = true;
-        ResetAgentDestination();
         state = Animal.State.start;
+        ResetAgentDestination();
         agent.enabled = false;
         transform.position = startPos;
         agent.enabled = true;
+    }
+
+
+    IEnumerator Eating(float eatTime)
+    {
+        yield return new WaitForSeconds(eatTime);
+        canFear = true;
+        state = State.stay;
     }
 }

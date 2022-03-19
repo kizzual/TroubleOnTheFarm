@@ -1,13 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using TMPro;
 public class AnimalPaddock : MonoBehaviour
 {
     public bool isActive;
     [SerializeField] private Door door;
     [SerializeField] private float spawnRaduis;
-    //  [SerializeField] private Vector3 spawnRaduisCube;
+//  [SerializeField] private Vector3 spawnRaduisCube;
+
+    [SerializeField] TextMeshPro animals_count;
+    private int animal_max_count;
 
     public enum Type
     {
@@ -26,11 +29,116 @@ public class AnimalPaddock : MonoBehaviour
     public List<Animal> Out_Side_animals;
     private bool firstSpawn = true;
 
-    void Start()
+    private int diedAnimals;
+    void Awake()
     {
-        if(isActive)
+        CheckSave();
+    }
+    private void Start()
+    {
+        DisplayAnimal_count();
+
+        if (isActive)
         {
-            door.CloseOpenDoore();
+            OpenGate();
+        }
+    }
+    private void CheckSave()
+    {
+        if (type == Type.Goose)
+        {
+            if (PlayerPrefs.GetInt("Goose_paddock") == 1)
+            {
+                isActive = true;
+            }
+            else
+            {
+                isActive = false;
+            }
+        }
+        if (type == Type.Goat)
+        {
+            if (PlayerPrefs.GetInt("Goat_paddock") == 1)
+            {
+                isActive = true;
+            }
+            else
+            {
+                isActive = false;
+            }
+        }
+        if (type == Type.Ostrich)
+        {
+            if (PlayerPrefs.GetInt("Ostrich_paddock") == 1)
+            {
+                isActive = true;
+            }
+            else
+            {
+                isActive = false;
+            }
+        }
+        if (type == Type.Pig)
+        {
+            if (PlayerPrefs.GetInt("Pig_paddock") == 1)
+            {
+                isActive = true;
+            }
+            else
+            {
+                isActive = false;
+            }
+        }
+        if (type == Type.Cow)
+        {
+            if (PlayerPrefs.GetInt("Cow_paddock") == 1)
+            {
+                isActive = true;
+            }
+            else
+            {
+                isActive = false;
+            }
+        }
+        if (type == Type.Horse)
+        {
+            if (PlayerPrefs.GetInt("Horse_paddock") == 1)
+            {
+                isActive = true;
+            }
+            else
+            {
+                isActive = false;
+            }
+        }
+        if (type == Type.Sheep)
+        {
+            if (PlayerPrefs.GetInt("Sheep_paddock") == 1)
+            {
+                isActive = true;
+            }
+            else
+            {
+                isActive = false;
+            }
+        }
+        if (type == Type.Chicken)
+        {
+            if (PlayerPrefs.GetInt("Chicken_paddock") == 1)
+            {
+                isActive = true;
+            }
+            else
+            {
+                isActive = false;
+            }
+        }
+    }
+    private void OpenGate()
+    {
+        if (isActive)
+        {
+            door.Open_door();
         }
     }
     private void OnTriggerEnter(Collider other)
@@ -49,6 +157,7 @@ public class AnimalPaddock : MonoBehaviour
                 {
                     Out_Side_animals.Remove(animal);
                     In_Side_animals.Add(animal);
+                    DisplayAnimal_count();
                 }
             }
         }
@@ -66,6 +175,7 @@ public class AnimalPaddock : MonoBehaviour
                 animal.inSide = false;
                 In_Side_animals.Remove(animal);
                 Out_Side_animals.Add(animal);
+                DisplayAnimal_count();
             }
         }
     }
@@ -112,16 +222,19 @@ public class AnimalPaddock : MonoBehaviour
         Vector3 pos = new Vector3(randomPos.x, 0, randomPos.z);
         return pos;
     }
-    public void SpawnAnimals(Animal prefab, int maxCount, Transform zoneToWalk, float walkRadius, Transform parrent)
+    public void SpawnAnimals(Animal prefab, int maxCount, Transform zoneToWalk, float walkRadius, Transform parrent, int Weight, int priority)
     {
+        OpenGate();
 
+        animal_max_count = maxCount;
         if (!firstSpawn)
         {
             for (int i = In_Side_animals.Count; i < maxCount; i++)
             {
                 Animal go = Instantiate(prefab, SpawnPos(), Quaternion.identity, parrent);
                 In_Side_animals.Add(go);
-                go.SetPriority(i);
+                go.SetPriority(i + priority);
+                go.Weight = Weight;
                 go.zone_to_walk = zoneToWalk;
                 go.radius_walk_zone = walkRadius;
                 go.inSide = true;
@@ -133,19 +246,28 @@ public class AnimalPaddock : MonoBehaviour
             {
                 Animal go = Instantiate(prefab, SpawnPos(), Quaternion.identity, parrent);
                 In_Side_animals.Add(go);
-                go.SetPriority(i);
+                go.SetPriority(i + priority);
+                go.Weight = Weight;
                 go.zone_to_walk = zoneToWalk;
                 go.radius_walk_zone = walkRadius;
                 go.inSide = true;
             }
             firstSpawn = false;
         }
-
-
+        DisplayAnimal_count();
+       // StartCoroutine(OpenGates());
     }
 
-    public void Day_result()//int minPercent, int maxPercent)
+    public void StartDay()
     {
+        foreach (var item in In_Side_animals)
+        {
+            item.Find_First_Point();
+        }
+    }
+    public int Day_result()
+    {
+        diedAnimals = 0;
         if (isActive)
         {
             door.Close_door();
@@ -154,15 +276,14 @@ public class AnimalPaddock : MonoBehaviour
         float tmp = (float)Out_Side_animals.Count / 100;
         float deadAnimals = tmp * rng;
 
-
         deadAnimals = Mathf.RoundToInt(deadAnimals);
-        Debug.Log("Dead animal  =   " + deadAnimals);
+        
         for (int i = Out_Side_animals.Count; i > 0; i--)
         {
-            Debug.Log(i);
-            Debug.Log(deadAnimals);
             if (deadAnimals > 0)
             {
+                diedAnimals++;
+                Destroy(Out_Side_animals[i - 1].gameObject);
                 Out_Side_animals.RemoveAt(i - 1);
                 deadAnimals--;
             }
@@ -176,9 +297,24 @@ public class AnimalPaddock : MonoBehaviour
         {
             item.ResetAnimal();
         }
+        return diedAnimals;
     }
 
+    private void DisplayAnimal_count()
+    {
+        animals_count.text = In_Side_animals.Count.ToString() + "/" + animal_max_count.ToString();
+    }
 
+    private IEnumerator OpenGates()
+    {
+        yield return new WaitForSeconds(3f);
+        foreach (var item in In_Side_animals)
+        {
+            item.Find_First_Point();
+        }
+    }
+
+   
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;

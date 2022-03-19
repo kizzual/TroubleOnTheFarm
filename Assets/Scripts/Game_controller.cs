@@ -6,8 +6,7 @@ using UnityEngine.AI;
 public class Game_controller : MonoBehaviour
 {
     [SerializeField] private Container container;
-
-    [SerializeField] private float radius_walk_zone;
+    [SerializeField] private float radius_walk_zone;  //скриптабл
 
     [SerializeField] private int Goose_count;
     [SerializeField] private int Goat_count;
@@ -18,70 +17,551 @@ public class Game_controller : MonoBehaviour
     [SerializeField] private int Sheep_count;
     [SerializeField] private int Chicken_count;
 
-    [SerializeField] private float Day_length;
+    [SerializeField] private int feed_Bust_count;
+    [SerializeField] private int time_Bust_count;
+    public static int gold;  //вынести в сейвы
+    private int Day;
 
-    private bool DayIsActive = false;
+    public int Day_length; //   брать из скриптаблобж
+
+
+
+
+
+
+    public bool DayIsActive = false;  //поменять на приват
+
     private float timer;
+    private float deadCount;
 
+    public enum State
+    {
+        InMenu,
+        Ingame,
+        Finish,
+        Result
+
+    }
+    public State state;
+
+
+
+    private int Goose_died;
+    private int Goat_died;
+    private int Ostrich_died;
+    private int Pig_died;
+    private int Cow_died;
+    private int Horse_died;
+    private int Sheep_died;
+    private int Chicken_died;
     void Awake()
     {
+        CheckSave();
+        state = State.InMenu;
+        container.InGame_ui.gameObject.SetActive(false);
+        container.Finish_ui.gameObject.SetActive(false);
+        container.Result_ui.gameObject.SetActive(false);
+        container.Manager_ui.gameObject.SetActive(true);
+        container.Ingame_panel.gameObject.SetActive(false);
+        container.Manager_panel.gameObject.SetActive(true);
         SpawnAnimals();
+    }
+    private void Start()
+    {
+        DisplayGold();
+        DisplayBusters_count();
+        DisplayBusters_price();
+        DisplayAnimalsCountInManagerPanel();
+        DisplayActive_inactive_paddock();
     }
     private void Update()
     {
         DayActive();
     }
+
+    private void DisplayAnimalsCountInManagerPanel()
+    {
+        container.Manager_panel.AnimalsCount(Goose_count, Goat_count, Ostrich_count, Pig_count, Cow_count, Horse_count, Sheep_count, Chicken_count);
+    }
+
+    private void CheckSave()
+    {
+        Goose_count = Save.Goose_count_Get();
+        Goat_count = Save.Goat_count_Get();
+        Ostrich_count = Save.Ostrich_count_Get();
+        Pig_count = Save.Pig_count_Get();
+        Cow_count = Save.Cow_count_Get();
+        Horse_count = Save.Horse_count_Get();
+        Sheep_count = Save.Sheep_count_Get();
+        Chicken_count = Save.Chicken_count_Get();
+
+        feed_Bust_count = Save.Feed_bust_count_Get();
+        time_Bust_count = Save.Time_bust_count_Get();
+        Day = Save.Day_Get();
+        gold = Save.Gold_Get();
+    }
+
+    private void SaveAll()
+    {
+        Save.Save_Goose_count(Goose_count);
+        Save.Save_Goat_count(Goat_count);
+        Save.Save_Ostrich_count(Ostrich_count);
+        Save.Save_Pig_count(Pig_count);
+        Save.Save_Cow_count(Cow_count);
+        Save.Save_Horse_count(Horse_count);
+        Save.Save_Sheep_count(Sheep_count);
+        Save.Save_Chicken_count(Chicken_count);
+
+        Save.Save_Feed_bust(feed_Bust_count);
+        Save.Save_Time_bust(time_Bust_count);
+        Save.Save_Day(Day);
+        Save.Save_Gold(gold);
+        Save.SaveStats();
+    }
+
     private void SpawnAnimals()
     {
-        if (container.Goose_paddock.isActive)
+        if (Goose_count > 0)
         {
-            container.Goose_paddock.SpawnAnimals(container.Goose_prefab, Goose_count, container.zone_to_walk, radius_walk_zone, container.AnimalsParrent);
+            container.Goose_paddock.isActive = true;
+            container.Goose_paddock.SpawnAnimals(container.Goose_prefab, Goose_count, container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 2, 1);
         }
-        if (container.Goat_paddock.isActive)
+        if (Goat_count > 0)
         {
-            container.Goat_paddock.SpawnAnimals(container.Goat_prefab, Goat_count, container.zone_to_walk, radius_walk_zone, container.AnimalsParrent);
+            container.Goat_paddock.isActive = true;
+            container.Goat_paddock.SpawnAnimals(container.Goat_prefab, Goat_count, container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 3, Goose_count + 1);
         }
-        if (container.Ostrich_paddock.isActive)
+        if (Ostrich_count > 0)
         {
-            container.Ostrich_paddock.SpawnAnimals(container.Ostrich_prefab, Ostrich_count, container.zone_to_walk, radius_walk_zone, container.AnimalsParrent);
+            container.Ostrich_paddock.isActive = true;
+            container.Ostrich_paddock.SpawnAnimals(container.Ostrich_prefab, Ostrich_count, container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 5, Goat_count + 1);
         }
-        if (container.Pig_paddock.isActive)
+        if (Pig_count > 0)
         {
-            container.Pig_paddock.SpawnAnimals(container.pig_prefab, Pig_count, container.zone_to_walk, radius_walk_zone, container.AnimalsParrent);
+            container.Pig_paddock.isActive = true;
+            container.Pig_paddock.SpawnAnimals(container.pig_prefab, Pig_count, container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 4, Ostrich_count + 1);
         }
-        if (container.Cow_paddock.isActive)
+        if (Cow_count > 0)
         {
-            container.Cow_paddock.SpawnAnimals(container.Cow_prefab, Cow_count, container.zone_to_walk, radius_walk_zone, container.AnimalsParrent);
+            container.Cow_paddock.isActive = true;
+            container.Cow_paddock.SpawnAnimals(container.Cow_prefab, Cow_count, container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 6, Pig_count + 1);
         }
-        if (container.Horse_paddock.isActive)
+        if (Horse_count > 0)
         {
-            container.Horse_paddock.SpawnAnimals(container.horse_prefab, Horse_count, container.zone_to_walk, radius_walk_zone, container.AnimalsParrent);
+            container.Horse_paddock.isActive = true;
+            container.Horse_paddock.SpawnAnimals(container.horse_prefab, Horse_count, container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 7, Cow_count + 1);
         }
-        if (container.Sheep_paddock.isActive)
+        if (Sheep_count > 0)
         {
-            container.Sheep_paddock.SpawnAnimals(container.Sheep_prefab, Sheep_count, container.zone_to_walk, radius_walk_zone, container.AnimalsParrent);
+            container.Sheep_paddock.isActive = true;
+            container.Sheep_paddock.SpawnAnimals(container.Sheep_prefab, Sheep_count, container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 3, Horse_count + 1);
         }
-        if (container.Chicken_paddock.isActive)
+        if (Chicken_count > 0)
         {
-            container.Chicken_paddock.SpawnAnimals(container.Chicken_prefab, Chicken_count, container.zone_to_walk, radius_walk_zone, container.AnimalsParrent);
+            container.Chicken_paddock.isActive = true;
+            container.Chicken_paddock.SpawnAnimals(container.Chicken_prefab, Chicken_count, container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 1, Sheep_count + 1);
         }
     }
 
-    private void Gold_Earned() // вывод заработанного количества денег на экран
+    private void ResetDieAnimals()
     {
-        container.Result_ui.Gold_earned(Goose_count, Goat_count, Ostrich_count, Pig_count, Cow_count, Horse_count, Sheep_count, Chicken_count);
+        deadCount = 0;
+        Goose_died = 0;
+        Goat_died = 0;
+        Ostrich_died = 0;
+        Pig_died = 0;
+        Cow_died = 0;
+        Horse_died = 0;
+        Sheep_died = 0;
+        Chicken_died = 0;
     }
 
-    private void Scoring() // сьедаем скот и перемещаем в загон
+    private void DayActive()
     {
-        container.Goose_paddock.Day_result();
-        container.Goat_paddock.Day_result();
-        container.Ostrich_paddock.Day_result();
-        container.Pig_paddock.Day_result();
-        container.Cow_paddock.Day_result();
-        container.Horse_paddock.Day_result();
-        container.Sheep_paddock.Day_result();
-        container.Chicken_paddock.Day_result();
+        if (DayIsActive)
+        {
+            timer += Time.deltaTime;
+            container.InGame_ui.Display_Day_timer(Day_length - timer, Day_length);
+
+            if (timer > Day_length)
+            {
+                DayIsActive = false;
+                timer = 0;
+                SwitchState();
+                //вызов финиш панели
+            }
+        }
+    }
+    private void StartDay()
+    {
+        container.Goose_paddock.StartDay();
+        container.Goat_paddock.StartDay();
+        container.Ostrich_paddock.StartDay();
+        container.Pig_paddock.StartDay();
+        container.Cow_paddock.StartDay();
+        container.Horse_paddock.StartDay();
+        container.Sheep_paddock.StartDay();
+        container.Chicken_paddock.StartDay();
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(container.zone_to_walk.position, radius_walk_zone);
+    }
+
+    #region SwitchState
+    public void SwitchState()
+    {
+        if(state == State.InMenu)
+        {
+            //начинаем игру
+            StartDay();
+            container.Manager_ui.gameObject.SetActive(false);
+            container.InGame_ui.gameObject.SetActive(true);
+            container.Ingame_panel.gameObject.SetActive(true);
+            container.Manager_panel.gameObject.SetActive(false);
+            container.inputMouse.InGame = true;
+            container.Inventory_ui.Display_Busters_Count(feed_Bust_count, time_Bust_count);
+            SpawnAnimals();
+
+            //движением камеры и задержку пока не выйдут животные
+            DayIsActive = true;
+            state = State.Ingame;
+            
+        }
+        else if(state == State.Ingame)
+        {
+            Display_Scoring();
+            DisplayScoreDay();
+            container.InGame_ui.gameObject.SetActive(false);
+            container.Finish_ui.gameObject.SetActive(true);
+            if(deadCount > 0)
+            {
+                container.Finish_ui.LoseDay(Goose_died, Goat_died, Ostrich_died, Pig_died, Cow_died, Horse_died, Sheep_died, Chicken_died);
+            }
+            else
+            {
+                container.Finish_ui.WinDay();
+
+            }
+            container.inputMouse.InGame = false;
+
+            state = State.Finish;
+
+        }
+        else if (state == State.Finish)
+        {
+            container.Finish_ui.gameObject.SetActive(false);
+            container.Result_ui.gameObject.SetActive(true);
+            Display_Gold_Earned();
+            DisplayGold();
+            DisplayAnimalsCountInManagerPanel();
+            DisplayActive_inactive_paddock();
+            feed_Bust_count = container.Inventory_ui.feed_buster_count;
+            time_Bust_count = container.Inventory_ui.time_buster_count;
+            DisplayBusters_count();
+            SaveAll();
+            state = State.Result;
+        }
+        else if (state == State.Result)
+        {
+            container.Result_ui.gameObject.SetActive(false);
+            container.Manager_ui.gameObject.SetActive(true);
+
+            container.Ingame_panel.gameObject.SetActive(false);
+            container.Manager_panel.gameObject.SetActive(true);
+            //вывод экрана меню (смещение камеру UI)
+            state = State.InMenu;
+        }
+    }
+    #endregion
+
+    #region Buy Paddock / Animals
+    public void BuyAnimal(ShopInGame.Type type)
+    {
+
+        if (type == ShopInGame.Type.Chicken)
+        {
+            if (gold >= container.animal_price.Chicken && Chicken_count < container.max_animals.Chicken)
+            {
+                Debug.Log("bye sucessful");
+                Chicken_count++;
+                gold -= container.animal_price.Chicken;
+                DisplayGold();
+                DisplayAnimalsCountInManagerPanel();
+                container.Manager_panel.DisplayManagerPanel(container.Chicken_paddock);
+
+            }
+            else if (gold < container.animal_price.Chicken && Chicken_count < container.max_animals.Chicken)
+            {
+                Debug.Log("not enough gold");
+            }
+            else if (Chicken_count >= container.max_animals.Chicken)
+            {
+                DisplayAnimalsCountInManagerPanel();
+                container.Manager_panel.DisplayManagerPanel(container.Chicken_paddock);
+            }
+        }
+        if (type == ShopInGame.Type.Cow)
+        {
+            if (gold >= container.animal_price.Cow && Cow_count < container.max_animals.Cow)
+            {
+                Debug.Log("bye sucessful");
+                Cow_count++;
+                gold -= container.animal_price.Cow;
+                DisplayGold();
+                DisplayAnimalsCountInManagerPanel();
+                container.Manager_panel.DisplayManagerPanel(container.Cow_paddock);
+
+            }
+            else if (gold < container.animal_price.Cow && Cow_count < container.max_animals.Cow)
+            {
+                Debug.Log("not enough gold");
+            }
+            else if (Cow_count >= container.max_animals.Cow)
+            {
+                DisplayAnimalsCountInManagerPanel();
+            }
+            container.Manager_panel.DisplayManagerPanel(container.Cow_paddock);
+        }
+        if (type == ShopInGame.Type.Goat)
+        {
+            if (gold >= container.animal_price.Goat && Goat_count < container.max_animals.Goat)
+            {
+
+                Debug.Log("bye sucessful");
+                Goat_count++;
+                gold -= container.animal_price.Goat;
+                DisplayGold();
+                DisplayAnimalsCountInManagerPanel();
+                container.Manager_panel.DisplayManagerPanel(container.Goat_paddock);
+            }
+            else if (gold < container.animal_price.Goat && Goat_count < container.max_animals.Goat)
+            {
+                Debug.Log("not enough gold");
+            }
+            else if (Goat_count >= container.max_animals.Goat)
+            {
+                DisplayAnimalsCountInManagerPanel();
+                container.Manager_panel.DisplayManagerPanel(container.Goat_paddock);
+            }
+        }
+        if (type == ShopInGame.Type.Goose)
+        {
+            if (gold >= container.animal_price.Goose && Goose_count < container.max_animals.Goose)
+            {
+                Debug.Log("bye sucessful");
+                Goose_count++;
+                gold -= container.animal_price.Goose;
+                DisplayGold();
+                DisplayAnimalsCountInManagerPanel();
+                container.Manager_panel.DisplayManagerPanel(container.Goose_paddock);
+            }
+            else if (gold < container.animal_price.Goose && Goose_count < container.max_animals.Goose)
+            {
+                Debug.Log("not enough gold");
+            }
+            else if (Goose_count >= container.max_animals.Goose)
+            {
+                DisplayAnimalsCountInManagerPanel();
+                container.Manager_panel.DisplayManagerPanel(container.Goose_paddock);
+            }
+        }
+        if (type == ShopInGame.Type.Horse)
+        {
+            if (gold >= container.animal_price.Horse && Horse_count < container.max_animals.Horse)
+            {
+                Debug.Log("bye sucessful");
+                Horse_count++;
+                gold -= container.animal_price.Horse;
+                DisplayGold();
+                DisplayAnimalsCountInManagerPanel();
+                container.Manager_panel.DisplayManagerPanel(container.Horse_paddock);
+            }
+            else if (gold < container.animal_price.Horse && Horse_count < container.max_animals.Horse)
+            {
+                Debug.Log("not enough gold");
+            }
+            else if (Horse_count >= container.max_animals.Horse)
+            {
+                DisplayAnimalsCountInManagerPanel();
+                container.Manager_panel.DisplayManagerPanel(container.Horse_paddock);
+            }
+        }
+        if (type == ShopInGame.Type.Ostrich)
+        {
+            if (gold >= container.animal_price.Ostrich && Ostrich_count < container.max_animals.Ostrich)
+            {
+                Debug.Log("bye sucessful");
+                Ostrich_count++;
+                gold -= container.animal_price.Ostrich;
+                DisplayGold();
+                DisplayAnimalsCountInManagerPanel();
+                container.Manager_panel.DisplayManagerPanel(container.Ostrich_paddock);
+            }
+            else if (gold < container.animal_price.Ostrich && Ostrich_count < container.max_animals.Ostrich)
+            {
+                Debug.Log("not enough gold");
+            }
+            else if (Ostrich_count >= container.max_animals.Ostrich)
+            {
+                DisplayAnimalsCountInManagerPanel();
+                container.Manager_panel.DisplayManagerPanel(container.Ostrich_paddock);
+            }
+        }
+        if (type == ShopInGame.Type.Pig)
+        {
+            if (gold >= container.animal_price.Pig && Pig_count < container.max_animals.Pig)
+            {
+                Debug.Log("bye sucessful");
+                Pig_count++;
+                gold -= container.animal_price.Pig;
+                DisplayGold();
+                DisplayAnimalsCountInManagerPanel();
+                container.Manager_panel.DisplayManagerPanel(container.Pig_paddock);
+            }
+            else if (gold < container.animal_price.Pig && Pig_count < container.max_animals.Pig)
+            {
+                Debug.Log("not enough gold");
+            }
+            else if (Pig_count >= container.max_animals.Pig)
+            {
+                DisplayAnimalsCountInManagerPanel();
+                container.Manager_panel.DisplayManagerPanel(container.Pig_paddock);
+            }
+        }
+        if (type == ShopInGame.Type.Sheep)
+        {
+            if (gold >= container.animal_price.Sheep && Sheep_count < container.max_animals.Sheep)
+            {
+                Debug.Log("bye sucessful");
+                Sheep_count++;
+                gold -= container.animal_price.Sheep;
+                DisplayGold();
+                DisplayAnimalsCountInManagerPanel();
+                container.Manager_panel.DisplayManagerPanel(container.Sheep_paddock);
+            }
+            else if (gold < container.animal_price.Sheep && Sheep_count < container.max_animals.Sheep)
+            {
+                Debug.Log("not enough gold");
+            }
+            else if (Sheep_count >= container.max_animals.Sheep)
+            {
+                DisplayAnimalsCountInManagerPanel();
+                container.Manager_panel.DisplayManagerPanel(container.Sheep_paddock);
+            }
+        }
+        DisplayGold();
+        SaveAll();
+    }
+    public void BuePaddock(ShopInGame.Type type)
+    {
+
+        if (type == ShopInGame.Type.Goose)
+        {
+            if (gold >= container.PaddockPrice.Goose)
+            {
+                gold -= container.PaddockPrice.Goose;
+                DisplayGold();
+                Save.Goose_paddockSave(true);
+                container.Goose_paddock.isActive = true;
+                container.Manager_panel.DisplayManagerPanel(container.Goose_paddock);
+            }
+        }
+        if (type == ShopInGame.Type.Chicken)
+        {
+            if (gold >= container.PaddockPrice.Chicken)
+            {
+                gold -= container.PaddockPrice.Chicken;
+                DisplayGold();
+                Save.Chicken_paddockSave(true);
+                container.Chicken_paddock.isActive = true;
+                container.Manager_panel.DisplayManagerPanel(container.Chicken_paddock);
+            }
+        }
+        else if (type == ShopInGame.Type.Cow)
+        {
+            if (gold >= container.PaddockPrice.Cow)
+            {
+
+                gold -= container.PaddockPrice.Cow;
+                DisplayGold();
+                Save.Cow_paddockSave(true);
+                container.Cow_paddock.isActive = true;
+                container.Manager_panel.DisplayManagerPanel(container.Cow_paddock);
+            }
+        }
+        else if (type == ShopInGame.Type.Goat)
+        {
+            if (gold >= container.PaddockPrice.Goat)
+            {
+                gold -= container.PaddockPrice.Goat;
+                DisplayGold();
+                Save.Goat_paddockSave(true);
+                container.Goat_paddock.isActive = true;
+                container.Manager_panel.DisplayManagerPanel(container.Goat_paddock);
+            }
+        }
+        else if (type == ShopInGame.Type.Horse)
+        {
+            if (gold >= container.PaddockPrice.Horse)
+            {
+                gold -= container.PaddockPrice.Horse;
+                DisplayGold();
+                Save.Horse_paddockSave(true);
+                container.Horse_paddock.isActive = true;
+                container.Manager_panel.DisplayManagerPanel(container.Horse_paddock);
+            }
+        }
+        else if (type == ShopInGame.Type.Ostrich)
+        {
+            if (gold >= container.PaddockPrice.Ostrich)
+            {
+                gold -= container.PaddockPrice.Ostrich;
+                DisplayGold();
+                Save.Ostrich_paddockSave(true);
+                container.Ostrich_paddock.isActive = true;
+                container.Manager_panel.DisplayManagerPanel(container.Ostrich_paddock);
+            }
+        }
+        else if (type == ShopInGame.Type.Pig)
+        {
+            if (gold >= container.PaddockPrice.Pig)
+            {
+                gold -= container.PaddockPrice.Pig;
+                DisplayGold();
+                Save.Pig_paddockSave(true);
+                container.Pig_paddock.isActive = true;
+                container.Manager_panel.DisplayManagerPanel(container.Pig_paddock);
+            }
+        }
+        else if (type == ShopInGame.Type.Sheep)
+        {
+            if (gold >= container.PaddockPrice.Sheep)
+            {
+                gold -= container.PaddockPrice.Sheep;
+                DisplayGold();
+                Save.Sheep_paddockSave(true);
+                container.Sheep_paddock.isActive = true;
+                container.Manager_panel.DisplayManagerPanel(container.Sheep_paddock);
+            }
+        }
+        DisplayGold();
+        SaveAll();
+    }
+    #endregion
+    #region Display
+  
+    public void DisplayActive_inactive_paddock()
+    {
+        container.Manager_panel.DisplayManagerPanel(container.Goose_paddock);
+        container.Manager_panel.DisplayManagerPanel(container.Goat_paddock);
+        container.Manager_panel.DisplayManagerPanel(container.Ostrich_paddock);
+        container.Manager_panel.DisplayManagerPanel(container.Pig_paddock);
+        container.Manager_panel.DisplayManagerPanel(container.Cow_paddock);
+        container.Manager_panel.DisplayManagerPanel(container.Horse_paddock);
+        container.Manager_panel.DisplayManagerPanel(container.Sheep_paddock);
+        container.Manager_panel.DisplayManagerPanel(container.Chicken_paddock);
     }
 
     private void DisplayScoreDay() // Проверяем количество каждого скота
@@ -95,25 +575,68 @@ public class Game_controller : MonoBehaviour
         Sheep_count = container.Sheep_paddock.In_Side_animals.Count;
         Chicken_count = container.Chicken_paddock.In_Side_animals.Count;
     }
-    private void DayActive()
+    private void DisplayGold()
     {
-        if(DayIsActive)
-        {
-            timer += Time.deltaTime;
-            if(timer >= Day_length)
-            {
-                DayIsActive = false;
-                timer = 0;
-                Scoring();
-                DisplayScoreDay();
-                //вызов финиш панели
-            }
-        }
+            container.Manager_ui.Display_Gold_earned(gold);
     }
-    private void OnDrawGizmos()
+    private void Display_Gold_Earned() // вывод заработанного количества денег на экран
     {
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(container.zone_to_walk.position, radius_walk_zone);
+        container.Result_ui.Gold_earned(Goose_count, Goat_count, Ostrich_count, Pig_count, Cow_count, Horse_count, Sheep_count, Chicken_count);
+    }
+    private void Display_Scoring() // сьедаем скот и перемещаем в загон
+    {
+        deadCount = 0;
+        ResetDieAnimals();
+        Goose_died = container.Goose_paddock.Day_result();
+        Goat_died = container.Goat_paddock.Day_result();
+        Ostrich_died = container.Ostrich_paddock.Day_result();
+        Pig_died = container.Pig_paddock.Day_result();
+        Cow_died = container.Cow_paddock.Day_result();
+        Horse_died = container.Horse_paddock.Day_result();
+        Sheep_died = container.Sheep_paddock.Day_result();
+        Chicken_died = container.Chicken_paddock.Day_result();
+        deadCount = (Goose_died + Goat_died + Ostrich_died + Pig_died + Cow_died + Horse_died + Sheep_died + Chicken_died);
+    }
+    private void DisplayBusters_count()
+    {
+        container.Manager_ui.Display_Bust_counts(feed_Bust_count, time_Bust_count);
+
+    }
+    private void DisplayBusters_price()
+    {
+        container.Manager_ui.DisplayBusters_price(container.busters_price.Feed_bust_price, container.busters_price.Time_bust_price);
     }
 
+    #endregion
+
+    #region Buy Bust 
+    public void BuyFeedBust()
+    {
+        if (gold >= container.busters_price.Feed_bust_price)
+        {
+            feed_Bust_count += 5;
+            gold -= container.busters_price.Feed_bust_price;
+            DisplayGold();
+            DisplayBusters_count();
+        }
+        else
+        {
+            Debug.Log("Not enough gold to buy Feed_Buster");
+        }
+    }
+    public void BuyTimeBust()
+    {
+        if (gold >= container.busters_price.Time_bust_price)
+        {
+            time_Bust_count ++;
+            gold -= container.busters_price.Time_bust_price;
+            DisplayGold();
+            DisplayBusters_count();
+        }
+        else
+        {
+            Debug.Log("Not enough gold to buy Time_Buster");
+        }
+    }
+    #endregion  
 }
