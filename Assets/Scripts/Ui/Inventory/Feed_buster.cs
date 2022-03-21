@@ -8,19 +8,16 @@ public class Feed_buster : MonoBehaviour
 
     private float timer;
     private SphereCollider collider;
-    private bool isActive = false;
+    public bool isActive = false;
 
+    public List<Animal> eatingAnimals;
     [SerializeField] float sphereRadius;
     public enum FeedType
     {
-        Goose,
-        Goat,
+        Goose_Pig_Chicken,
+        Goat_Sheep,
         Ostrich,
-        Pig,
-        Cow,
-        Horse,
-        Sheep,
-        Chicken
+        Cow_horse,
     }
     public FeedType feedtype;
 
@@ -34,6 +31,11 @@ public class Feed_buster : MonoBehaviour
         if (isActive)
         {
             timer += Time.deltaTime;
+            if(timer > LifeTime -1 && timer < LifeTime)
+            {
+                collider.enabled = false;
+                EatingFinished();
+            }
             if (timer >= LifeTime)
             {
                 Destroy(gameObject);
@@ -51,11 +53,33 @@ public class Feed_buster : MonoBehaviour
         {
             if (!animal.inSide && checkFeedType(animal.animalType))
             {
-                float time = Random.RandomRange(5, 15);
-                animal.UsedFeedBuster(time, SpawnPos());
-                animal.canFear = false;
+                animal.eating = true;
+                animal.UsedFeedBuster(SpawnPos(), this);
+                eatingAnimals.Add(animal);
             }
         }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.TryGetComponent(out Animal animal))
+        {
+            if (!animal.inSide && checkFeedType(animal.animalType))
+            {
+                eatingAnimals.Remove(animal);
+                animal.state = Animal.State.stay;
+                animal.eating = false;
+            }
+        }
+    }
+    private void EatingFinished()
+    {
+        foreach (var item in eatingAnimals)
+        {
+            item.eating = false;
+            item.state = Animal.State.stay;
+            Debug.Log("EatEnded");
+        }
+
     }
     public Vector3 SpawnPos()
     {
@@ -71,39 +95,23 @@ public class Feed_buster : MonoBehaviour
 
     private bool checkFeedType(Animal.AnimalType type)
     {
-        if (feedtype == FeedType.Goose && type == Animal.AnimalType.Goose)
+        if (feedtype == FeedType.Goose_Pig_Chicken)  
         {
-            return true;
+            if(type == Animal.AnimalType.Goose || type == Animal.AnimalType.Pig || type == Animal.AnimalType.Chicken) return true;
         }
-        else if (feedtype == FeedType.Goat && type == Animal.AnimalType.Goat)
+        else if (feedtype == FeedType.Goat_Sheep)
         {
-            return true;
+            if(type == Animal.AnimalType.Goat || type == Animal.AnimalType.Sheep) return true;
         }
         else if (feedtype == FeedType.Ostrich && type == Animal.AnimalType.Ostrich)
         {
             return true;
         }
-        else if (feedtype == FeedType.Pig && type == Animal.AnimalType.Pig)
+        else if (feedtype == FeedType.Cow_horse) 
         {
-            return true;
+            if(type == Animal.AnimalType.Cow || type == Animal.AnimalType.Horse) return true;
         }
-        else if (feedtype == FeedType.Cow && type == Animal.AnimalType.Cow)
-        {
-            return true;
-        }
-        else if (feedtype == FeedType.Horse && type == Animal.AnimalType.Horse)
-        {
-            return true;
-        }
-        else if (feedtype == FeedType.Sheep && type == Animal.AnimalType.Sheep)
-        {
-            return true;
-        }
-        else if (feedtype == FeedType.Chicken && type == Animal.AnimalType.Chicken)
-        {
-            return true;
-        }
-
+       
         return false;
     }
 }

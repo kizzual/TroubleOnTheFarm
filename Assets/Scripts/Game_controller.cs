@@ -65,6 +65,7 @@ public class Game_controller : MonoBehaviour
         container.Ingame_panel.gameObject.SetActive(false);
         container.Manager_panel.gameObject.SetActive(true);
         SpawnAnimals();
+   //     EndDay();
     }
     private void Start()
     {
@@ -86,7 +87,7 @@ public class Game_controller : MonoBehaviour
 
     private void CheckSave()
     {
-        Goose_count = Save.Goose_count_Get();
+     /*   Goose_count = Save.Goose_count_Get();
         Goat_count = Save.Goat_count_Get();
         Ostrich_count = Save.Ostrich_count_Get();
         Pig_count = Save.Pig_count_Get();
@@ -94,7 +95,7 @@ public class Game_controller : MonoBehaviour
         Horse_count = Save.Horse_count_Get();
         Sheep_count = Save.Sheep_count_Get();
         Chicken_count = Save.Chicken_count_Get();
-
+*/
         feed_Bust_count = Save.Feed_bust_count_Get();
         time_Bust_count = Save.Time_bust_count_Get();
         Day = Save.Day_Get();
@@ -192,17 +193,59 @@ public class Game_controller : MonoBehaviour
             }
         }
     }
-    private void StartDay()
+    IEnumerator StartingDay()
     {
+        OpenGate();
         container.Goose_paddock.StartDay();
+        yield return new WaitForSeconds(1f);
         container.Goat_paddock.StartDay();
+        yield return new WaitForSeconds(1f);
         container.Ostrich_paddock.StartDay();
+        yield return new WaitForSeconds(1f);
         container.Pig_paddock.StartDay();
+        yield return new WaitForSeconds(1f);
         container.Cow_paddock.StartDay();
+        yield return new WaitForSeconds(1f);
         container.Horse_paddock.StartDay();
+        yield return new WaitForSeconds(1f);
         container.Sheep_paddock.StartDay();
+        yield return new WaitForSeconds(1f);
         container.Chicken_paddock.StartDay();
     }
+    private void StartDay()
+    {
+
+        
+        
+        
+        
+        
+        
+        
+    }
+    private void EndDay()
+    {
+        container.Goose_paddock.EndDay();
+        container.Goat_paddock.EndDay();
+        container.Ostrich_paddock.EndDay();
+        container.Pig_paddock.EndDay();
+        container.Cow_paddock.EndDay();
+        container.Horse_paddock.EndDay();
+        container.Sheep_paddock.EndDay();
+        container.Chicken_paddock.EndDay();
+    }
+    private void OpenGate()
+    {
+        container.Goose_paddock.OpenGate();
+        container.Goat_paddock.OpenGate();
+        container.Ostrich_paddock.OpenGate();
+        container.Pig_paddock.OpenGate();
+        container.Cow_paddock.OpenGate();
+        container.Horse_paddock.OpenGate();
+        container.Sheep_paddock.OpenGate();
+        container.Chicken_paddock.OpenGate();
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
@@ -215,6 +258,7 @@ public class Game_controller : MonoBehaviour
         if(state == State.InMenu)
         {
             //начинаем игру
+            StartCoroutine(StartingDay());
             StartDay();
             container.Manager_ui.gameObject.SetActive(false);
             container.InGame_ui.gameObject.SetActive(true);
@@ -222,7 +266,7 @@ public class Game_controller : MonoBehaviour
             container.Manager_panel.gameObject.SetActive(false);
             container.inputMouse.InGame = true;
             container.Inventory_ui.Display_Busters_Count(feed_Bust_count, time_Bust_count);
-            SpawnAnimals();
+       //     SpawnAnimals();
 
             //движением камеры и задержку пока не выйдут животные
             DayIsActive = true;
@@ -270,6 +314,7 @@ public class Game_controller : MonoBehaviour
 
             container.Ingame_panel.gameObject.SetActive(false);
             container.Manager_panel.gameObject.SetActive(true);
+            EndDay();
             //вывод экрана меню (смещение камеру UI)
             state = State.InMenu;
         }
@@ -287,6 +332,8 @@ public class Game_controller : MonoBehaviour
                 Debug.Log("bye sucessful");
                 Chicken_count++;
                 gold -= container.animal_price.Chicken;
+                container.Chicken_paddock.BuyAnimal(container.Chicken_prefab, container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 1);
+
                 DisplayGold();
                 DisplayAnimalsCountInManagerPanel();
                 container.Manager_panel.DisplayManagerPanel(container.Chicken_paddock);
@@ -309,6 +356,8 @@ public class Game_controller : MonoBehaviour
                 Debug.Log("bye sucessful");
                 Cow_count++;
                 gold -= container.animal_price.Cow;
+                container.Cow_paddock.BuyAnimal(container.Cow_prefab, container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 6);
+
                 DisplayGold();
                 DisplayAnimalsCountInManagerPanel();
                 container.Manager_panel.DisplayManagerPanel(container.Cow_paddock);
@@ -332,6 +381,8 @@ public class Game_controller : MonoBehaviour
                 Debug.Log("bye sucessful");
                 Goat_count++;
                 gold -= container.animal_price.Goat;
+                container.Goat_paddock.BuyAnimal(container.Goat_prefab,  container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 3);
+
                 DisplayGold();
                 DisplayAnimalsCountInManagerPanel();
                 container.Manager_panel.DisplayManagerPanel(container.Goat_paddock);
@@ -353,6 +404,8 @@ public class Game_controller : MonoBehaviour
                 Debug.Log("bye sucessful");
                 Goose_count++;
                 gold -= container.animal_price.Goose;
+                container.Goose_paddock.BuyAnimal(container.Goose_prefab,  container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 2);
+
                 DisplayGold();
                 DisplayAnimalsCountInManagerPanel();
                 container.Manager_panel.DisplayManagerPanel(container.Goose_paddock);
@@ -374,6 +427,8 @@ public class Game_controller : MonoBehaviour
                 Debug.Log("bye sucessful");
                 Horse_count++;
                 gold -= container.animal_price.Horse;
+                container.Horse_paddock.BuyAnimal(container.horse_prefab,  container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 7);
+
                 DisplayGold();
                 DisplayAnimalsCountInManagerPanel();
                 container.Manager_panel.DisplayManagerPanel(container.Horse_paddock);
@@ -395,6 +450,8 @@ public class Game_controller : MonoBehaviour
                 Debug.Log("bye sucessful");
                 Ostrich_count++;
                 gold -= container.animal_price.Ostrich;
+                container.Ostrich_paddock.BuyAnimal(container.Ostrich_prefab,  container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 5);
+
                 DisplayGold();
                 DisplayAnimalsCountInManagerPanel();
                 container.Manager_panel.DisplayManagerPanel(container.Ostrich_paddock);
@@ -416,6 +473,8 @@ public class Game_controller : MonoBehaviour
                 Debug.Log("bye sucessful");
                 Pig_count++;
                 gold -= container.animal_price.Pig;
+                container.Pig_paddock.BuyAnimal(container.pig_prefab,  container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 4);
+
                 DisplayGold();
                 DisplayAnimalsCountInManagerPanel();
                 container.Manager_panel.DisplayManagerPanel(container.Pig_paddock);
@@ -437,6 +496,8 @@ public class Game_controller : MonoBehaviour
                 Debug.Log("bye sucessful");
                 Sheep_count++;
                 gold -= container.animal_price.Sheep;
+                container.Sheep_paddock.BuyAnimal(container.Sheep_prefab,  container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 3);
+
                 DisplayGold();
                 DisplayAnimalsCountInManagerPanel();
                 container.Manager_panel.DisplayManagerPanel(container.Sheep_paddock);

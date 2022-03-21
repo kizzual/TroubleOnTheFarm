@@ -405,6 +405,7 @@ MonoBehaviour:
   zone_to_walk: {fileID: 0}
   patrol_Sphere_Raduis: 1.41
   fear_Sphere_Raduis: 0.28
+  eating: 0
   active: 0
   canFear: 1
 --- !u!114 &849681620682994189
@@ -431,7 +432,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.11004448
+  m_Radius: 0.035462152
   m_Center: {x: 0.004281044, y: 0.12, z: 0}
 --- !u!195 &849681620682994187
 NavMeshAgent:
@@ -442,7 +443,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 849681620682994190}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.1
+  m_Radius: 0.02
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50

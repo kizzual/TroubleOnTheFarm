@@ -17,6 +17,7 @@ public class InputDetect : MonoBehaviour
     public static bool FeedBusterIsActive = false;
     private bool feedIsHiding = true;
     [SerializeField] private Inventory_container inventory;
+    public LayerMask layerToRay;
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
@@ -25,7 +26,7 @@ public class InputDetect : MonoBehaviour
             {
                 Ray ray = camera.ScreenPointToRay(Input.mousePosition);
                 RaycastHit hit;
-                if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerToRay))
                 {
                     if (!hit.collider.CompareTag("Gate"))
                     {

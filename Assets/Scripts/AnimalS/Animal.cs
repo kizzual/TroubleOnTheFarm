@@ -25,7 +25,10 @@ public class Animal : MonoBehaviour, IMoveAnimal
         stay,
         walk,
         rotate,
-        run
+        run,
+        runToEat,
+        rotateToEat,
+        eating
     }
     public State state;
 
@@ -35,7 +38,7 @@ public class Animal : MonoBehaviour, IMoveAnimal
     private float run_speed;
     private float min_Time_ToStay, max_Time_To_Stay;
     private float timeToMove;
-    private float timer;
+    private float timer ;
     private float walkingTimer;
     private int priority;
     private Vector3 random_point;
@@ -68,6 +71,10 @@ public class Animal : MonoBehaviour, IMoveAnimal
     private Vector3 axis;
     private Vector3 startPos;
 
+    public bool eating;
+    private Feed_buster feed;
+    private Vector3 eatPos; 
+
     public bool active = false;
     [HideInInspector] public bool canFear = true;
     private void Start()
@@ -82,7 +89,7 @@ public class Animal : MonoBehaviour, IMoveAnimal
     }
     private void Initialize()
     {
-        state = State.start;
+     //   state = State.start;
         _animation = GetComponent<Animation_animal>();
         run_speed = animalSettings.run_speed;
         min_Time_ToStay = animalSettings.min_Time_ToStay;
@@ -112,30 +119,57 @@ public class Animal : MonoBehaviour, IMoveAnimal
             distCur = CheckDistance(transform.position, random_point);
             agent.speed = ChangeSpeedByAnimationCurve(distCur, distMax);
 
-            if (CheckDistance(transform.position, random_point) < 0.01 || walkingTimer > 20)  // Переработать время
+           
+                if (CheckDistance(transform.position, random_point) < 0.01 || walkingTimer > 20)  // Переработать время
+                {
+                    walkingTimer = 0;
+                    _animation.Idle_Animation();
+                    state = State.stay;
+                }
+            
+         
+        }
+        else if( state == State.runToEat)
+        {
+            walkingTimer += Time.deltaTime;
+            Debug.Log(CheckDistance(transform.position, eatPos));
+            if (CheckDistance(transform.position, eatPos) < .5 || walkingTimer > 10)  // Переработать время
             {
-                walkingTimer = 0;
                 _animation.Idle_Animation();
-                state = State.stay;
+                state = State.rotateToEat;
+                timer = 0;
+                walkingTimer = 0;
             }
+            
         }
         else if (state == State.run)
         {
             walkingTimer += Time.deltaTime;
-
+            timer += Time.deltaTime;
             agent.speed = run_speed;
-            if (CheckDistance(transform.position, random_point) < 0.01 || walkingTimer > 20)  // Переработать время
+
+            if(eating)
             {
-                walkingTimer = 0;
-                _animation.Idle_Animation();
-                state = State.stay;
+                if (CheckDistance(transform.position, random_point) < 0.3 || walkingTimer > 20)  // Переработать время
+                {
+                    RotateToEat(true);
+                }
             }
+            else if(!eating)
+            {
+                if (CheckDistance(transform.position, random_point) < 0.1 || walkingTimer > 20)  // Переработать время
+                {
+                    walkingTimer = 0;
+                    _animation.Idle_Animation();
+                    state = State.stay;
+                }
+            }         
         }
         else if (state == State.rotate)
         {
             timer += Time.deltaTime;
 
-            if(!isFearing)
+            if(!isFearing && !eating)
             {
                 RotateAnimal(isFearing);
                 if (timer > .3)
@@ -155,7 +189,29 @@ public class Animal : MonoBehaviour, IMoveAnimal
                     Fear_run_away();
                     timer = 0;
                 }
-            }         
+            }
+            if(eating)
+            {
+                RotateAnimal(false);
+
+                if (timer > .5)
+                {
+                    timer = 0;
+                    _animation.Run_Animation(); //анимация еды
+
+                    agent.SetDestination(eatPos);
+                    state = State.runToEat;
+
+                }
+            }
+        }
+        else if (state == State.eating)
+        {
+            Debug.Log("EATING");
+        }
+        else if (state == State.rotateToEat)
+        {
+            RotateToEat(false);
         }
     }
     private float ChangeSpeedByAnimationCurve(float currentDistance, float maxDistance)
@@ -218,20 +274,23 @@ public class Animal : MonoBehaviour, IMoveAnimal
         int check = 0;
 
         bool get_correct_point = false;
-        while (!get_correct_point || check < 100)
-        {
-            check++;
-            NavMeshHit navMesh_hit;
-            NavMesh.SamplePosition(Random.insideUnitSphere * radius_walk_zone + zone_to_walk.position, out navMesh_hit, radius_walk_zone + 1, NavMesh.AllAreas);
-            random_point = navMesh_hit.position;
+         while (!get_correct_point || check < 100)
+         {
+             check++;
+             NavMeshHit navMesh_hit;
+             NavMesh.SamplePosition(Random.insideUnitSphere * radius_walk_zone + zone_to_walk.position, out navMesh_hit, radius_walk_zone + 1, NavMesh.AllAreas);
+             random_point = navMesh_hit.position;
 
-            agent.CalculatePath(random_point, nav_mesh_path);
+             agent.CalculatePath(random_point, nav_mesh_path);
 
-            if (nav_mesh_path.status == NavMeshPathStatus.PathComplete)
-            {
-                get_correct_point = true;
-            }
-        }
+             if (nav_mesh_path.status == NavMeshPathStatus.PathComplete)
+             {
+                 get_correct_point = true;
+             }
+         }
+    /*    NavMeshHit navMesh_hit;
+        NavMesh.SamplePosition(Random.insideUnitSphere * radius_walk_zone + zone_to_walk.position, out navMesh_hit, radius_walk_zone + 1, NavMesh.AllAreas);
+        random_point = navMesh_hit.position;*/
 
         targetToRotate = random_point - transform.position;
         rotation = Quaternion.LookRotation(targetToRotate);
@@ -242,14 +301,42 @@ public class Animal : MonoBehaviour, IMoveAnimal
         {
         }
     }
-    public void UsedFeedBuster(float time, Vector3 destination)
+    private void RotateToEat(bool fromFear)
     {
-        timeToMove = time;
-        distMax = CheckDistance(transform.position, destination);
+        if(fromFear)
+        {
+            _animation.Idle_Animation();
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(eatPos - transform.position), rotateSpeed);
+            if (timer > 3)
+            {
+                timer = 0;
+                agent.SetDestination(eatPos);
+                state = State.runToEat;
+                _animation.Run_Animation();
+            }
+        }
+        else
+        {
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(feed.transform.position - transform.position), rotateSpeed);
+            if (timer > .3)
+            {
+                timer = 0;
+                _animation.Idle_Animation(); //анимация еды
+                state = State.eating;
+            }
+        }
+    }
+    public void UsedFeedBuster( Vector3 destination,Feed_buster feedBuster)
+    {
+        feed = feedBuster;
+        eatPos = destination;
+        timeToMove = Random.Range(min_Time_ToStay, max_Time_To_Stay + 1);
+        
+        _animation.Idle_Animation();
+        targetToRotate = random_point - transform.position;
+        timer = 0;
+        state = State.rotate;
 
-        agent.SetDestination(destination);
-        state = State.run;
-        StartCoroutine(Eating(time));
     }
     public void Patroling_In_Main_zone()
     {
@@ -334,11 +421,4 @@ public class Animal : MonoBehaviour, IMoveAnimal
         agent.enabled = true;
     }
 
-
-    IEnumerator Eating(float eatTime)
-    {
-        yield return new WaitForSeconds(eatTime);
-        canFear = true;
-        state = State.stay;
-    }
 }

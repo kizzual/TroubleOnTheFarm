@@ -1235,7 +1235,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.38000202
+  m_Radius: 0.11921894
   m_Center: {x: 0.0029668808, y: 0.25, z: 0}
 --- !u!195 &9160855022305989760
 NavMeshAgent:
@@ -1246,7 +1246,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 8681608057648601315}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.36
+  m_Radius: 0.06
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50

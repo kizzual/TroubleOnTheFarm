@@ -56,7 +56,7 @@ public class CameraMove : MonoBehaviour
             var nextPos = transform.position + transform.forward * Input.GetAxis("Mouse ScrollWheel") * 20;
             
             
-            if (nextPos.y > 10 && nextPos.y < 25)
+            if (nextPos.y > 9 && nextPos.y < 22)
             {
                  transform.position += transform.forward * Input.GetAxis("Mouse ScrollWheel") * 20;
             }

@@ -33,15 +33,16 @@ public class AnimalPaddock : MonoBehaviour
     void Awake()
     {
         CheckSave();
+   //     door.Close_door();
     }
     private void Start()
     {
         DisplayAnimal_count();
 
-        if (isActive)
+      /*  if (isActive)
         {
             OpenGate();
-        }
+        }*/
     }
     private void CheckSave()
     {
@@ -134,7 +135,7 @@ public class AnimalPaddock : MonoBehaviour
             }
         }
     }
-    private void OpenGate()
+    public void OpenGate()
     {
         if (isActive)
         {
@@ -222,9 +223,23 @@ public class AnimalPaddock : MonoBehaviour
         Vector3 pos = new Vector3(randomPos.x, 0, randomPos.z);
         return pos;
     }
+
+    public void BuyAnimal(Animal prefab, Transform zoneToWalk, float walkRadius, Transform parrent, int Weight)
+    {
+        Animal go = Instantiate(prefab, SpawnPos(), Quaternion.identity, parrent);
+        In_Side_animals.Add(go);
+        go.SetPriority(1);
+        go.Weight = Weight;
+        go.zone_to_walk = zoneToWalk;
+        go.radius_walk_zone = walkRadius;
+        go.inSide = true;
+        go.state = Animal.State.stay;
+
+        DisplayAnimal_count();
+    }
     public void SpawnAnimals(Animal prefab, int maxCount, Transform zoneToWalk, float walkRadius, Transform parrent, int Weight, int priority)
     {
-        OpenGate();
+   //     OpenGate();
 
         animal_max_count = maxCount;
         if (!firstSpawn)
@@ -251,18 +266,25 @@ public class AnimalPaddock : MonoBehaviour
                 go.zone_to_walk = zoneToWalk;
                 go.radius_walk_zone = walkRadius;
                 go.inSide = true;
+                go.state = Animal.State.stay;
             }
             firstSpawn = false;
         }
         DisplayAnimal_count();
-       // StartCoroutine(OpenGates());
+        // StartCoroutine(OpenGates());
     }
 
     public void StartDay()
     {
+        StartCoroutine(StartDay_courutine());
+    }
+    public void EndDay()
+    {
+        // StartCoroutine(EndDay_courutine());
         foreach (var item in In_Side_animals)
         {
-            item.Find_First_Point();
+            item.canFear = false;
+            item.Patroling_In_Main_zone();
         }
     }
     public int Day_result()
@@ -305,16 +327,40 @@ public class AnimalPaddock : MonoBehaviour
         animals_count.text = In_Side_animals.Count.ToString() + "/" + animal_max_count.ToString();
     }
 
-    private IEnumerator OpenGates()
+    private IEnumerator StartDay_courutine()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1f);
+        for (int i = 0; i < In_Side_animals.Count; i++)
+        {
+            In_Side_animals[i].canFear = false;
+            In_Side_animals[i].Find_First_Point();
+            yield return new WaitForSeconds(.01f);
+        }
+      /*  foreach (var item in In_Side_animals)
+        {
+            item.canFear = false;
+            item.Find_First_Point();
+            
+
+        }*/
+        yield return new WaitForSeconds(7f);
         foreach (var item in In_Side_animals)
         {
-            item.Find_First_Point();
+            item.canFear = true;
         }
     }
+    private IEnumerator EndDay_courutine()
+    {
+        yield return new WaitForSeconds(2f);
+        foreach (var item in In_Side_animals)
+        {
+            item.canFear = false;
+            item.Patroling_In_Main_zone();
+        }
+ 
+    }
 
-   
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
