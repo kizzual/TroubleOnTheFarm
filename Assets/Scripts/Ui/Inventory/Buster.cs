@@ -9,8 +9,10 @@ public class Buster : MonoBehaviour, IPointerDownHandler
     [SerializeField] private Inventory_container Inventory_container;
     public void OnPointerDown(PointerEventData eventData)
     {
-        Inventory_container.CreateFeedPrefab(worldPrefab);
-
+        if (Inventory_container.CheckBustersCount())
+        {
+            Inventory_container.CreateFeedPrefab(worldPrefab);
+        }
     }
     
 }

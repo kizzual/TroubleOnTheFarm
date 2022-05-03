@@ -140,7 +140,7 @@ public class Save : MonoBehaviour
         }
         else
         {
-            Gold = 500;
+            Gold = 5000;
         }
         if (PlayerPrefs.HasKey("Feed_bust_count"))
         {
@@ -287,66 +287,83 @@ public class Save : MonoBehaviour
         if (PlayerPrefs.GetInt("Goose_paddock") == 1)
         {
             Goose_paddock = true;
+            Goose_paddockSave(true);
         }
         else
         {
             Goose_paddock = false;
+            Goose_paddockSave(false);
+
         }
         if (PlayerPrefs.GetInt("Goat_paddock") == 1)
         {
             Goat_paddock = true;
+            Goat_paddockSave(true);
         }
         else
         {
             Goat_paddock = false;
+            Goat_paddockSave(false);
         }
         if (PlayerPrefs.GetInt("Ostrich_paddock") == 1)
         {
             Ostrich_paddock = true;
+            Ostrich_paddockSave(true);
         }
         else
         {
             Ostrich_paddock = false;
+            Ostrich_paddockSave(false);
         }
         if (PlayerPrefs.GetInt("Pig_paddock") == 1)
         {
             Pig_paddock = true;
+            Pig_paddockSave(true);
         }
         else
         {
             Pig_paddock = false;
+            Pig_paddockSave(false);
         }
         if (PlayerPrefs.GetInt("Cow_paddock") == 1)
         {
             Cow_paddock = true;
+            Cow_paddockSave(true);
         }
         else
         {
             Cow_paddock = false;
+            Cow_paddockSave(false);
         }
         if (PlayerPrefs.GetInt("Horse_paddock") == 1)
         {
             Horse_paddock = true;
+            Horse_paddockSave(true);
         }
         else
         {
             Horse_paddock = false;
+            Horse_paddockSave(false);
         }
         if (PlayerPrefs.GetInt("Sheep_paddock") == 1)
         {
             Sheep_paddock = true;
+            Sheep_paddockSave(true);
         }
         else
         {
             Sheep_paddock = false;
+            Sheep_paddockSave(false);
         }
         if (PlayerPrefs.GetInt("Chicken_paddock") == 1)
         {
-            Chicken_paddock = true;
+            Chicken_paddock = true; 
+            Chicken_paddockSave(true);
         }
         else
         {
             Chicken_paddock = false;
+            Chicken_paddockSave(false);
         }
     }
     public static void SaveStats()

@@ -15,18 +15,20 @@ public class Wall_fear : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if(other.TryGetComponent(out Animal animal))
+        if (other.TryGetComponent(out Player animal))
         {
-            animal.FearingAnimal(transform);
-            animal.canFear = false;
-
+            if (!animal.dayIsActive)
+            {
+                animal.WrongWay();
+                animal.canFear = false;
+            }
         }
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.TryGetComponent(out Animal animal))
+        if (other.TryGetComponent(out Player animal))
         {
-         
+            
             animal.canFear = true;
 
         }

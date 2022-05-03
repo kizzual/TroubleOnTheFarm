@@ -15,14 +15,14 @@ public class Container : MonoBehaviour
     public AnimalPaddock Chicken_paddock;
 
     [Header("Prefabs")]
-    public Animal Goose_prefab;
-    public Animal Goat_prefab;
-    public Animal Ostrich_prefab;
-    public Animal pig_prefab;
-    public Animal Cow_prefab;
-    public Animal horse_prefab;
-    public Animal Sheep_prefab;
-    public Animal Chicken_prefab;
+    public Player Goose_prefab;
+    public Player Goat_prefab;
+    public Player Ostrich_prefab;
+    public Player pig_prefab;
+    public Player Cow_prefab;
+    public Player horse_prefab;
+    public Player Sheep_prefab;
+    public Player Chicken_prefab;
 
     [Header("UI")]
     public Result_ui Result_ui;
@@ -30,6 +30,9 @@ public class Container : MonoBehaviour
     public InGame_Ui InGame_ui;
     public Manager_UI Manager_ui;
     public Inventory_container Inventory_ui;
+    
+
+    public StartDayAnimPanel startDayAnim;
 
     [Header("Panel")]
     public GameObject Ingame_panel;    
@@ -38,6 +41,7 @@ public class Container : MonoBehaviour
     [Header("Transfrom")]
     public Transform AnimalsParrent;
     public Transform zone_to_walk;
+    public List<RandomPoint> RandomPoints;
 
     [Header("input")]
     public InputDetect inputMouse;

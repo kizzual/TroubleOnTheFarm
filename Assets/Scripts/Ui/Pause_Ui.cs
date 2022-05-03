@@ -120,11 +120,13 @@ public class Pause_Ui : MonoBehaviour
 
         if (Pause.activeSelf)
         {
+            Time.timeScale = 1;
+
             Pause.SetActive(false);
         }
         else
         {
-
+            Time.timeScale = 0.0001f;
             Pause.SetActive(true);
         }
     }

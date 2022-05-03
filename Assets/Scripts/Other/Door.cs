@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Door : MonoBehaviour
 {
@@ -31,7 +32,23 @@ public class Door : MonoBehaviour
             return true;
         }
     }
-
+    public void EnableColision(bool on)
+    {
+        if(on)
+        {
+            foreach (var item in anim)
+            {
+                item.gameObject.GetComponent<NavMeshObstacle>().enabled = true;
+            }
+        }
+        else
+        {
+            foreach (var item in anim)
+            {
+                item.gameObject.GetComponent<NavMeshObstacle>().enabled = false;
+            }
+        }
+    }
 
     public void CloseOpenDoore()
     {

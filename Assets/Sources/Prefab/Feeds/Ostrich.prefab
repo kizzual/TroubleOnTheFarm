@@ -60,8 +60,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LifeTime: 15
+  isActive: 0
+  eatingAnimals: []
   sphereRadius: 0.9
-  feedtype: 2
+  feedtype: 5
 --- !u!135 &3506007428922222318
 SphereCollider:
   m_ObjectHideFlags: 0

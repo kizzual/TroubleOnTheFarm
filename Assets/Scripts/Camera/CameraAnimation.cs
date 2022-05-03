@@ -1,0 +1,68 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class CameraAnimation : MonoBehaviour
+{
+    [SerializeField] Container container;
+ //   [SerializeField] Transform cameraSatartPos;
+    [SerializeField] private new Animator animation;
+    [SerializeField] private List<Animator> UiAnimation;
+    [SerializeField] private Game_controller game_controller;
+    void Start()
+    {
+        
+    }
+
+
+    void Update()
+    {
+        
+    }
+
+   
+    public void AnimationEded()
+    {
+        container.Goose_paddock.EnableColision(true);
+        container.Goat_paddock.EnableColision(true);
+        container.Ostrich_paddock.EnableColision(true);
+        container.Pig_paddock.EnableColision(true);
+        container.Cow_paddock.EnableColision(true);
+        container.Horse_paddock.EnableColision(true);
+        container.Sheep_paddock.EnableColision(true);
+        container.Chicken_paddock.EnableColision(true);
+        ShowUi();
+        container.inputMouse.InGame = true;
+        container.Goose_paddock.StartDay();
+        container.Goat_paddock.StartDay();
+        container.Ostrich_paddock.StartDay();
+        container.Pig_paddock.StartDay();
+        container.Cow_paddock.StartDay();
+        container.Horse_paddock.StartDay();
+        container.Sheep_paddock.StartDay();
+        container.Chicken_paddock.StartDay();
+        animation.enabled = false;
+        transform.position = new Vector3(-11.74f, 16f, -14.99f);
+
+    }
+    public void SwitchCameraPosition()
+    {
+        animation.enabled = true;
+        animation.SetTrigger("StartCameraMove");
+    }
+    private void ShowUi()
+    {
+        foreach (var item in UiAnimation)
+        {
+            item.SetBool("ShowUi", true);
+        }
+        StartCoroutine(startDay());
+    }
+    IEnumerator startDay()
+    {
+        yield return new WaitForSeconds(.3f);
+        game_controller.DayIsActive = true;
+
+
+    }
+}

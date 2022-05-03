@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2382e0ca140c9f5438aa7360a927335a, type: 3}
   m_Name: Animal_Max_count
   m_EditorClassIdentifier: 
-  Goose: 5
-  Goat: 5
-  Ostrich: 5
-  Pig: 5
-  Cow: 5
-  Horse: 5
-  Sheep: 5
-  Chicken: 5
+  Goose: 40
+  Goat: 30
+  Ostrich: 30
+  Pig: 30
+  Cow: 20
+  Horse: 15
+  Sheep: 30
+  Chicken: 50

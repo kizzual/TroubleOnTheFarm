@@ -8,18 +8,18 @@ public class EnemyInYard : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out Animal animal))
+        if (other.TryGetComponent(out Player animal))
         {
             var rng = Random.Range(0, 2);
             Transform POS = animal.transform;
             dogs[rng].EnemyComing(POS);
-            animal.FearingAnimal(transform);
+            animal.WrongWay();
             animal.canFear = false;
         }
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.TryGetComponent(out Animal animal))
+        if (other.TryGetComponent(out Player animal))
         {
             animal.canFear = true;
         }

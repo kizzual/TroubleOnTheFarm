@@ -12,7 +12,7 @@ public class Manager_UI : MonoBehaviour
 
     [SerializeField] private Text FeedBust_price;
     [SerializeField] private Text TimeBust_price;
-
+    public Button startDayButton;
 
     void Start()
     {

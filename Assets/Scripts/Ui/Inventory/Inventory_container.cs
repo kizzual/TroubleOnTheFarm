@@ -8,18 +8,20 @@ public class Inventory_container : MonoBehaviour
     private  GameObject currentFeedPrefab;
     [SerializeField] private  Game_controller Game_controller;
 
+    [SerializeField] private Animator feedAnimation;
     [SerializeField] private List<Image> feed_busters;
     [SerializeField] private Image time_buster;
     [SerializeField] private Text feed_buster_count_text;
     [SerializeField] private Text time_buster_count_text;
-
+    [SerializeField] private List<Mask> FeedMasks;
     public  int feed_buster_count;
     public  int time_buster_count;
 
+    private bool feedBusterIsHide = true;
 
     void Start()
     {
-        
+
     }
 
 
@@ -28,11 +30,18 @@ public class Inventory_container : MonoBehaviour
         
         
     }
+    public bool CheckBustersCount()
+    {
+        if (feed_buster_count > 0) return true;
+        else return false;
+
+    }
     public  void CreateFeedPrefab(GameObject prefab)
     {
         var go = Instantiate(prefab);
         currentFeedPrefab = go;
         InputDetect.FeedBusterIsActive = true;
+        CameraMove.CanMoveCamera = false;
     }
 
     public  void DestroyPrefab()
@@ -41,11 +50,12 @@ public class Inventory_container : MonoBehaviour
     }
 
     public void AddingFeedBusterToList()
-    {
-        Debug.Log(currentFeedPrefab.name); 
+    { 
         currentFeedPrefab.GetComponent<Feed_buster>().AciveFeedBuster();
         feed_buster_count--;
         Display_Busters_Count(feed_buster_count, time_buster_count);
+        CameraMove.CanMoveCamera = true;
+
     }
     private void Check_Feed_busters_count(int count)
     {
@@ -106,8 +116,32 @@ public class Inventory_container : MonoBehaviour
 
     public void TimeBustUsing()
     {
-        time_buster_count--;
-        Display_Busters_Count(feed_buster_count, time_buster_count);
-        Game_controller.Day_length += 30;
+        if (time_buster_count > 0)
+        {
+            time_buster_count--;
+            Display_Busters_Count(feed_buster_count, time_buster_count);
+            Game_controller.Day_length += 30;
+        }
+    }
+    public void DisplayBustPanel()
+    {
+        if(feedBusterIsHide)
+        {
+            feedAnimation.SetBool("ShowBuster", true);
+            feedBusterIsHide = false;
+            foreach (var item in FeedMasks)
+            {
+                item.raycastTarget = true;
+            }
+        }
+        else
+        {
+            feedAnimation.SetBool("ShowBuster", false);
+            feedBusterIsHide = true;
+            foreach (var item in FeedMasks)
+            {
+                item.raycastTarget = false;
+            }
+        }
     }
 }

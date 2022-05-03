@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using TMPro;
 public class AnimalPaddock : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class AnimalPaddock : MonoBehaviour
 
     [SerializeField] TextMeshPro animals_count;
     private int animal_max_count;
-
+    bool dayIsActive = false;
     public enum Type
     {
         Goose,
@@ -25,11 +26,16 @@ public class AnimalPaddock : MonoBehaviour
     }
     public Type type;
 
-    public List<Animal> In_Side_animals;
-    public List<Animal> Out_Side_animals;
+    [SerializeField]
+    private List<RandomPoint> randomZoneInSide;
+    public List<Player> In_Side_animals;
+    public List<Player> Out_Side_animals;
+    public List<NavMeshAgent> agents;
     private bool firstSpawn = true;
-
+    [SerializeField] private Transform door_zone_to_walk;
+    public bool IsClosed = true;
     private int diedAnimals;
+    public Game_controller _gameController;
     void Awake()
     {
         CheckSave();
@@ -37,6 +43,11 @@ public class AnimalPaddock : MonoBehaviour
     }
     private void Start()
     {
+        if(!isActive)
+        {
+            IsClosed = true;
+            door.gameObject.layer = 3;
+        }
         DisplayAnimal_count();
 
       /*  if (isActive)
@@ -139,18 +150,20 @@ public class AnimalPaddock : MonoBehaviour
     {
         if (isActive)
         {
+            IsClosed = false;
             door.Open_door();
         }
     }
     private void OnTriggerEnter(Collider other)
     {
-        if(other.TryGetComponent(out Animal animal))
+        if(other.TryGetComponent(out Player animal))
         {
             if (!PassAllowed(type, animal))
             {
-                //   animal.Find_First_Point();
-                animal.FearingAnimal(transform);
+                animal.EnterinToWrongPaddock = true;
+                animal.WrongWay();
                 animal.canFear = false;
+            //    animal.RunFromWrongPaddock();
             }
             else
             {
@@ -165,7 +178,7 @@ public class AnimalPaddock : MonoBehaviour
     }   
     private void OnTriggerExit(Collider other)
     {
-        if (other.TryGetComponent(out Animal animal))
+        if (other.TryGetComponent(out Player animal))
         {
             if(!PassAllowed(type, animal))
             {
@@ -180,37 +193,37 @@ public class AnimalPaddock : MonoBehaviour
             }
         }
     }
-    private bool PassAllowed(Type type, Animal animalType)
+    private bool PassAllowed(Type type, Player animalType)
     {
-        if (type == Type.Goose && animalType.animalType != Animal.AnimalType.Goose)
+        if (type == Type.Goose && animalType.animalType != Player.AnimalType.Goose)
         {
             return false;
         }
-        else if (type == Type.Goat && animalType.animalType != Animal.AnimalType.Goat)
+        else if (type == Type.Goat && animalType.animalType != Player.AnimalType.Goat)
         {
             return false;
         }
-        else if (type == Type.Ostrich && animalType.animalType != Animal.AnimalType.Ostrich)
+        else if (type == Type.Ostrich && animalType.animalType != Player.AnimalType.Ostrich)
         {
             return false;
         }
-        else if (type == Type.Pig && animalType.animalType != Animal.AnimalType.Pig)
+        else if (type == Type.Pig && animalType.animalType != Player.AnimalType.Pig)
         {
             return false;
         }
-        else if (type == Type.Cow && animalType.animalType != Animal.AnimalType.Cow)
+        else if (type == Type.Cow && animalType.animalType != Player.AnimalType.Cow)
         {
             return false;
         }
-        else if (type == Type.Horse && animalType.animalType != Animal.AnimalType.Horse)
+        else if (type == Type.Horse && animalType.animalType != Player.AnimalType.Horse)
         {
             return false;
         }
-        else if (type == Type.Sheep && animalType.animalType != Animal.AnimalType.Sheep)
+        else if (type == Type.Sheep && animalType.animalType != Player.AnimalType.Sheep)
         {
             return false;
         }
-        else if (type == Type.Chicken && animalType.animalType != Animal.AnimalType.Chicken)
+        else if (type == Type.Chicken && animalType.animalType != Player.AnimalType.Chicken)
         {
             return false;
         }
@@ -224,34 +237,31 @@ public class AnimalPaddock : MonoBehaviour
         return pos;
     }
 
-    public void BuyAnimal(Animal prefab, Transform zoneToWalk, float walkRadius, Transform parrent, int Weight)
+    public void BuyAnimal(Player prefab, int maxCount,Transform zoneToWalk, float walkRadius, Transform parrent, int Weight, List<RandomPoint> randomPoints)
     {
-        Animal go = Instantiate(prefab, SpawnPos(), Quaternion.identity, parrent);
+        animal_max_count = maxCount;
+
+        Player go = Instantiate(prefab, SpawnPos(), Quaternion.identity, parrent);
         In_Side_animals.Add(go);
-        go.SetPriority(1);
-        go.Weight = Weight;
-        go.zone_to_walk = zoneToWalk;
-        go.radius_walk_zone = walkRadius;
         go.inSide = true;
-        go.state = Animal.State.stay;
+        go.pointToGoOutSide = randomPoints;
+        go.pointToGoInSide = randomZoneInSide;
+
 
         DisplayAnimal_count();
     }
-    public void SpawnAnimals(Animal prefab, int maxCount, Transform zoneToWalk, float walkRadius, Transform parrent, int Weight, int priority)
+    public void SpawnAnimals(Player prefab, int maxCount, Transform zoneToWalk, float walkRadius, Transform parrent, int Weight, int priority,List<RandomPoint> randomPoints)
     {
-   //     OpenGate();
 
         animal_max_count = maxCount;
         if (!firstSpawn)
         {
             for (int i = In_Side_animals.Count; i < maxCount; i++)
             {
-                Animal go = Instantiate(prefab, SpawnPos(), Quaternion.identity, parrent);
+                Player go = Instantiate(prefab, SpawnPos(), Quaternion.identity, parrent);
                 In_Side_animals.Add(go);
-                go.SetPriority(i + priority);
-                go.Weight = Weight;
-                go.zone_to_walk = zoneToWalk;
-                go.radius_walk_zone = walkRadius;
+                In_Side_animals[i].pointToGoInSide = randomZoneInSide;
+                In_Side_animals[i].pointToGoOutSide = randomPoints;
                 go.inSide = true;
             }
         }
@@ -259,33 +269,51 @@ public class AnimalPaddock : MonoBehaviour
         {
             for (int i = 0; i < maxCount; i++)
             {
-                Animal go = Instantiate(prefab, SpawnPos(), Quaternion.identity, parrent);
+                Player go = Instantiate(prefab, SpawnPos(), Quaternion.identity, parrent);
                 In_Side_animals.Add(go);
-                go.SetPriority(i + priority);
-                go.Weight = Weight;
-                go.zone_to_walk = zoneToWalk;
-                go.radius_walk_zone = walkRadius;
+                In_Side_animals[i].pointToGoInSide = randomZoneInSide;
+                In_Side_animals[i].pointToGoOutSide = randomPoints;
                 go.inSide = true;
-                go.state = Animal.State.stay;
             }
             firstSpawn = false;
         }
         DisplayAnimal_count();
-        // StartCoroutine(OpenGates());
     }
 
+    public void MoveAnimalsToWalkingZone(List<RandomPoint> randomPoints)
+    {
+        foreach (var item in In_Side_animals)
+        {
+            item.StartDayRun();
+
+        }
+    }
     public void StartDay()
     {
-        StartCoroutine(StartDay_courutine());
+        if (isActive)
+        {
+            dayIsActive = true;
+
+        }
+        for (int i = 0; i < In_Side_animals.Count; i++)
+        {
+            In_Side_animals[i].canFear = true;
+        }
+        for (int i = 0; i < Out_Side_animals.Count; i++)
+        {
+            Out_Side_animals[i].canFear = true;
+
+        }
+
     }
     public void EndDay()
     {
-        // StartCoroutine(EndDay_courutine());
         foreach (var item in In_Side_animals)
         {
             item.canFear = false;
-            item.Patroling_In_Main_zone();
+            item.StartPatroling();
         }
+        door.gameObject.layer = 3;
     }
     public int Day_result()
     {
@@ -321,50 +349,55 @@ public class AnimalPaddock : MonoBehaviour
         }
         return diedAnimals;
     }
-
     private void DisplayAnimal_count()
     {
         animals_count.text = In_Side_animals.Count.ToString() + "/" + animal_max_count.ToString();
+        if(dayIsActive && In_Side_animals.Count == animal_max_count)
+        {
+            
+            StartCoroutine(close());
+        }
     }
-
-    private IEnumerator StartDay_courutine()
+    IEnumerator close()
     {
         yield return new WaitForSeconds(1f);
-        for (int i = 0; i < In_Side_animals.Count; i++)
+        if (dayIsActive && In_Side_animals.Count == animal_max_count)
         {
-            In_Side_animals[i].canFear = false;
-            In_Side_animals[i].Find_First_Point();
-            yield return new WaitForSeconds(.01f);
-        }
-      /*  foreach (var item in In_Side_animals)
-        {
-            item.canFear = false;
-            item.Find_First_Point();
-            
+           
+            IsClosed = true;
+            door.Close_door();
+            SwtichGatesLayer(false);
+            _gameController.CheckClosedPaddocks();
 
-        }*/
-        yield return new WaitForSeconds(7f);
-        foreach (var item in In_Side_animals)
-        {
-            item.canFear = true;
         }
     }
-    private IEnumerator EndDay_courutine()
+    public void SwtichGatesLayer(bool canTouch)
     {
-        yield return new WaitForSeconds(2f);
-        foreach (var item in In_Side_animals)
+
+        if (canTouch && isActive)
         {
-            item.canFear = false;
-            item.Patroling_In_Main_zone();
+            door.gameObject.layer = 8;
         }
- 
+        else if(!canTouch)
+        {
+            door.gameObject.layer = 3;
+            
+        }
     }
-
-
+    public void EnableColision(bool on)
+    {
+        door.EnableColision(on);
+        if(!on)
+        {
+            foreach (var item in In_Side_animals)
+            {
+                item.FindNewZone();
+            }
+        }
+    }
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, spawnRaduis);
-    //    Gizmos.DrawWireCube(transform.position, spawnRaduisCube);
     }
 }

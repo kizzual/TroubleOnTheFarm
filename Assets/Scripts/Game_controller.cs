@@ -54,6 +54,7 @@ public class Game_controller : MonoBehaviour
     private int Horse_died;
     private int Sheep_died;
     private int Chicken_died;
+
     void Awake()
     {
         CheckSave();
@@ -67,6 +68,19 @@ public class Game_controller : MonoBehaviour
         SpawnAnimals();
    //     EndDay();
     }
+    public void REsetSaves()
+    {
+        PlayerPrefs.SetInt("Goose_paddock", 0);
+        PlayerPrefs.SetInt("Goat_paddock", 0);
+        PlayerPrefs.SetInt("Ostrich_paddock", 0);
+        PlayerPrefs.SetInt("Pig_paddock", 0);
+        PlayerPrefs.SetInt("Cow_paddock", 0);
+        PlayerPrefs.SetInt("Horse_paddock", 0);
+        PlayerPrefs.SetInt("Sheep_paddock", 0);
+        PlayerPrefs.SetInt("Chicken_paddock", 0);
+        PlayerPrefs.DeleteAll();
+
+    }
     private void Start()
     {
         DisplayGold();
@@ -74,6 +88,14 @@ public class Game_controller : MonoBehaviour
         DisplayBusters_price();
         DisplayAnimalsCountInManagerPanel();
         DisplayActive_inactive_paddock();
+        container.Goose_paddock.EnableColision(false);
+        container.Goat_paddock.EnableColision(false);
+        container.Ostrich_paddock.EnableColision(false);
+        container.Pig_paddock.EnableColision(false);
+        container.Cow_paddock.EnableColision(false);
+        container.Horse_paddock.EnableColision(false);
+        container.Sheep_paddock.EnableColision(false);
+        container.Chicken_paddock.EnableColision(false);
     }
     private void Update()
     {
@@ -87,7 +109,7 @@ public class Game_controller : MonoBehaviour
 
     private void CheckSave()
     {
-     /*   Goose_count = Save.Goose_count_Get();
+        Goose_count = Save.Goose_count_Get();
         Goat_count = Save.Goat_count_Get();
         Ostrich_count = Save.Ostrich_count_Get();
         Pig_count = Save.Pig_count_Get();
@@ -95,7 +117,7 @@ public class Game_controller : MonoBehaviour
         Horse_count = Save.Horse_count_Get();
         Sheep_count = Save.Sheep_count_Get();
         Chicken_count = Save.Chicken_count_Get();
-*/
+
         feed_Bust_count = Save.Feed_bust_count_Get();
         time_Bust_count = Save.Time_bust_count_Get();
         Day = Save.Day_Get();
@@ -125,42 +147,42 @@ public class Game_controller : MonoBehaviour
         if (Goose_count > 0)
         {
             container.Goose_paddock.isActive = true;
-            container.Goose_paddock.SpawnAnimals(container.Goose_prefab, Goose_count, container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 2, 1);
+            container.Goose_paddock.SpawnAnimals(container.Goose_prefab, Goose_count, container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 2, 1, container.RandomPoints);
         }
         if (Goat_count > 0)
         {
             container.Goat_paddock.isActive = true;
-            container.Goat_paddock.SpawnAnimals(container.Goat_prefab, Goat_count, container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 3, Goose_count + 1);
+            container.Goat_paddock.SpawnAnimals(container.Goat_prefab, Goat_count, container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 3, Goose_count + 1, container.RandomPoints);
         }
         if (Ostrich_count > 0)
         {
             container.Ostrich_paddock.isActive = true;
-            container.Ostrich_paddock.SpawnAnimals(container.Ostrich_prefab, Ostrich_count, container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 5, Goat_count + 1);
+            container.Ostrich_paddock.SpawnAnimals(container.Ostrich_prefab, Ostrich_count, container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 5, Goat_count + 1, container.RandomPoints);
         }
         if (Pig_count > 0)
         {
             container.Pig_paddock.isActive = true;
-            container.Pig_paddock.SpawnAnimals(container.pig_prefab, Pig_count, container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 4, Ostrich_count + 1);
+            container.Pig_paddock.SpawnAnimals(container.pig_prefab, Pig_count, container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 4, Ostrich_count + 1, container.RandomPoints);
         }
         if (Cow_count > 0)
         {
             container.Cow_paddock.isActive = true;
-            container.Cow_paddock.SpawnAnimals(container.Cow_prefab, Cow_count, container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 6, Pig_count + 1);
+            container.Cow_paddock.SpawnAnimals(container.Cow_prefab, Cow_count, container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 6, Pig_count + 1, container.RandomPoints);
         }
         if (Horse_count > 0)
         {
             container.Horse_paddock.isActive = true;
-            container.Horse_paddock.SpawnAnimals(container.horse_prefab, Horse_count, container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 7, Cow_count + 1);
+            container.Horse_paddock.SpawnAnimals(container.horse_prefab, Horse_count, container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 7, Cow_count + 1, container.RandomPoints);
         }
         if (Sheep_count > 0)
         {
             container.Sheep_paddock.isActive = true;
-            container.Sheep_paddock.SpawnAnimals(container.Sheep_prefab, Sheep_count, container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 3, Horse_count + 1);
+            container.Sheep_paddock.SpawnAnimals(container.Sheep_prefab, Sheep_count, container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 3, Horse_count + 1, container.RandomPoints);
         }
         if (Chicken_count > 0)
         {
             container.Chicken_paddock.isActive = true;
-            container.Chicken_paddock.SpawnAnimals(container.Chicken_prefab, Chicken_count, container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 1, Sheep_count + 1);
+            container.Chicken_paddock.SpawnAnimals(container.Chicken_prefab, Chicken_count, container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 1, Sheep_count + 1, container.RandomPoints);
         }
     }
 
@@ -193,35 +215,52 @@ public class Game_controller : MonoBehaviour
             }
         }
     }
-    IEnumerator StartingDay()
+    IEnumerator EarlyDayEnded()
+    {
+        yield return new WaitForSeconds(4f);
+        SwitchState();
+
+    }
+    public void CheckClosedPaddocks()
+    {
+        if (container.Goose_paddock.IsClosed &&
+            container.Goat_paddock.IsClosed &&
+            container.Ostrich_paddock.IsClosed &&
+            container.Pig_paddock.IsClosed &&
+            container.Cow_paddock.IsClosed &&
+            container.Horse_paddock.IsClosed &&
+            container.Sheep_paddock.IsClosed &&
+            container.Chicken_paddock.IsClosed)
+        {
+
+            DayIsActive = false;
+            timer = 0;
+            Sun._instance.EarlyDayEnd();
+            StartCoroutine(EarlyDayEnded());
+
+         //   SwitchState();
+        }
+    }
+    void StartgDay()
     {
         OpenGate();
-        container.Goose_paddock.StartDay();
-        yield return new WaitForSeconds(1f);
-        container.Goat_paddock.StartDay();
-        yield return new WaitForSeconds(1f);
-        container.Ostrich_paddock.StartDay();
-        yield return new WaitForSeconds(1f);
-        container.Pig_paddock.StartDay();
-        yield return new WaitForSeconds(1f);
-        container.Cow_paddock.StartDay();
-        yield return new WaitForSeconds(1f);
-        container.Horse_paddock.StartDay();
-        yield return new WaitForSeconds(1f);
-        container.Sheep_paddock.StartDay();
-        yield return new WaitForSeconds(1f);
-        container.Chicken_paddock.StartDay();
-    }
-    private void StartDay()
-    {
-
         
-        
-        
-        
-        
-        
-        
+        container.Goose_paddock.MoveAnimalsToWalkingZone(container.RandomPoints);
+        container.Goat_paddock.MoveAnimalsToWalkingZone(container.RandomPoints);
+        container.Ostrich_paddock.MoveAnimalsToWalkingZone(container.RandomPoints);
+        container.Pig_paddock.MoveAnimalsToWalkingZone(container.RandomPoints);
+        container.Cow_paddock.MoveAnimalsToWalkingZone(container.RandomPoints);
+        container.Horse_paddock.MoveAnimalsToWalkingZone(container.RandomPoints);
+        container.Sheep_paddock.MoveAnimalsToWalkingZone(container.RandomPoints);
+        container.Chicken_paddock.MoveAnimalsToWalkingZone(container.RandomPoints);
+        container.Goose_paddock.SwtichGatesLayer(true);
+        container.Goat_paddock.SwtichGatesLayer(true);
+        container.Ostrich_paddock.SwtichGatesLayer(true);
+        container.Pig_paddock.SwtichGatesLayer(true);
+        container.Cow_paddock.SwtichGatesLayer(true);
+        container.Horse_paddock.SwtichGatesLayer(true);
+        container.Sheep_paddock.SwtichGatesLayer(true);
+        container.Chicken_paddock.SwtichGatesLayer(true);
     }
     private void EndDay()
     {
@@ -246,35 +285,32 @@ public class Game_controller : MonoBehaviour
         container.Chicken_paddock.OpenGate();
     }
 
-    private void OnDrawGizmos()
+   /* private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(container.zone_to_walk.position, radius_walk_zone);
-    }
+    }*/
 
     #region SwitchState
     public void SwitchState()
     {
         if(state == State.InMenu)
         {
+            Sun.DayLengh = Day_length;
+            
+            container.startDayAnim.StartDayAnimation();
             //начинаем игру
-            StartCoroutine(StartingDay());
-            StartDay();
-            container.Manager_ui.gameObject.SetActive(false);
-            container.InGame_ui.gameObject.SetActive(true);
-            container.Ingame_panel.gameObject.SetActive(true);
-            container.Manager_panel.gameObject.SetActive(false);
-            container.inputMouse.InGame = true;
-            container.Inventory_ui.Display_Busters_Count(feed_Bust_count, time_Bust_count);
-       //     SpawnAnimals();
+            StartgDay();
+            StartCoroutine(HideManagerUI());
+            
 
             //движением камеры и задержку пока не выйдут животные
-            DayIsActive = true;
             state = State.Ingame;
-            
+            container.Manager_ui.startDayButton.enabled = false;
         }
         else if(state == State.Ingame)
         {
+            Sun._instance.DayEnded();
             Display_Scoring();
             DisplayScoreDay();
             container.InGame_ui.gameObject.SetActive(false);
@@ -286,21 +322,30 @@ public class Game_controller : MonoBehaviour
             else
             {
                 container.Finish_ui.WinDay();
-
             }
             container.inputMouse.InGame = false;
-
+            container.Goose_paddock.EnableColision(false);
+            container.Goat_paddock.EnableColision(false);
+            container.Ostrich_paddock.EnableColision(false);
+            container.Pig_paddock.EnableColision(false);
+            container.Cow_paddock.EnableColision(false);
+            container.Horse_paddock.EnableColision(false);
+            container.Sheep_paddock.EnableColision(false);
+            container.Chicken_paddock.EnableColision(false);
             state = State.Finish;
+            container.Manager_ui.startDayButton.enabled = true;
 
         }
         else if (state == State.Finish)
         {
+            Sun._instance.StartNight();
             container.Finish_ui.gameObject.SetActive(false);
             container.Result_ui.gameObject.SetActive(true);
             Display_Gold_Earned();
             DisplayGold();
             DisplayAnimalsCountInManagerPanel();
             DisplayActive_inactive_paddock();
+
             feed_Bust_count = container.Inventory_ui.feed_buster_count;
             time_Bust_count = container.Inventory_ui.time_buster_count;
             DisplayBusters_count();
@@ -332,7 +377,7 @@ public class Game_controller : MonoBehaviour
                 Debug.Log("bye sucessful");
                 Chicken_count++;
                 gold -= container.animal_price.Chicken;
-                container.Chicken_paddock.BuyAnimal(container.Chicken_prefab, container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 1);
+                container.Chicken_paddock.BuyAnimal(container.Chicken_prefab,Chicken_count ,container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 1,container.RandomPoints);
 
                 DisplayGold();
                 DisplayAnimalsCountInManagerPanel();
@@ -356,7 +401,7 @@ public class Game_controller : MonoBehaviour
                 Debug.Log("bye sucessful");
                 Cow_count++;
                 gold -= container.animal_price.Cow;
-                container.Cow_paddock.BuyAnimal(container.Cow_prefab, container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 6);
+                container.Cow_paddock.BuyAnimal(container.Cow_prefab,Cow_count, container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 6, container.RandomPoints);
 
                 DisplayGold();
                 DisplayAnimalsCountInManagerPanel();
@@ -381,7 +426,7 @@ public class Game_controller : MonoBehaviour
                 Debug.Log("bye sucessful");
                 Goat_count++;
                 gold -= container.animal_price.Goat;
-                container.Goat_paddock.BuyAnimal(container.Goat_prefab,  container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 3);
+                container.Goat_paddock.BuyAnimal(container.Goat_prefab,Goat_count,  container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 3, container.RandomPoints);
 
                 DisplayGold();
                 DisplayAnimalsCountInManagerPanel();
@@ -404,7 +449,7 @@ public class Game_controller : MonoBehaviour
                 Debug.Log("bye sucessful");
                 Goose_count++;
                 gold -= container.animal_price.Goose;
-                container.Goose_paddock.BuyAnimal(container.Goose_prefab,  container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 2);
+                container.Goose_paddock.BuyAnimal(container.Goose_prefab,Goose_count,  container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 2, container.RandomPoints);
 
                 DisplayGold();
                 DisplayAnimalsCountInManagerPanel();
@@ -427,7 +472,7 @@ public class Game_controller : MonoBehaviour
                 Debug.Log("bye sucessful");
                 Horse_count++;
                 gold -= container.animal_price.Horse;
-                container.Horse_paddock.BuyAnimal(container.horse_prefab,  container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 7);
+                container.Horse_paddock.BuyAnimal(container.horse_prefab,Horse_count,  container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 7, container.RandomPoints);
 
                 DisplayGold();
                 DisplayAnimalsCountInManagerPanel();
@@ -450,7 +495,7 @@ public class Game_controller : MonoBehaviour
                 Debug.Log("bye sucessful");
                 Ostrich_count++;
                 gold -= container.animal_price.Ostrich;
-                container.Ostrich_paddock.BuyAnimal(container.Ostrich_prefab,  container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 5);
+                container.Ostrich_paddock.BuyAnimal(container.Ostrich_prefab,Ostrich_count,  container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 5, container.RandomPoints);
 
                 DisplayGold();
                 DisplayAnimalsCountInManagerPanel();
@@ -473,7 +518,7 @@ public class Game_controller : MonoBehaviour
                 Debug.Log("bye sucessful");
                 Pig_count++;
                 gold -= container.animal_price.Pig;
-                container.Pig_paddock.BuyAnimal(container.pig_prefab,  container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 4);
+                container.Pig_paddock.BuyAnimal(container.pig_prefab,Pig_count,  container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 4, container.RandomPoints);
 
                 DisplayGold();
                 DisplayAnimalsCountInManagerPanel();
@@ -496,7 +541,7 @@ public class Game_controller : MonoBehaviour
                 Debug.Log("bye sucessful");
                 Sheep_count++;
                 gold -= container.animal_price.Sheep;
-                container.Sheep_paddock.BuyAnimal(container.Sheep_prefab,  container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 3);
+                container.Sheep_paddock.BuyAnimal(container.Sheep_prefab,Sheep_count,  container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 3, container.RandomPoints);
 
                 DisplayGold();
                 DisplayAnimalsCountInManagerPanel();
@@ -660,6 +705,7 @@ public class Game_controller : MonoBehaviour
     }
     private void DisplayBusters_count()
     {
+        container.Inventory_ui.Display_Busters_Count(feed_Bust_count, time_Bust_count);
         container.Manager_ui.Display_Bust_counts(feed_Bust_count, time_Bust_count);
 
     }
@@ -700,4 +746,13 @@ public class Game_controller : MonoBehaviour
         }
     }
     #endregion  
+    IEnumerator HideManagerUI()
+    {
+        yield return new WaitForSeconds(1f);
+        Sun._instance.SunStart();
+        container.Manager_ui.gameObject.SetActive(false);
+        container.InGame_ui.gameObject.SetActive(true);
+        container.Ingame_panel.gameObject.SetActive(true);
+        container.Manager_panel.gameObject.SetActive(false);
+    }
 }
