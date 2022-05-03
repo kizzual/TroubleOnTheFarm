@@ -11,7 +11,8 @@ public class CameraAnimation : MonoBehaviour
     [SerializeField] private Game_controller game_controller;
     void Start()
     {
-        
+        animation.enabled = true;
+        animation.SetTrigger("StartGame");
     }
 
 
@@ -63,6 +64,11 @@ public class CameraAnimation : MonoBehaviour
         yield return new WaitForSeconds(.3f);
         game_controller.DayIsActive = true;
 
+
+    }
+    public void EndStartGameAnimation()
+    {
+        animation.enabled = false;
 
     }
 }

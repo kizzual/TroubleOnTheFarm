@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Cinemachine;
+using UnityEngine;
 public class CameraMove : MonoBehaviour
 {
     [SerializeField] private float speed;
@@ -20,6 +18,7 @@ public class CameraMove : MonoBehaviour
     private void Start()
     {
         startPos = new Vector3(-22.4f, 28.9f, -22.4f);
+       
         transform.position = startPos;
         cinemachine = GetComponentInChildren<CinemachineVirtualCamera>();
        
