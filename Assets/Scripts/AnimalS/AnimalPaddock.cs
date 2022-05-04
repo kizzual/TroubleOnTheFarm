@@ -347,6 +347,9 @@ public class AnimalPaddock : MonoBehaviour
         {
             item.ResetAnimal();
         }
+        animal_max_count = In_Side_animals.Count;
+        animals_count.text = In_Side_animals.Count.ToString() + "/" + animal_max_count.ToString();
+
         return diedAnimals;
     }
     private void DisplayAnimal_count()

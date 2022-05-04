@@ -79,5 +79,6 @@ public class Dogs_Patroling : MonoBehaviour
         agent.speed = 1.3f;
         agent.SetDestination(enemyPos);
         anim.Run_Animation();
+
     }
 }

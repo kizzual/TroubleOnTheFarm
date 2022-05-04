@@ -51,4 +51,8 @@ public class Container : MonoBehaviour
     public Max_animals max_animals;
     public PaddockPrice PaddockPrice;
     public Busters_price busters_price;
+
+    [Header("ScriptableObjects")]
+    public SoundController _soundController;
+
 }

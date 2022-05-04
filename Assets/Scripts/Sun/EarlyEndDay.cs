@@ -25,8 +25,8 @@ public class EarlyEndDay : SunState
     public override void FixedUpdate()
     {
         base.FixedUpdate();
-        _sun.transform.rotation = Quaternion.Slerp(_sun.transform.rotation, _sun.RotateTo.rotation, Time.fixedDeltaTime);
-        _sun.animationIsStarting = false;
+   //     _sun.transform.rotation = Quaternion.Slerp(_sun.transform.rotation, _sun.RotateTo.rotation, Time.fixedDeltaTime);
+    //    _sun.animationIsStarting = false;
 
     }
 

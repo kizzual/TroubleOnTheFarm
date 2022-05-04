@@ -14,8 +14,24 @@ public class Manager_UI : MonoBehaviour
     [SerializeField] private Text TimeBust_price;
     public Button startDayButton;
 
+    [SerializeField] private List<Animator> ShowUI;
+
     void Start()
     {
+        StartCoroutine(ShowUIStart());
+    }
+    IEnumerator ShowUIStart()
+    {
+        foreach (var item in ShowUI)
+        {
+            item.SetBool("HideUI", true);
+        }
+        yield return new WaitForSeconds(2.3f);
+        foreach (var item in ShowUI)
+        {
+            item.SetBool("HideUI", false);
+            item.SetBool("ShowUI", true);
+        }
     }
 
     public void DisplayBusters_price(int FeedPirce, int TimePrice)

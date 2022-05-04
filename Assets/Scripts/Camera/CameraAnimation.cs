@@ -13,6 +13,7 @@ public class CameraAnimation : MonoBehaviour
     {
         animation.enabled = true;
         animation.SetTrigger("StartGame");
+        StartCoroutine(ShowStartUI());
     }
 
 
@@ -63,12 +64,17 @@ public class CameraAnimation : MonoBehaviour
     {
         yield return new WaitForSeconds(.3f);
         game_controller.DayIsActive = true;
-
-
     }
     public void EndStartGameAnimation()
     {
         animation.enabled = false;
-
+    }
+    IEnumerator ShowStartUI()
+    {
+        yield return new WaitForSeconds(2.5f);
+        foreach (var item in UiAnimation)
+        {
+            item.SetBool("ShowUi", true);
+        }
     }
 }

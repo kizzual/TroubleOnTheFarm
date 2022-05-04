@@ -10,7 +10,7 @@ public class InputDetect : MonoBehaviour
     public Camera camera;
     public LayerMask layer;
     public GameObject target;
-
+    public SoundController _soundController;
     public static GameObject currentFeedPrefab;
 
     public bool InGame = false;
@@ -22,6 +22,7 @@ public class InputDetect : MonoBehaviour
     public bool isMobileInput;
     public bool IsMoving = false;
     Vector3 startClickPosition;
+
     void Update()
     {
         if (!isMobileInput)
@@ -309,7 +310,8 @@ public class InputDetect : MonoBehaviour
 
     private void CheckAnimals(Vector3 position)
     {
-        Collider[] hitColliders = Physics.OverlapSphere(position, sphere_radius , layer);
+        _soundController.Fearing();
+           Collider[] hitColliders = Physics.OverlapSphere(position, sphere_radius , layer);
         foreach (var hitCollider in hitColliders)
         {
 

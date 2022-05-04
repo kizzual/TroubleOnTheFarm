@@ -9,6 +9,8 @@ public class Pause_Ui : MonoBehaviour
     private bool musicd_bool;
     private int graphic;
 
+    public SoundController _soundController;
+
     [SerializeField] private GameObject Pause;
 
     [Header("Sound")]
@@ -57,12 +59,14 @@ public class Pause_Ui : MonoBehaviour
     {
         if (sound_bool)
         {
+            _soundController.TurnSoundOff();
             sound_bool = false;
             sound.text = "OFF";
             Save.SoundSave(sound_bool);
         }
         else
         {
+            _soundController.TurnSoundOn();
             sound_bool = true;
             sound.text = "ON";
             Save.SoundSave(sound_bool);
@@ -72,12 +76,14 @@ public class Pause_Ui : MonoBehaviour
     {
         if (musicd_bool)
         {
+            _soundController.TurnSoundOff();
             musicd_bool = false;
             music.text = "OFF";
             Save.MusicSave(false);
         }
         else
         {
+            _soundController.TurnSoundOn();
             musicd_bool = true;
             music.text = "ON";
             Save.MusicSave(true);

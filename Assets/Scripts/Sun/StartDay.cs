@@ -30,7 +30,7 @@ public class StartDay : SunState
     public override void FixedUpdate()
     {
         base.FixedUpdate();
-        if (_sun.animationIsStarting)
+   /*     if (_sun.animationIsStarting)
         {
             _timer += Time.fixedDeltaTime;
             if (_timer <= _dayTime)
@@ -44,7 +44,7 @@ public class StartDay : SunState
                       _sun.animationIsStarting = false;
                 }
             }
-        }
+        }*/
     }
 
 }

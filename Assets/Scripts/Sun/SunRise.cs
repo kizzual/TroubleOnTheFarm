@@ -29,7 +29,7 @@ public class SunRise : SunState
     public override void FixedUpdate()
     {
         base.FixedUpdate();
-        if (_sun.animationIsStarting)
+       /* if (_sun.animationIsStarting)
         {
             _timer += Time.fixedDeltaTime;
             if (_timer <= 3f)
@@ -42,7 +42,7 @@ public class SunRise : SunState
                 }
             }
 
-        }
+        }*/
     }
 
 }

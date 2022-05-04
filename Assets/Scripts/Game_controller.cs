@@ -22,8 +22,9 @@ public class Game_controller : MonoBehaviour
     public static int gold;  //вынести в сейвы
     private int Day;
 
-    public int Day_length; //   брать из скриптаблобж
-
+     public int Day_length; //   брать из скриптаблобж
+    public int startLength;
+    public int stepPerAnimal;
 
 
 
@@ -66,6 +67,7 @@ public class Game_controller : MonoBehaviour
         container.Ingame_panel.gameObject.SetActive(false);
         container.Manager_panel.gameObject.SetActive(true);
         SpawnAnimals();
+        DayLenghCalculating(startLength, stepPerAnimal);
    //     EndDay();
     }
     public void REsetSaves()
@@ -210,14 +212,17 @@ public class Game_controller : MonoBehaviour
             {
                 DayIsActive = false;
                 timer = 0;
-                SwitchState();
+                StartCoroutine(EarlyDayEnded());
+         //       SwitchState();
                 //вызов финиш панели
             }
         }
     }
     IEnumerator EarlyDayEnded()
     {
-        yield return new WaitForSeconds(4f);
+        Sun._instance.EarlyDayEnd();
+
+        yield return new WaitForSeconds(2.7f);
         SwitchState();
 
     }
@@ -296,8 +301,9 @@ public class Game_controller : MonoBehaviour
     {
         if(state == State.InMenu)
         {
-            Sun.DayLengh = Day_length;
-            
+            //    Sun.DayLengh = Day_length;
+            DayLenghCalculating(startLength, stepPerAnimal);
+
             container.startDayAnim.StartDayAnimation();
             //начинаем игру
             StartgDay();
@@ -310,7 +316,7 @@ public class Game_controller : MonoBehaviour
         }
         else if(state == State.Ingame)
         {
-            Sun._instance.DayEnded();
+    //        Sun._instance.DayEnded();
             Display_Scoring();
             DisplayScoreDay();
             container.InGame_ui.gameObject.SetActive(false);
@@ -338,7 +344,7 @@ public class Game_controller : MonoBehaviour
         }
         else if (state == State.Finish)
         {
-            Sun._instance.StartNight();
+       //     Sun._instance.StartNight();
             container.Finish_ui.gameObject.SetActive(false);
             container.Result_ui.gameObject.SetActive(true);
             Display_Gold_Earned();
@@ -375,6 +381,8 @@ public class Game_controller : MonoBehaviour
             if (gold >= container.animal_price.Chicken && Chicken_count < container.max_animals.Chicken)
             {
                 Debug.Log("bye sucessful");
+                container._soundController.BuySometing();
+
                 Chicken_count++;
                 gold -= container.animal_price.Chicken;
                 container.Chicken_paddock.BuyAnimal(container.Chicken_prefab,Chicken_count ,container.zone_to_walk, radius_walk_zone, container.AnimalsParrent, 1,container.RandomPoints);
@@ -386,6 +394,8 @@ public class Game_controller : MonoBehaviour
             }
             else if (gold < container.animal_price.Chicken && Chicken_count < container.max_animals.Chicken)
             {
+                container._soundController.NotEnoughMoney();
+
                 Debug.Log("not enough gold");
             }
             else if (Chicken_count >= container.max_animals.Chicken)
@@ -398,6 +408,8 @@ public class Game_controller : MonoBehaviour
         {
             if (gold >= container.animal_price.Cow && Cow_count < container.max_animals.Cow)
             {
+                container._soundController.BuySometing();
+
                 Debug.Log("bye sucessful");
                 Cow_count++;
                 gold -= container.animal_price.Cow;
@@ -410,6 +422,8 @@ public class Game_controller : MonoBehaviour
             }
             else if (gold < container.animal_price.Cow && Cow_count < container.max_animals.Cow)
             {
+                container._soundController.NotEnoughMoney();
+
                 Debug.Log("not enough gold");
             }
             else if (Cow_count >= container.max_animals.Cow)
@@ -422,6 +436,7 @@ public class Game_controller : MonoBehaviour
         {
             if (gold >= container.animal_price.Goat && Goat_count < container.max_animals.Goat)
             {
+                container._soundController.BuySometing();
 
                 Debug.Log("bye sucessful");
                 Goat_count++;
@@ -434,6 +449,8 @@ public class Game_controller : MonoBehaviour
             }
             else if (gold < container.animal_price.Goat && Goat_count < container.max_animals.Goat)
             {
+                container._soundController.NotEnoughMoney();
+
                 Debug.Log("not enough gold");
             }
             else if (Goat_count >= container.max_animals.Goat)
@@ -446,6 +463,8 @@ public class Game_controller : MonoBehaviour
         {
             if (gold >= container.animal_price.Goose && Goose_count < container.max_animals.Goose)
             {
+                container._soundController.BuySometing();
+
                 Debug.Log("bye sucessful");
                 Goose_count++;
                 gold -= container.animal_price.Goose;
@@ -457,6 +476,8 @@ public class Game_controller : MonoBehaviour
             }
             else if (gold < container.animal_price.Goose && Goose_count < container.max_animals.Goose)
             {
+                container._soundController.NotEnoughMoney();
+
                 Debug.Log("not enough gold");
             }
             else if (Goose_count >= container.max_animals.Goose)
@@ -469,6 +490,8 @@ public class Game_controller : MonoBehaviour
         {
             if (gold >= container.animal_price.Horse && Horse_count < container.max_animals.Horse)
             {
+                container._soundController.BuySometing();
+
                 Debug.Log("bye sucessful");
                 Horse_count++;
                 gold -= container.animal_price.Horse;
@@ -480,6 +503,8 @@ public class Game_controller : MonoBehaviour
             }
             else if (gold < container.animal_price.Horse && Horse_count < container.max_animals.Horse)
             {
+                container._soundController.NotEnoughMoney();
+
                 Debug.Log("not enough gold");
             }
             else if (Horse_count >= container.max_animals.Horse)
@@ -492,6 +517,8 @@ public class Game_controller : MonoBehaviour
         {
             if (gold >= container.animal_price.Ostrich && Ostrich_count < container.max_animals.Ostrich)
             {
+                container._soundController.BuySometing();
+
                 Debug.Log("bye sucessful");
                 Ostrich_count++;
                 gold -= container.animal_price.Ostrich;
@@ -503,6 +530,8 @@ public class Game_controller : MonoBehaviour
             }
             else if (gold < container.animal_price.Ostrich && Ostrich_count < container.max_animals.Ostrich)
             {
+                container._soundController.NotEnoughMoney();
+
                 Debug.Log("not enough gold");
             }
             else if (Ostrich_count >= container.max_animals.Ostrich)
@@ -515,6 +544,8 @@ public class Game_controller : MonoBehaviour
         {
             if (gold >= container.animal_price.Pig && Pig_count < container.max_animals.Pig)
             {
+                container._soundController.BuySometing();
+
                 Debug.Log("bye sucessful");
                 Pig_count++;
                 gold -= container.animal_price.Pig;
@@ -526,6 +557,8 @@ public class Game_controller : MonoBehaviour
             }
             else if (gold < container.animal_price.Pig && Pig_count < container.max_animals.Pig)
             {
+                container._soundController.NotEnoughMoney();
+
                 Debug.Log("not enough gold");
             }
             else if (Pig_count >= container.max_animals.Pig)
@@ -538,6 +571,8 @@ public class Game_controller : MonoBehaviour
         {
             if (gold >= container.animal_price.Sheep && Sheep_count < container.max_animals.Sheep)
             {
+                container._soundController.BuySometing();
+
                 Debug.Log("bye sucessful");
                 Sheep_count++;
                 gold -= container.animal_price.Sheep;
@@ -549,6 +584,8 @@ public class Game_controller : MonoBehaviour
             }
             else if (gold < container.animal_price.Sheep && Sheep_count < container.max_animals.Sheep)
             {
+                container._soundController.NotEnoughMoney();
+
                 Debug.Log("not enough gold");
             }
             else if (Sheep_count >= container.max_animals.Sheep)
@@ -567,28 +604,41 @@ public class Game_controller : MonoBehaviour
         {
             if (gold >= container.PaddockPrice.Goose)
             {
+                container._soundController.BuySometing();
+
                 gold -= container.PaddockPrice.Goose;
                 DisplayGold();
                 Save.Goose_paddockSave(true);
                 container.Goose_paddock.isActive = true;
                 container.Manager_panel.DisplayManagerPanel(container.Goose_paddock);
             }
+            else
+            {
+                container._soundController.NotEnoughMoney();
+            }
         }
         if (type == ShopInGame.Type.Chicken)
         {
             if (gold >= container.PaddockPrice.Chicken)
             {
+                container._soundController.BuySometing();
+
                 gold -= container.PaddockPrice.Chicken;
                 DisplayGold();
                 Save.Chicken_paddockSave(true);
                 container.Chicken_paddock.isActive = true;
                 container.Manager_panel.DisplayManagerPanel(container.Chicken_paddock);
             }
+            else
+            {
+                container._soundController.NotEnoughMoney();
+            }
         }
         else if (type == ShopInGame.Type.Cow)
         {
             if (gold >= container.PaddockPrice.Cow)
             {
+                container._soundController.BuySometing();
 
                 gold -= container.PaddockPrice.Cow;
                 DisplayGold();
@@ -596,60 +646,94 @@ public class Game_controller : MonoBehaviour
                 container.Cow_paddock.isActive = true;
                 container.Manager_panel.DisplayManagerPanel(container.Cow_paddock);
             }
+            else
+            {
+                container._soundController.NotEnoughMoney();
+            }
         }
         else if (type == ShopInGame.Type.Goat)
         {
             if (gold >= container.PaddockPrice.Goat)
             {
+                container._soundController.BuySometing();
+
                 gold -= container.PaddockPrice.Goat;
                 DisplayGold();
                 Save.Goat_paddockSave(true);
                 container.Goat_paddock.isActive = true;
                 container.Manager_panel.DisplayManagerPanel(container.Goat_paddock);
             }
+            else
+            {
+                container._soundController.NotEnoughMoney();
+            }
         }
         else if (type == ShopInGame.Type.Horse)
         {
             if (gold >= container.PaddockPrice.Horse)
             {
+                container._soundController.BuySometing();
+
                 gold -= container.PaddockPrice.Horse;
                 DisplayGold();
                 Save.Horse_paddockSave(true);
                 container.Horse_paddock.isActive = true;
                 container.Manager_panel.DisplayManagerPanel(container.Horse_paddock);
             }
+            else
+            {
+                container._soundController.NotEnoughMoney();
+            }
         }
         else if (type == ShopInGame.Type.Ostrich)
         {
             if (gold >= container.PaddockPrice.Ostrich)
             {
+                container._soundController.BuySometing();
+
                 gold -= container.PaddockPrice.Ostrich;
                 DisplayGold();
                 Save.Ostrich_paddockSave(true);
                 container.Ostrich_paddock.isActive = true;
                 container.Manager_panel.DisplayManagerPanel(container.Ostrich_paddock);
             }
+            else
+            {
+                container._soundController.NotEnoughMoney();
+            }
         }
         else if (type == ShopInGame.Type.Pig)
         {
             if (gold >= container.PaddockPrice.Pig)
             {
+                container._soundController.BuySometing();
+
                 gold -= container.PaddockPrice.Pig;
                 DisplayGold();
                 Save.Pig_paddockSave(true);
                 container.Pig_paddock.isActive = true;
                 container.Manager_panel.DisplayManagerPanel(container.Pig_paddock);
             }
+            else
+            {
+                container._soundController.NotEnoughMoney();
+            }
         }
         else if (type == ShopInGame.Type.Sheep)
         {
             if (gold >= container.PaddockPrice.Sheep)
             {
+                container._soundController.BuySometing();
+
                 gold -= container.PaddockPrice.Sheep;
                 DisplayGold();
                 Save.Sheep_paddockSave(true);
                 container.Sheep_paddock.isActive = true;
                 container.Manager_panel.DisplayManagerPanel(container.Sheep_paddock);
+            }
+            else
+            {
+                container._soundController.NotEnoughMoney();
             }
         }
         DisplayGold();
@@ -721,13 +805,17 @@ public class Game_controller : MonoBehaviour
     {
         if (gold >= container.busters_price.Feed_bust_price)
         {
+            container._soundController.BuySometing();
             feed_Bust_count += 5;
             gold -= container.busters_price.Feed_bust_price;
             DisplayGold();
             DisplayBusters_count();
+
         }
         else
         {
+            container._soundController.NotEnoughMoney();
+
             Debug.Log("Not enough gold to buy Feed_Buster");
         }
     }
@@ -735,13 +823,17 @@ public class Game_controller : MonoBehaviour
     {
         if (gold >= container.busters_price.Time_bust_price)
         {
-            time_Bust_count ++;
+            container._soundController.BuySometing();
+
+            time_Bust_count++;
             gold -= container.busters_price.Time_bust_price;
             DisplayGold();
             DisplayBusters_count();
         }
         else
         {
+            container._soundController.NotEnoughMoney();
+
             Debug.Log("Not enough gold to buy Time_Buster");
         }
     }
@@ -754,5 +846,24 @@ public class Game_controller : MonoBehaviour
         container.InGame_ui.gameObject.SetActive(true);
         container.Ingame_panel.gameObject.SetActive(true);
         container.Manager_panel.gameObject.SetActive(false);
+    }
+    private void DayLenghCalculating(int startLength, int StepPerAnimal)
+    {
+        int tmp = (Goose_count +
+            Goat_count +
+            Ostrich_count +
+            Pig_count +
+            Cow_count +
+            Horse_count +
+            Sheep_count +
+            Chicken_count);
+        if(tmp != 0)
+        {
+            Day_length = startLength + ((tmp - 1) * StepPerAnimal);
+        }
+        else
+        {
+            Day_length = 0;
+        }
     }
 }
