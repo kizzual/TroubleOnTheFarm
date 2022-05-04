@@ -81,7 +81,6 @@ public class Sun : MonoBehaviour
 
             }
        //     yield return new WaitForSeconds(1f);
-            Music._instance.NightIsOn();
         }
         else
         {

@@ -72,6 +72,8 @@ public class CameraAnimation : MonoBehaviour
     IEnumerator ShowStartUI()
     {
         yield return new WaitForSeconds(2.5f);
+        Music._instance.NightIsOn();
+
         foreach (var item in UiAnimation)
         {
             item.SetBool("ShowUi", true);

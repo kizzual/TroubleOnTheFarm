@@ -24,7 +24,7 @@ public class SoundController : MonoBehaviour
 
 
     public void ClickButton()
-    {
+    {   
         _audioSource.PlayOneShot(buttonClick);
     } 
     public void ClickStartDayButton()

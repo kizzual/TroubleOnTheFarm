@@ -38,9 +38,9 @@ public class Inventory_container : MonoBehaviour
     }
     public  void CreateFeedPrefab(GameObject prefab)
     {
+        InputDetect.FeedBusterIsActive = true;
         var go = Instantiate(prefab);
         currentFeedPrefab = go;
-        InputDetect.FeedBusterIsActive = true;
         CameraMove.CanMoveCamera = false;
     }
 
@@ -90,7 +90,7 @@ public class Inventory_container : MonoBehaviour
         feed_buster_count = feed_count;
         time_buster_count = time_count;
         Check_Feed_busters_count(feed_count);
-        Check_time_busters_count(time_count);
+        Check_time_busters_count( time_count);
         feed_buster_count_text.text = feed_count.ToString();
         time_buster_count_text.text = time_count.ToString();
     }

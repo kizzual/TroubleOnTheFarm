@@ -30,30 +30,35 @@ public class InputDetect : MonoBehaviour
 
             if (Input.GetMouseButtonDown(0))
             {
+                
+
                 if (InGame)
                 {
-                    Ray ray = camera.ScreenPointToRay(Input.mousePosition);
-                    RaycastHit hit;
-                    if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerToRay))
+                    if (!IsMouseOverUiWithIgnores())
                     {
-
-                        if (!hit.collider.CompareTag("Gate"))
+                        Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+                        RaycastHit hit;
+                        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerToRay))
                         {
-                            transform.position = new Vector3(hit.point.x, 0, hit.point.z);
 
-                            shadowSprite.GetComponent<SpriteRenderer>().color = new Color32(255, 255, 255, 0);
-
-                            shadowSprite.gameObject.SetActive(false);
-                            shadowSprite.gameObject.SetActive(true);
-
-                            DisplayShadowClick();
-                            CheckAnimals(transform.position);
-                        }
-                        else if (hit.collider.CompareTag("Gate"))
-                        {
-                            if (hit.collider.TryGetComponent(out Door door))
+                            if (!hit.collider.CompareTag("Gate"))
                             {
-                                door.CloseOpenDoore();
+                                transform.position = new Vector3(hit.point.x, 0, hit.point.z);
+
+                                shadowSprite.GetComponent<SpriteRenderer>().color = new Color32(255, 255, 255, 0);
+
+                                shadowSprite.gameObject.SetActive(false);
+                                shadowSprite.gameObject.SetActive(true);
+
+                                DisplayShadowClick();
+                                CheckAnimals(transform.position);
+                            }
+                            else if (hit.collider.CompareTag("Gate"))
+                            {
+                                if (hit.collider.TryGetComponent(out Door door))
+                                {
+                                    door.CloseOpenDoore();
+                                }
                             }
                         }
                     }
@@ -70,59 +75,6 @@ public class InputDetect : MonoBehaviour
                         }
                     }
                 }
-
-
-
-
-
-                else if (Input.GetMouseButton(0) && FeedBusterIsActive)
-                {
-                    if (!IsMouseOverUiWithIgnores())
-                    {
-                        Ray ray = camera.ScreenPointToRay(Input.mousePosition);
-                        RaycastHit hit;
-                        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerToRay))
-                        {
-                            inventory.MovePrefab(new Vector3(hit.point.x, 0, hit.point.z));
-                            if (feedIsHiding)
-                            {
-                                inventory.DisplayPrefab(true);
-                                feedIsHiding = false;
-                            }
-                        }
-                    }
-                    else if (IsMouseOverUiWithIgnores())
-                    {
-                        if (!feedIsHiding)
-                        {
-                            inventory.DisplayPrefab(false);
-                            feedIsHiding = true;
-                        }
-                    }
-                }
-                else if (Input.GetMouseButtonUp(0) && FeedBusterIsActive)
-                {
-                    FeedBusterIsActive = false;
-
-                    Ray ray = camera.ScreenPointToRay(Input.mousePosition);
-                    RaycastHit hit;
-                    if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerToRay))
-                    {
-                        inventory.MovePrefab_test(new Vector3(hit.point.x, 0, hit.point.z));
-                    }
-
-                    if (!IsMouseOverUiWithIgnores())
-                    {
-                        inventory.AddingFeedBusterToList();
-
-                    }
-                    else if (IsMouseOverUiWithIgnores())
-                    {
-                        inventory.DestroyPrefab();
-                    }
-
-                }
-
 
                 /*      else if (Input.GetMouseButton(0) && FeedBusterIsActive)
                       {
@@ -171,6 +123,58 @@ public class InputDetect : MonoBehaviour
                           }
 
                       }*/
+
+            }
+
+            else if (Input.GetMouseButton(0) && FeedBusterIsActive)
+            {
+                Debug.Log("ACTIVE");
+
+                if (!IsMouseOverUiWithIgnores())
+                {
+                    Debug.Log("ASD");
+                    Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+                    RaycastHit hit;
+                    if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerToRay))
+                    {
+                        inventory.MovePrefab(new Vector3(hit.point.x, 0, hit.point.z));
+                        if (feedIsHiding)
+                        {
+                            inventory.DisplayPrefab(true);
+                            feedIsHiding = false;
+                        }
+                    }
+                }
+                else if (IsMouseOverUiWithIgnores())
+                {
+                    if (!feedIsHiding)
+                    {
+                        inventory.DisplayPrefab(false);
+                        feedIsHiding = true;
+                    }
+                }
+            }
+            else if (Input.GetMouseButtonUp(0) && FeedBusterIsActive)
+            {
+                FeedBusterIsActive = false;
+                Debug.Log("UP");
+
+                Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerToRay))
+                {
+                    inventory.MovePrefab_test(new Vector3(hit.point.x, 0, hit.point.z));
+                }
+
+                if (!IsMouseOverUiWithIgnores())
+                {
+                    inventory.AddingFeedBusterToList();
+
+                }
+                else if (IsMouseOverUiWithIgnores())
+                {
+                    inventory.DestroyPrefab();
+                }
 
             }
         }
@@ -290,6 +294,7 @@ public class InputDetect : MonoBehaviour
             IsMoving = false;
         }
     }
+
     private bool IsMouseOverUiWithIgnores()
     {
         PointerEventData pointerEventData = new PointerEventData(EventSystem.current);

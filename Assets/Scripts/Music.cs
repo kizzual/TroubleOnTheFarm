@@ -10,6 +10,7 @@ public class Music : MonoBehaviour
     [SerializeField] private AudioClip DayIsActive;
     [SerializeField] private AudioClip NightIsActive;
     [SerializeField] private AudioClip FinishDay;
+    [SerializeField] private AudioClip WolfSound;
 
     void Start()
     {
@@ -24,18 +25,27 @@ public class Music : MonoBehaviour
     public void DayIsOn()
     {
         _audioSource.Stop();
-        _audioSource.PlayOneShot(DayIsActive);
+        _audioSource.loop = true;
+        _audioSource.clip = DayIsActive;
+        _audioSource.Play();
+
+      
     }
     public void NightIsOn()
     {
         _audioSource.Stop();
-
-        _audioSource.PlayOneShot(NightIsActive);
+        _audioSource.loop = true;
+        _audioSource.clip = NightIsActive;
+        _audioSource.Play();
     }
     public void DayIsFinished()
     {
         _audioSource.Stop();
-
         _audioSource.PlayOneShot(FinishDay);
+    }
+    public void Wolf()
+    {
+        _audioSource.Stop();
+        _audioSource.PlayOneShot(WolfSound);
     }
 }

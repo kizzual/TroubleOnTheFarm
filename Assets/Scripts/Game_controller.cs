@@ -316,7 +316,8 @@ public class Game_controller : MonoBehaviour
         }
         else if(state == State.Ingame)
         {
-    //        Sun._instance.DayEnded();
+            //        Sun._instance.DayEnded();
+            Music._instance.Wolf();
             Display_Scoring();
             DisplayScoreDay();
             container.InGame_ui.gameObject.SetActive(false);
@@ -360,6 +361,8 @@ public class Game_controller : MonoBehaviour
         }
         else if (state == State.Result)
         {
+            Music._instance.NightIsOn();
+
             container.Result_ui.gameObject.SetActive(false);
             container.Manager_ui.gameObject.SetActive(true);
 
@@ -821,9 +824,12 @@ public class Game_controller : MonoBehaviour
     }
     public void BuyTimeBust()
     {
+        Debug.Log(time_Bust_count  + " =  TIME BEFORE");
+
         if (gold >= container.busters_price.Time_bust_price)
         {
             container._soundController.BuySometing();
+            Debug.Log(time_Bust_count + " =  TIME AFTER");
 
             time_Bust_count++;
             gold -= container.busters_price.Time_bust_price;
