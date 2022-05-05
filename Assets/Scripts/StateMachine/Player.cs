@@ -69,16 +69,18 @@ public class Player : MonoBehaviour
     private State _FearingState;
     // End States
 
-    public NavMeshPath path; 
-
+    public NavMeshPath path;
+    public AudioSource _audio;
     public Vector3 startDestination;
     public bool _check;
     public Vector3 test;
+    public bool soundIsOn;
     void Start()
     {
         StartInitialise();
         StateInitialise();
         FindNewZone();
+        _audio = GetComponent<AudioSource>();
     }
     void Update()
     {
@@ -242,6 +244,14 @@ public class Player : MonoBehaviour
         Vector3 randomPos = Random.insideUnitSphere * patrolRadius + transform.position;
         Vector3 pos = new Vector3(randomPos.x, 0, randomPos.z);
         return pos;
+    }
+
+    public void PlaySound()
+    {
+        if (animalType != AnimalType.Ostrich && soundIsOn)
+        {
+            _audio.Play();
+        }
     }
 /*    private void OnDrawGizmos()
     {

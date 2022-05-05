@@ -13,7 +13,7 @@ public class InputDetect : MonoBehaviour
     public SoundController _soundController;
     public static GameObject currentFeedPrefab;
 
-    public bool InGame = false;
+    public  bool InGame = false;
     public static bool FeedBusterIsActive = false;
     private bool feedIsHiding = true;
     [SerializeField] private Inventory_container inventory;
@@ -324,6 +324,7 @@ public class InputDetect : MonoBehaviour
             {
                 //   animal.FearingAnimal(transform);
                 animal.FearAnimal(transform);
+                animal.PlaySound();
             }
         }
     }

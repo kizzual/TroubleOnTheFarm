@@ -34,7 +34,7 @@ public class Door : MonoBehaviour
     }
     public void EnableColision(bool on)
     {
-        if(on)
+        if (on)
         {
             foreach (var item in anim)
             {

@@ -5,9 +5,10 @@ using UnityEngine;
 public class SoundController : MonoBehaviour
 {
 
- //   public static SoundController _instance;
-
-    public  AudioSource _audioSource;
+    public static SoundController _instance;
+    public Container container;
+    public List<Dogs_Patroling> dogs;
+    public AudioSource _audioSource;
     [SerializeField] private AudioClip buttonClick;
     [SerializeField] private AudioClip buttonStartDay;
 
@@ -17,9 +18,24 @@ public class SoundController : MonoBehaviour
     [SerializeField] private AudioClip MoneyEnded;
     [SerializeField] private AudioClip Fear;
 
-    void Start()
+    void Awake()
     {
-        _audioSource.GetComponent<AudioSource>();
+        _instance = this;
+        if (PlayerPrefs.HasKey("SoundOn"))
+        {
+            if (PlayerPrefs.GetInt("SoundOn") == 1)
+            {
+                _audioSource.enabled = true;
+            }
+            else
+            {
+                _audioSource.enabled = false;
+            }
+        }
+        else
+        {
+            _audioSource.enabled = true;
+        }
     }
 
 
@@ -50,5 +66,38 @@ public class SoundController : MonoBehaviour
     public void Fearing()
     {
         _audioSource.PlayOneShot(Fear);
+    }
+    public void SoundStatus(bool isOn)
+    {
+        if(isOn)
+        {
+            _audioSource.mute = false;
+            container.Chicken_paddock.SoundStatus(true);
+            container.Cow_paddock.SoundStatus(true);
+            container.Sheep_paddock.SoundStatus(true);
+            container.Horse_paddock.SoundStatus(true);
+            container.Pig_paddock.SoundStatus(true);
+            container.Goat_paddock.SoundStatus(true);
+            container.Goose_paddock.SoundStatus(true);
+            foreach (var item in dogs)
+            {
+                item.SoundIsOn = true;
+            }
+        }
+        else
+        {
+            _audioSource.mute = true;
+            container.Chicken_paddock.SoundStatus(false);
+            container.Cow_paddock.SoundStatus(false);
+            container.Sheep_paddock.SoundStatus(false);
+            container.Horse_paddock.SoundStatus(false);
+            container.Pig_paddock.SoundStatus(false);
+            container.Goat_paddock.SoundStatus(false);
+            container.Goose_paddock.SoundStatus(false);
+            foreach (var item in dogs)
+            {
+                item.SoundIsOn = false;
+            }
+        }
     }
 }

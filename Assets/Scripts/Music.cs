@@ -12,9 +12,24 @@ public class Music : MonoBehaviour
     [SerializeField] private AudioClip FinishDay;
     [SerializeField] private AudioClip WolfSound;
 
-    void Start()
+    void Awake()
     {
         _instance = this;
+        if (PlayerPrefs.HasKey("MusicOn"))
+        {
+            if (PlayerPrefs.GetInt("MusicOn") == 1)
+            {
+                _audioSource.enabled = true;
+            }
+            else
+            {
+                _audioSource.enabled = false;
+            }
+        }
+        else
+        {
+            _audioSource.enabled = true;
+        }
     }
 
 
@@ -47,5 +62,16 @@ public class Music : MonoBehaviour
     {
         _audioSource.Stop();
         _audioSource.PlayOneShot(WolfSound);
+    }
+    public void MusicStatus(bool isOn)
+    {
+        if (isOn)
+        {
+            _audioSource.mute = false;
+        }
+        else
+        {
+            _audioSource.mute = true;
+        }
     }
 }

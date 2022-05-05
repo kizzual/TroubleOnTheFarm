@@ -9,6 +9,8 @@ public class Dogs_Patroling : MonoBehaviour
     [SerializeField] private List<Transform> patroling_zone;
     private int randomPoint;
     [SerializeField] private Animation_animal anim;
+    private AudioSource _audio;
+    public bool SoundIsOn;
     public enum State
     {
         walk,
@@ -26,7 +28,7 @@ public class Dogs_Patroling : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animation_animal>();
         TimeBetweenPatrol = Random.Range(5, 12);
-
+        _audio = GetComponent<AudioSource>();
     }
     private void Update()
     {
@@ -79,6 +81,9 @@ public class Dogs_Patroling : MonoBehaviour
         agent.speed = 1.3f;
         agent.SetDestination(enemyPos);
         anim.Run_Animation();
-
+        if (SoundIsOn)
+        {
+            _audio.Play();
+        }
     }
 }

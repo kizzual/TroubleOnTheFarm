@@ -32,7 +32,7 @@ public class Game_controller : MonoBehaviour
 
     public bool DayIsActive = false;  //поменять на приват
 
-    private float timer;
+    public float timer;
     private float deadCount;
 
     public enum State
@@ -224,7 +224,7 @@ public class Game_controller : MonoBehaviour
 
         yield return new WaitForSeconds(2.7f);
         SwitchState();
-
+        
     }
     public void CheckClosedPaddocks()
     {

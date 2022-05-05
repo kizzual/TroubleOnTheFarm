@@ -355,7 +355,7 @@ public class AnimalPaddock : MonoBehaviour
     private void DisplayAnimal_count()
     {
         animals_count.text = In_Side_animals.Count.ToString() + "/" + animal_max_count.ToString();
-        if(dayIsActive && In_Side_animals.Count == animal_max_count)
+        if(dayIsActive && In_Side_animals.Count == animal_max_count && _gameController.DayIsActive)
         {
             
             StartCoroutine(close());
@@ -395,6 +395,31 @@ public class AnimalPaddock : MonoBehaviour
             foreach (var item in In_Side_animals)
             {
                 item.FindNewZone();
+            }
+        }
+    }
+    public void SoundStatus(bool isOn)
+    {
+        if (isOn)
+        {
+            foreach (var item in In_Side_animals)
+            {
+                item.soundIsOn = true;
+            }
+            foreach (var item in Out_Side_animals)
+            {
+                item.soundIsOn = true;
+            }
+        }
+        else
+        {
+            foreach (var item in In_Side_animals)
+            {
+                item.soundIsOn = false;
+            }
+            foreach (var item in Out_Side_animals)
+            {
+                item.soundIsOn = false;
             }
         }
     }

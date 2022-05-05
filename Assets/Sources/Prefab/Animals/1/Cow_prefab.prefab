@@ -588,9 +588,11 @@ MonoBehaviour:
   pointFromFear: {fileID: 0}
   canFear: 0
   tg: {x: 0, y: 0, z: 0}
+  _audio: {fileID: 0}
   startDestination: {x: 0, y: 0, z: 0}
   _check: 0
   test: {x: 0, y: 0, z: 0}
+  soundIsOn: 0
 --- !u!82 &6011420786787224251
 AudioSource:
   m_ObjectHideFlags: 0
@@ -602,10 +604,10 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: eb31dc817c3b0bf4894a1da46c81f120, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 1
+  Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

@@ -23,7 +23,7 @@ public class Pause_Ui : MonoBehaviour
     [SerializeField] private Image Low;
     [SerializeField] private Image Medium;
     [SerializeField] private Image High;
-
+    public Container Container;
     void Start()
     {
         sound_bool = Save.AnimalsSoundOn_Get();
@@ -60,6 +60,7 @@ public class Pause_Ui : MonoBehaviour
         if (sound_bool)
         {
             _soundController.TurnSoundOff();
+            _soundController.SoundStatus(false);
             sound_bool = false;
             sound.text = "OFF";
             Save.SoundSave(sound_bool);
@@ -67,6 +68,7 @@ public class Pause_Ui : MonoBehaviour
         else
         {
             _soundController.TurnSoundOn();
+            _soundController.SoundStatus(true);
             sound_bool = true;
             sound.text = "ON";
             Save.SoundSave(sound_bool);
@@ -77,6 +79,7 @@ public class Pause_Ui : MonoBehaviour
         if (musicd_bool)
         {
             _soundController.TurnSoundOff();
+            Music._instance.MusicStatus(false);
             musicd_bool = false;
             music.text = "OFF";
             Save.MusicSave(false);
@@ -84,6 +87,7 @@ public class Pause_Ui : MonoBehaviour
         else
         {
             _soundController.TurnSoundOn();
+            Music._instance.MusicStatus(true);
             musicd_bool = true;
             music.text = "ON";
             Save.MusicSave(true);
@@ -132,7 +136,10 @@ public class Pause_Ui : MonoBehaviour
         }
         else
         {
-            Time.timeScale = 0.0001f;
+            if(Container.inputMouse.InGame)
+            {
+                Time.timeScale = 0.0001f;
+            }
             Pause.SetActive(true);
         }
     }
