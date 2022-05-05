@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41cab04db9ba0ab43aa661d3f011cbe5, type: 3}
   m_Name: Busters_price
   m_EditorClassIdentifier: 
-  Feed_bust_price: 1
-  Time_bust_price: 1
+  Feed_bust_price: 50
+  Time_bust_price: 50

@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97ab1d105a219f8448109bca3043f083, type: 3}
   m_Name: Paddock_Price
   m_EditorClassIdentifier: 
-  Goose: 1
-  Goat: 2
-  Ostrich: 3
-  Pig: 4
-  Cow: 5
-  Horse: 6
-  Sheep: 7
-  Chicken: 8
+  Goose: 100
+  Goat: 200
+  Ostrich: 500
+  Pig: 1000
+  Cow: 1750
+  Horse: 2500
+  Sheep: 750
+  Chicken: 50

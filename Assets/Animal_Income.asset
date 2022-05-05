@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   incomePerCount_Chicken_text: 1
   incomePerCount_Goose_text: 2
-  incomePerCount_Goat_text: 5
-  incomePerCount_Pig_text: 10
-  incomePerCount_Sheep_text: 12
-  incomePerCount_Cow_text: 15
-  incomePerCount_Ostrich_text: 20
-  incomePerCount_Horse_text: 25
+  incomePerCount_Goat_text: 7
+  incomePerCount_Pig_text: 20
+  incomePerCount_Sheep_text: 15
+  incomePerCount_Cow_text: 50
+  incomePerCount_Ostrich_text: 10
+  incomePerCount_Horse_text: 75
