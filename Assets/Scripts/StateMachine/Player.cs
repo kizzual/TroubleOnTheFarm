@@ -74,13 +74,28 @@ public class Player : MonoBehaviour
     public Vector3 startDestination;
     public bool _check;
     public Vector3 test;
-    public bool soundIsOn;
+    public bool soundIsOn = true;
     void Start()
     {
         StartInitialise();
         StateInitialise();
         FindNewZone();
         _audio = GetComponent<AudioSource>();
+        if (PlayerPrefs.HasKey("SoundOn"))
+        {
+            if (PlayerPrefs.GetInt("SoundOn") == 1)
+            {
+                soundIsOn = true;
+            }
+            else
+            {
+                soundIsOn = false;
+            }
+        }
+        else
+        {
+            soundIsOn = true;
+        }
     }
     void Update()
     {

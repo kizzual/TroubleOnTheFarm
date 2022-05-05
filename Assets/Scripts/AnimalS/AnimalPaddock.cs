@@ -322,7 +322,7 @@ public class AnimalPaddock : MonoBehaviour
         {
             door.Close_door();
         }
-        float rng = Random.Range(10, 50);
+        float rng = Random.Range(30, 60);
         float tmp = (float)Out_Side_animals.Count / 100;
         float deadAnimals = tmp * rng;
 
