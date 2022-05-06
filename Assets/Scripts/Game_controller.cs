@@ -1,24 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.AI;
 
 public class Game_controller : MonoBehaviour
 {
     [SerializeField] private Container container;
+    [SerializeField] private Button StartDayButton;
+    [SerializeField] private Text StartDayText;
+    [SerializeField] private GameObject finger_tutorial;
     [SerializeField] private float radius_walk_zone;  //скриптабл
 
-    [SerializeField] private int Goose_count;
-    [SerializeField] private int Goat_count;
-    [SerializeField] private int Ostrich_count;
-    [SerializeField] private int Pig_count;
-    [SerializeField] private int Cow_count;
-    [SerializeField] private int Horse_count;
-    [SerializeField] private int Sheep_count;
-    [SerializeField] private int Chicken_count;
+    private int Goose_count;
+    private int Goat_count;
+    private int Ostrich_count;
+    private int Pig_count;
+    private int Cow_count;
+    private int Horse_count;
+    private int Sheep_count;
+    private int Chicken_count;
 
-    [SerializeField] private int feed_Bust_count;
-    [SerializeField] private int time_Bust_count;
+    private int feed_Bust_count;
+     private int time_Bust_count;
     public static int gold;  //вынести в сейвы
     private int Day;
 
@@ -68,6 +72,7 @@ public class Game_controller : MonoBehaviour
         container.Manager_panel.gameObject.SetActive(true);
         SpawnAnimals();
         DayLenghCalculating(startLength, stepPerAnimal);
+        
    //     EndDay();
     }
     public void REsetSaves()
@@ -109,7 +114,7 @@ public class Game_controller : MonoBehaviour
         container.Manager_panel.AnimalsCount(Goose_count, Goat_count, Ostrich_count, Pig_count, Cow_count, Horse_count, Sheep_count, Chicken_count);
     }
 
-    private void CheckSave()
+    private void CheckSave() 
     {
         Goose_count = Save.Goose_count_Get();
         Goat_count = Save.Goat_count_Get();
@@ -378,6 +383,10 @@ public class Game_controller : MonoBehaviour
     #region Buy Paddock / Animals
     public void BuyAnimal(ShopInGame.Type type)
     {
+        if(!StartDayButton.enabled)
+        {
+            StartDayButton.enabled = true;
+        }
 
         if (type == ShopInGame.Type.Chicken)
         {
@@ -597,12 +606,16 @@ public class Game_controller : MonoBehaviour
                 container.Manager_panel.DisplayManagerPanel(container.Sheep_paddock);
             }
         }
+        if(Chicken_count >= 2)
+        {
+            finger_tutorial.SetActive(false);
+        }
         DisplayGold();
         SaveAll();
     }
     public void BuePaddock(ShopInGame.Type type)
     {
-
+     
         if (type == ShopInGame.Type.Goose)
         {
             if (gold >= container.PaddockPrice.Goose)
@@ -863,6 +876,10 @@ public class Game_controller : MonoBehaviour
             Horse_count +
             Sheep_count +
             Chicken_count);
+        if(tmp < 1)
+        {
+            StartDayButton.enabled = false;
+        }
         if(tmp != 0)
         {
             Day_length = startLength + ((tmp - 1) * StepPerAnimal);
@@ -870,6 +887,13 @@ public class Game_controller : MonoBehaviour
         else
         {
             Day_length = 0;
+        }
+    }
+    public void AcivateFingerTutorial()
+    {
+        if (Chicken_count < 2)
+        {
+            finger_tutorial.SetActive(true);
         }
     }
 }

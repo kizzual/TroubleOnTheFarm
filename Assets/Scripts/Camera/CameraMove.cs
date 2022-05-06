@@ -15,6 +15,7 @@ public class CameraMove : MonoBehaviour
     Vector3 startClickPosition;
     Vector3 startPos;
     [SerializeField] private GameObject AudioListener;
+    public bool IsStoped = false;
     private void Start()
     {
         startPos = new Vector3(-22.4f, 28.9f, -22.4f);
@@ -25,64 +26,67 @@ public class CameraMove : MonoBehaviour
     }
     private void Update()
     {
-        if (!isMobileInput)
+        if (!IsStoped)
         {
-            if (Input.GetMouseButton(1))
+            if (!isMobileInput)
             {
-                transX = Input.GetAxis("Mouse X") * -20 * Time.deltaTime;
-                transZ = Input.GetAxis("Mouse Y") * -20 * Time.deltaTime;
-
-                var f = Vector3.Cross(transform.right, Vector3.up).normalized;
-                transform.position += f * transZ;
-                transform.position += transform.right * transX;
-                transform.position = new Vector3(Mathf.Clamp(transform.position.x, minX, maxX), transform.position.y, Mathf.Clamp(transform.position.z, minZ, maxZ));
-            }
-
-            if (Input.GetAxis("Mouse ScrollWheel") != 0)
-            {
-                var nextZoom = cinemachine.m_Lens.FieldOfView - Input.GetAxis("Mouse ScrollWheel") * 20;
-
-                if (nextZoom > ZoomMin && nextZoom < ZoomMax)
+                if (Input.GetMouseButton(1))
                 {
-                    Vector3 posListener = AudioListener.transform.position;
-                    AudioListener.transform.position = new Vector3(posListener.x, posListener.y - Input.GetAxis("Mouse ScrollWheel") * 20, posListener.z);
-                    AudioListener.transform.position = new Vector3(
-                        AudioListener.transform.position.x,
-                        Mathf.Clamp(AudioListener.transform.position.y, 15f, 30f),
-                        posListener.z);
+                    transX = Input.GetAxis("Mouse X") * -20 * Time.deltaTime;
+                    transZ = Input.GetAxis("Mouse Y") * -20 * Time.deltaTime;
 
-                    cinemachine.m_Lens.FieldOfView -= Input.GetAxis("Mouse ScrollWheel") * 20;
-                }
-            }
-
-        }
-
-        else if (isMobileInput)
-        {
-
-            if (CanMoveCamera)
-            { 
-                if(Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Began)
-                {
-                    startClickPosition = Input.GetTouch(0).position;
-                }
-                if (Input.touchCount == 1  && Vector3.Distance(startClickPosition, Input.GetTouch(0).position) > 0.5f)
-                {
-                    transX = Input.touches[0].deltaPosition.x * -speed * Time.deltaTime;
-                    transZ = Input.touches[0].deltaPosition.y * -speed * Time.deltaTime;
                     var f = Vector3.Cross(transform.right, Vector3.up).normalized;
-                    if (Input.GetTouch(0).phase == TouchPhase.Moved)
+                    transform.position += f * transZ;
+                    transform.position += transform.right * transX;
+                    transform.position = new Vector3(Mathf.Clamp(transform.position.x, minX, maxX), transform.position.y, Mathf.Clamp(transform.position.z, minZ, maxZ));
+                }
+
+                if (Input.GetAxis("Mouse ScrollWheel") != 0)
+                {
+                    var nextZoom = cinemachine.m_Lens.FieldOfView - Input.GetAxis("Mouse ScrollWheel") * 20;
+
+                    if (nextZoom > ZoomMin && nextZoom < ZoomMax)
                     {
+                        Vector3 posListener = AudioListener.transform.position;
+                        AudioListener.transform.position = new Vector3(posListener.x, posListener.y - Input.GetAxis("Mouse ScrollWheel") * 20, posListener.z);
+                        AudioListener.transform.position = new Vector3(
+                            AudioListener.transform.position.x,
+                            Mathf.Clamp(AudioListener.transform.position.y, 15f, 30f),
+                            posListener.z);
 
-                        transform.position += f * transZ;
-                        transform.position += transform.right * transX;
-                        transform.position = new Vector3(Mathf.Clamp(transform.position.x, minX, maxX), transform.position.y, Mathf.Clamp(transform.position.z, minZ, maxZ));
-
+                        cinemachine.m_Lens.FieldOfView -= Input.GetAxis("Mouse ScrollWheel") * 20;
                     }
                 }
-                if (Input.touchCount > 1)
+
+            }
+
+            else if (isMobileInput)
+            {
+
+                if (CanMoveCamera)
                 {
-                    zoom();
+                    if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Began)
+                    {
+                        startClickPosition = Input.GetTouch(0).position;
+                    }
+                    if (Input.touchCount == 1 && Vector3.Distance(startClickPosition, Input.GetTouch(0).position) > 0.5f)
+                    {
+                        transX = Input.touches[0].deltaPosition.x * -speed * Time.deltaTime;
+                        transZ = Input.touches[0].deltaPosition.y * -speed * Time.deltaTime;
+                        var f = Vector3.Cross(transform.right, Vector3.up).normalized;
+                        if (Input.GetTouch(0).phase == TouchPhase.Moved)
+                        {
+
+                            transform.position += f * transZ;
+                            transform.position += transform.right * transX;
+                            transform.position = new Vector3(Mathf.Clamp(transform.position.x, minX, maxX), transform.position.y, Mathf.Clamp(transform.position.z, minZ, maxZ));
+
+                        }
+                    }
+                    if (Input.touchCount > 1)
+                    {
+                        zoom();
+                    }
                 }
             }
         }

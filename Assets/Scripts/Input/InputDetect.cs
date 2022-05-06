@@ -22,276 +22,280 @@ public class InputDetect : MonoBehaviour
     public bool isMobileInput;
     public bool IsMoving = false;
     Vector3 startClickPosition;
-
+    public bool TutorialIsActive = false;
     void Update()
     {
-        if (!isMobileInput)
+        if (!TutorialIsActive)
         {
-
-            if (Input.GetMouseButtonDown(0))
+            if (!isMobileInput)
             {
-                
 
-                if (InGame)
+                if (Input.GetMouseButtonDown(0))
                 {
+
+
+                    if (InGame)
+                    {
+                        if (!IsMouseOverUiWithIgnores())
+                        {
+                            Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+                            RaycastHit hit;
+                            if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerToRay))
+                            {
+
+                                if (!hit.collider.CompareTag("Gate"))
+                                {
+                                    transform.position = new Vector3(hit.point.x, 0, hit.point.z);
+
+                                    shadowSprite.GetComponent<SpriteRenderer>().color = new Color32(255, 255, 255, 0);
+
+                                    shadowSprite.gameObject.SetActive(false);
+                                    shadowSprite.gameObject.SetActive(true);
+
+                                    DisplayShadowClick();
+                                    CheckAnimals(transform.position);
+                                }
+                                else if (hit.collider.CompareTag("Gate"))
+                                {
+                                    if (hit.collider.TryGetComponent(out Door door))
+                                    {
+                                        door.CloseOpenDoore();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else if (!InGame)
+                    {
+                        Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+                        RaycastHit hit;
+                        if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+                        {
+                            if (hit.collider.TryGetComponent(out ShopInGame shop))
+                            {
+                                
+                                shop.BuyAnimal();
+                            }
+                        }
+                    }
+
+                    /*      else if (Input.GetMouseButton(0) && FeedBusterIsActive)
+                          {
+                              if (!IsMouseOverUiWithIgnores())
+                              {
+                                  Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+                                  RaycastHit hit;
+                                  if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerToRay))
+                                  {
+                                      inventory.MovePrefab(new Vector3(hit.point.x, 0, hit.point.z));
+                                      if (feedIsHiding)
+                                      {
+                                          inventory.DisplayPrefab(true);
+                                          feedIsHiding = false;
+                                      }
+                                  }
+                              }
+                              else if (IsMouseOverUiWithIgnores())
+                              {
+                                  if (!feedIsHiding)
+                                  {
+                                      inventory.DisplayPrefab(false);
+                                      feedIsHiding = true;
+                                  }
+                              }
+                          }
+                          else if (Input.GetMouseButtonUp(0) && FeedBusterIsActive)
+                          {
+                              FeedBusterIsActive = false;
+
+                              Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+                              RaycastHit hit;
+                              if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerToRay))
+                              {
+                                  inventory.MovePrefab_test(new Vector3(hit.point.x, 0, hit.point.z));
+                              }
+
+                              if (!IsMouseOverUiWithIgnores())
+                              {
+                                  inventory.AddingFeedBusterToList();
+
+                              }
+                              else if (IsMouseOverUiWithIgnores())
+                              {
+                                  inventory.DestroyPrefab();
+                              }
+
+                          }*/
+
+                }
+
+                else if (Input.GetMouseButton(0) && FeedBusterIsActive)
+                {
+                    Debug.Log("ACTIVE");
+
+                    if (!IsMouseOverUiWithIgnores())
+                    {
+                        Debug.Log("ASD");
+                        Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+                        RaycastHit hit;
+                        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerToRay))
+                        {
+                            inventory.MovePrefab(new Vector3(hit.point.x, 0, hit.point.z));
+                            if (feedIsHiding)
+                            {
+                                inventory.DisplayPrefab(true);
+                                feedIsHiding = false;
+                            }
+                        }
+                    }
+                    else if (IsMouseOverUiWithIgnores())
+                    {
+                        if (!feedIsHiding)
+                        {
+                            inventory.DisplayPrefab(false);
+                            feedIsHiding = true;
+                        }
+                    }
+                }
+                else if (Input.GetMouseButtonUp(0) && FeedBusterIsActive)
+                {
+                    FeedBusterIsActive = false;
+                    Debug.Log("UP");
+
+                    Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+                    RaycastHit hit;
+                    if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerToRay))
+                    {
+                        inventory.MovePrefab_test(new Vector3(hit.point.x, 0, hit.point.z));
+                    }
+
+                    if (!IsMouseOverUiWithIgnores())
+                    {
+                        inventory.AddingFeedBusterToList();
+
+                    }
+                    else if (IsMouseOverUiWithIgnores())
+                    {
+                        inventory.DestroyPrefab();
+                    }
+
+                }
+            }
+            else if (isMobileInput)
+            {
+                if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Began)
+                {
+                    startClickPosition = Input.GetTouch(0).position;
+                }
+                if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Moved && Vector3.Distance(startClickPosition, Input.GetTouch(0).position) > 10)
+                {
+                    IsMoving = true;
+                }
+
+                if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended && !IsMoving)
+                {
+                    if (InGame)
+                    {
+                        if (!IsMouseOverUiWithIgnores())
+                        {
+
+                            Ray ray = camera.ScreenPointToRay(Input.GetTouch(0).position);
+                            RaycastHit hit;
+                            if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerToRay))
+                            {
+
+                                if (!hit.collider.CompareTag("Gate"))
+                                {
+                                    transform.position = new Vector3(hit.point.x, 0, hit.point.z);
+
+                                    shadowSprite.GetComponent<SpriteRenderer>().color = new Color32(255, 255, 255, 0);
+
+                                    shadowSprite.gameObject.SetActive(false);
+                                    shadowSprite.gameObject.SetActive(true);
+
+                                    DisplayShadowClick();
+                                    CheckAnimals(transform.position);
+                                }
+                                else if (hit.collider.CompareTag("Gate"))
+                                {
+                                    if (hit.collider.TryGetComponent(out Door door))
+                                    {
+                                        door.CloseOpenDoore();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else if (!InGame)
+                    {
+                        Ray ray = camera.ScreenPointToRay(Input.GetTouch(0).position);
+                        RaycastHit hit;
+                        if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+                        {
+                            if (hit.collider.TryGetComponent(out ShopInGame shop))
+                            {
+                                shop.BuyAnimal();
+                            }
+                        }
+                    }
+                }
+
+
+                else if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Moved && FeedBusterIsActive)
+                {
+                    CameraMove.CanMoveCamera = false;
                     if (!IsMouseOverUiWithIgnores())
                     {
                         Ray ray = camera.ScreenPointToRay(Input.mousePosition);
                         RaycastHit hit;
                         if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerToRay))
                         {
-
-                            if (!hit.collider.CompareTag("Gate"))
+                            inventory.MovePrefab(new Vector3(hit.point.x, 0, hit.point.z));
+                            if (feedIsHiding)
                             {
-                                transform.position = new Vector3(hit.point.x, 0, hit.point.z);
-
-                                shadowSprite.GetComponent<SpriteRenderer>().color = new Color32(255, 255, 255, 0);
-
-                                shadowSprite.gameObject.SetActive(false);
-                                shadowSprite.gameObject.SetActive(true);
-
-                                DisplayShadowClick();
-                                CheckAnimals(transform.position);
-                            }
-                            else if (hit.collider.CompareTag("Gate"))
-                            {
-                                if (hit.collider.TryGetComponent(out Door door))
-                                {
-                                    door.CloseOpenDoore();
-                                }
+                                inventory.DisplayPrefab(true);
+                                feedIsHiding = false;
                             }
                         }
                     }
-                }
-                else if (!InGame)
-                {
-                    Ray ray = camera.ScreenPointToRay(Input.mousePosition);
-                    RaycastHit hit;
-                    if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+                    else if (IsMouseOverUiWithIgnores())
                     {
-                        if (hit.collider.TryGetComponent(out ShopInGame shop))
+                        if (!feedIsHiding)
                         {
-                            shop.BuyAnimal();
+                            inventory.DisplayPrefab(false);
+                            feedIsHiding = true;
                         }
                     }
+
+
                 }
-
-                /*      else if (Input.GetMouseButton(0) && FeedBusterIsActive)
-                      {
-                          if (!IsMouseOverUiWithIgnores())
-                          {
-                              Ray ray = camera.ScreenPointToRay(Input.mousePosition);
-                              RaycastHit hit;
-                              if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerToRay))
-                              {
-                                  inventory.MovePrefab(new Vector3(hit.point.x, 0, hit.point.z));
-                                  if (feedIsHiding)
-                                  {
-                                      inventory.DisplayPrefab(true);
-                                      feedIsHiding = false;
-                                  }
-                              }
-                          }
-                          else if (IsMouseOverUiWithIgnores())
-                          {
-                              if (!feedIsHiding)
-                              {
-                                  inventory.DisplayPrefab(false);
-                                  feedIsHiding = true;
-                              }
-                          }
-                      }
-                      else if (Input.GetMouseButtonUp(0) && FeedBusterIsActive)
-                      {
-                          FeedBusterIsActive = false;
-
-                          Ray ray = camera.ScreenPointToRay(Input.mousePosition);
-                          RaycastHit hit;
-                          if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerToRay))
-                          {
-                              inventory.MovePrefab_test(new Vector3(hit.point.x, 0, hit.point.z));
-                          }
-
-                          if (!IsMouseOverUiWithIgnores())
-                          {
-                              inventory.AddingFeedBusterToList();
-
-                          }
-                          else if (IsMouseOverUiWithIgnores())
-                          {
-                              inventory.DestroyPrefab();
-                          }
-
-                      }*/
-
-            }
-
-            else if (Input.GetMouseButton(0) && FeedBusterIsActive)
-            {
-                Debug.Log("ACTIVE");
-
-                if (!IsMouseOverUiWithIgnores())
+                else if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended && FeedBusterIsActive)
                 {
-                    Debug.Log("ASD");
+                    FeedBusterIsActive = false;
+                    CameraMove.CanMoveCamera = true;
+
                     Ray ray = camera.ScreenPointToRay(Input.mousePosition);
                     RaycastHit hit;
                     if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerToRay))
                     {
-                        inventory.MovePrefab(new Vector3(hit.point.x, 0, hit.point.z));
-                        if (feedIsHiding)
-                        {
-                            inventory.DisplayPrefab(true);
-                            feedIsHiding = false;
-                        }
+                        inventory.MovePrefab_test(new Vector3(hit.point.x, 0, hit.point.z));
                     }
-                }
-                else if (IsMouseOverUiWithIgnores())
-                {
-                    if (!feedIsHiding)
-                    {
-                        inventory.DisplayPrefab(false);
-                        feedIsHiding = true;
-                    }
-                }
-            }
-            else if (Input.GetMouseButtonUp(0) && FeedBusterIsActive)
-            {
-                FeedBusterIsActive = false;
-                Debug.Log("UP");
 
-                Ray ray = camera.ScreenPointToRay(Input.mousePosition);
-                RaycastHit hit;
-                if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerToRay))
-                {
-                    inventory.MovePrefab_test(new Vector3(hit.point.x, 0, hit.point.z));
-                }
-
-                if (!IsMouseOverUiWithIgnores())
-                {
-                    inventory.AddingFeedBusterToList();
-
-                }
-                else if (IsMouseOverUiWithIgnores())
-                {
-                    inventory.DestroyPrefab();
-                }
-
-            }
-        }
-        else if (isMobileInput)
-        {
-            if(Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Began)
-            {
-                startClickPosition = Input.GetTouch(0).position;
-            }
-            if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Moved && Vector3.Distance(startClickPosition, Input.GetTouch(0).position) > 10)
-            {
-                IsMoving = true;
-            }
-
-            if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended && !IsMoving)
-            {
-                if (InGame)
-                {
                     if (!IsMouseOverUiWithIgnores())
                     {
+                        inventory.AddingFeedBusterToList();
 
-                        Ray ray = camera.ScreenPointToRay(Input.GetTouch(0).position);
-                        RaycastHit hit;
-                        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerToRay))
-                        {
-
-                            if (!hit.collider.CompareTag("Gate"))
-                            {
-                                transform.position = new Vector3(hit.point.x, 0, hit.point.z);
-
-                                shadowSprite.GetComponent<SpriteRenderer>().color = new Color32(255, 255, 255, 0);
-
-                                shadowSprite.gameObject.SetActive(false);
-                                shadowSprite.gameObject.SetActive(true);
-
-                                DisplayShadowClick();
-                                CheckAnimals(transform.position);
-                            }
-                            else if (hit.collider.CompareTag("Gate"))
-                            {
-                                if (hit.collider.TryGetComponent(out Door door))
-                                {
-                                    door.CloseOpenDoore();
-                                }
-                            }
-                        }
                     }
-                }
-                else if (!InGame)
-                {
-                    Ray ray = camera.ScreenPointToRay(Input.GetTouch(0).position);
-                    RaycastHit hit;
-                    if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+                    else if (IsMouseOverUiWithIgnores())
                     {
-                        if (hit.collider.TryGetComponent(out ShopInGame shop))
-                        {
-                            shop.BuyAnimal();
-                        }
+                        inventory.DestroyPrefab();
                     }
                 }
             }
-
-
-            else if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Moved && FeedBusterIsActive)
+            if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended)
             {
-                CameraMove.CanMoveCamera = false;
-                if (!IsMouseOverUiWithIgnores())
-                {
-                    Ray ray = camera.ScreenPointToRay(Input.mousePosition);
-                    RaycastHit hit;
-                    if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerToRay))
-                    {
-                        inventory.MovePrefab(new Vector3(hit.point.x, 0, hit.point.z));
-                        if (feedIsHiding)
-                        {
-                            inventory.DisplayPrefab(true);
-                            feedIsHiding = false;
-                        }
-                    }
-                }
-                else if (IsMouseOverUiWithIgnores())
-                {
-                    if (!feedIsHiding)
-                    {
-                        inventory.DisplayPrefab(false);
-                        feedIsHiding = true;
-                    }
-                }
-
-
+                IsMoving = false;
             }
-            else if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended && FeedBusterIsActive)
-            {
-                FeedBusterIsActive = false;
-                CameraMove.CanMoveCamera = true;
-
-                Ray ray = camera.ScreenPointToRay(Input.mousePosition);
-                RaycastHit hit;
-                if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerToRay))
-                {
-                    inventory.MovePrefab_test(new Vector3(hit.point.x, 0, hit.point.z));
-                }
-
-                if (!IsMouseOverUiWithIgnores())
-                {
-                    inventory.AddingFeedBusterToList();
-
-                }
-                else if (IsMouseOverUiWithIgnores())
-                {
-                    inventory.DestroyPrefab();
-                }
-            }
-        }
-        if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended)
-        {
-            IsMoving = false;
         }
     }
 

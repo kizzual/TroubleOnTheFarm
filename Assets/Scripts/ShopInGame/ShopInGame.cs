@@ -25,7 +25,6 @@ public class ShopInGame : MonoBehaviour
     }
     public void BuyAnimal()
     {
-
         if (!isPaddock)
         {
             gameController.BuyAnimal(type);

@@ -9,6 +9,7 @@ public class CameraAnimation : MonoBehaviour
     [SerializeField] private new Animator animation;
     [SerializeField] private List<Animator> UiAnimation;
     [SerializeField] private Game_controller game_controller;
+    [SerializeField] private Tutorial tutorial;
     void Start()
     {
         animation.enabled = true;
@@ -78,5 +79,10 @@ public class CameraAnimation : MonoBehaviour
         {
             item.SetBool("ShowUi", true);
         }
+        if(tutorial.firstTime)
+        {
+            tutorial.OpenTutorial();
+        }
+        game_controller.AcivateFingerTutorial();
     }
 }

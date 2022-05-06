@@ -12,6 +12,8 @@ public class Pause_Ui : MonoBehaviour
     public SoundController _soundController;
 
     [SerializeField] private GameObject Pause;
+    [SerializeField] private InputDetect input;
+    [SerializeField] private CameraMove cam;
 
     [Header("Sound")]
     [SerializeField] private Text sound;
@@ -46,7 +48,7 @@ public class Pause_Ui : MonoBehaviour
             music.text = "OFF";
         }
         graphic = Save.Graphic_Get();
-        SetQuality(graphic);
+    //    SetQuality(graphic);
 
     }
 
@@ -130,13 +132,17 @@ public class Pause_Ui : MonoBehaviour
 
         if (Pause.activeSelf)
         {
+            input.TutorialIsActive = false;
+            cam.IsStoped = false;
             Time.timeScale = 1;
 
             Pause.SetActive(false);
         }
         else
         {
-            if(Container.inputMouse.InGame)
+            input.TutorialIsActive = true;
+            cam.IsStoped = true;
+            if (Container.inputMouse.InGame)
             {
                 Time.timeScale = 0.0001f;
             }
