@@ -12,100 +12,100 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a71ef53c495f2f54bb42f87a0354f829, type: 3}
   m_Name: Merge
   m_EditorClassIdentifier: 
-  Type: 0
-  Chicken_1_name: Chicken
+  Type: 7
+  Chicken_1_name: Chicken1
   Chicken_2_name: Chicken_2
-  Chicken_3_name: asd
-  Chicken_4_name: 1597532
-  Goose_1_name: 
-  Goose_2_name: 
-  Goose_3_name: 
-  Goose_4_name: 
-  Goat_1_name: 
-  Goat_2_name: 
-  Goat_3_name: 
-  Goat_4_name: 
-  Ostrich_1_name: 
-  Ostrich_2_name: 
-  Ostrich_3_name: 
-  Ostrich_4_name: 
-  Sheep_1_name: 
-  Sheep_2_name: 
-  Sheep_3_name: 
-  Sheep_4_name: 
-  Pig_1_name: 
-  Pig_2_name: 
-  Pig_3_name: 
-  Pig_4_name: 
-  Cow_1_name: 
-  Cow_2_name: 
-  Cow_3_name: 
-  Cow_4_name: 
-  Horse_1_name: 
-  Horse_2_name: 
-  Horse_3_name: 
-  Horse_4_name: 
-  Chicken_1_price: 2
+  Chicken_3_name: Chicken3
+  Chicken_4_name: Chicken4
+  Goose_1_name: Goose1
+  Goose_2_name: Goose2
+  Goose_3_name: Goose3
+  Goose_4_name: Goose4
+  Goat_1_name: Goat1
+  Goat_2_name: Goat2
+  Goat_3_name: Goat3
+  Goat_4_name: Goat4
+  Ostrich_1_name: Ostrich1
+  Ostrich_2_name: Ostrich2
+  Ostrich_3_name: Ostrich3
+  Ostrich_4_name: Ostrich4
+  Sheep_1_name: Sheep1
+  Sheep_2_name: Sheep2
+  Sheep_3_name: Sheep3
+  Sheep_4_name: Sheep4
+  Pig_1_name: Pig1
+  Pig_2_name: Pig2
+  Pig_3_name: Pig3
+  Pig_4_name: Pig4
+  Cow_1_name: Cow1
+  Cow_2_name: Cow2
+  Cow_3_name: Cow3
+  Cow_4_name: Cow4
+  Horse_1_name: Horse1
+  Horse_2_name: Horse2
+  Horse_3_name: Horse3
+  Horse_4_name: Horse4
+  Chicken_1_price: 1
   Chicken_2_price: 3
-  Chicken_3_price: 111
-  Chicken_4_price: 23132
-  Goose_1_price: 0
-  Goose_2_price: 0
-  Goose_3_price: 0
-  Goose_4_price: 0
-  Goat_1_price: 0
-  Goat_2_price: 0
-  Goat_3_price: 0
-  Goat_4_price: 0
-  Ostrich_1_price: 0
-  Ostrich_2_price: 0
-  Ostrich_3_price: 0
-  Ostrich_4_price: 0
-  Sheep_1_price: 0
-  Sheep_2_price: 0
-  Sheep_3_price: 0
-  Sheep_4_price: 0
-  Pig_1_price: 0
-  Pig_2_price: 0
-  Pig_3_price: 0
-  Pig_4_price: 0
-  Cow_1_price: 0
-  Cow_2_price: 0
-  Cow_3_price: 0
-  Cow_4_price: 0
-  Horse_1_price: 0
-  Horse_2_price: 0
-  Horse_3_price: 0
-  Horse_4_price: 0
-  Chicken_1_sprite: {fileID: 21300000, guid: 869127beec52d44449575c62bccc8e47, type: 3}
-  Chicken_2_sprite: {fileID: 21300000, guid: c1fb18287a056bd4294f459758be9bfa, type: 3}
-  Chicken_3_sprite: {fileID: 21300000, guid: 519bc6826bc5659479abd92469373f86, type: 3}
-  Chicken_4_sprite: {fileID: 21300000, guid: b0ff4a9f1c85c02418de561516bbb3ee, type: 3}
-  Goose_1_sprite: {fileID: 0}
-  Goose_2_sprite: {fileID: 0}
-  Goose_3_sprite: {fileID: 0}
-  Goose_4_sprite: {fileID: 0}
-  Goat_1_sprite: {fileID: 0}
-  Goat_2_sprite: {fileID: 0}
-  Goat_3_sprite: {fileID: 0}
-  Goat_4_sprite: {fileID: 0}
-  Ostrich_1_sprite: {fileID: 0}
-  Ostrich_2_sprite: {fileID: 0}
-  Ostrich_3_sprite: {fileID: 0}
-  Ostrich_4_sprite: {fileID: 0}
-  Sheep_1_sprite: {fileID: 0}
-  Sheep_2_sprite: {fileID: 0}
-  Sheep_3_sprite: {fileID: 0}
-  Sheep_4_sprite: {fileID: 0}
-  Pig_1_sprite: {fileID: 0}
-  Pig_2_sprite: {fileID: 0}
-  Pig_3_sprite: {fileID: 0}
-  Pig_4_sprite: {fileID: 0}
-  Cow_1_sprite: {fileID: 0}
-  Cow_2_sprite: {fileID: 0}
-  Cow_3_sprite: {fileID: 0}
-  Cow_4_sprite: {fileID: 0}
-  Horse_1_sprite: {fileID: 0}
-  Horse_2_sprite: {fileID: 0}
-  Horse_3_sprite: {fileID: 0}
-  Horse_4_sprite: {fileID: 0}
+  Chicken_3_price: 8
+  Chicken_4_price: 20
+  Goose_1_price: 2
+  Goose_2_price: 4
+  Goose_3_price: 16
+  Goose_4_price: 40
+  Goat_1_price: 5
+  Goat_2_price: 15
+  Goat_3_price: 40
+  Goat_4_price: 100
+  Ostrich_1_price: 10
+  Ostrich_2_price: 30
+  Ostrich_3_price: 80
+  Ostrich_4_price: 200
+  Sheep_1_price: 15
+  Sheep_2_price: 45
+  Sheep_3_price: 120
+  Sheep_4_price: 300
+  Pig_1_price: 25
+  Pig_2_price: 75
+  Pig_3_price: 200
+  Pig_4_price: 500
+  Cow_1_price: 50
+  Cow_2_price: 150
+  Cow_3_price: 400
+  Cow_4_price: 1000
+  Horse_1_price: 75
+  Horse_2_price: 225
+  Horse_3_price: 500
+  Horse_4_price: 1500
+  Chicken_1_sprite: {fileID: 21300000, guid: 8aed0c7ba8750e14689736d95e6c2f93, type: 3}
+  Chicken_2_sprite: {fileID: 21300000, guid: 96da1a7f149170b4f8189e62c0f256ca, type: 3}
+  Chicken_3_sprite: {fileID: 21300000, guid: 8e5f73f74d8efce499d34242f1f54d18, type: 3}
+  Chicken_4_sprite: {fileID: 21300000, guid: d9b9d677d1c93f547b6c2b3551987b88, type: 3}
+  Goose_1_sprite: {fileID: 21300000, guid: fd85118faf85afd45afd63e19db3528e, type: 3}
+  Goose_2_sprite: {fileID: 21300000, guid: 57259a375ea6bdb439c9ef303bbd84d9, type: 3}
+  Goose_3_sprite: {fileID: 21300000, guid: 20f8ff002b378f34e82705ae766e9d13, type: 3}
+  Goose_4_sprite: {fileID: 21300000, guid: 2a51ff23e41d819418c82937a691e7c1, type: 3}
+  Goat_1_sprite: {fileID: 21300000, guid: cbd6137bf3bb95945a1214e0e0a8d361, type: 3}
+  Goat_2_sprite: {fileID: 21300000, guid: a01950e317c599149a4408f3b8559f2a, type: 3}
+  Goat_3_sprite: {fileID: 21300000, guid: 390ba098896e8af41be0a1deed08bb1c, type: 3}
+  Goat_4_sprite: {fileID: 21300000, guid: c37a97c4878e519499ad63903a7ccda1, type: 3}
+  Ostrich_1_sprite: {fileID: 21300000, guid: 3c46d63fe43c2af4281e234f54130043, type: 3}
+  Ostrich_2_sprite: {fileID: 21300000, guid: 6544e2d56cfad0e4db4a38ea112fbae3, type: 3}
+  Ostrich_3_sprite: {fileID: 21300000, guid: e5545bc6f5de48f49b12e4fa4e0671d5, type: 3}
+  Ostrich_4_sprite: {fileID: 21300000, guid: d6e6cd3a7419db64e820ffa01606747e, type: 3}
+  Sheep_1_sprite: {fileID: 21300000, guid: b4dc1531ba20d094eb402acf4952ce0f, type: 3}
+  Sheep_2_sprite: {fileID: 21300000, guid: b3fdaa2c56a1007408a2f540d4f7fd2d, type: 3}
+  Sheep_3_sprite: {fileID: 21300000, guid: b875b949ce8ba684d8ee318de507b6c1, type: 3}
+  Sheep_4_sprite: {fileID: 21300000, guid: a6c66c1ee8fae4c49ba76fb09e0837d8, type: 3}
+  Pig_1_sprite: {fileID: 21300000, guid: 98dd9bd224a31bc4f81faf1cbdef29dc, type: 3}
+  Pig_2_sprite: {fileID: 21300000, guid: bfacce7102b59f745be2fc767a16b326, type: 3}
+  Pig_3_sprite: {fileID: 21300000, guid: 5ba139a5e11f7b7478d7b4560bff38ae, type: 3}
+  Pig_4_sprite: {fileID: 21300000, guid: 2fa8862a6cb14444b92145f6f38daa79, type: 3}
+  Cow_1_sprite: {fileID: 21300000, guid: b7d2d322c5d2ece4086a46ada9771490, type: 3}
+  Cow_2_sprite: {fileID: 21300000, guid: 7d0cc8c4dfa9b6a4ead1d8b5863298e7, type: 3}
+  Cow_3_sprite: {fileID: 21300000, guid: 0e0575c4086591441be3f4a08e8c8f46, type: 3}
+  Cow_4_sprite: {fileID: 21300000, guid: 33c9adec42eff9a4e954daa43ae88d2c, type: 3}
+  Horse_1_sprite: {fileID: 21300000, guid: 04afd8e88aa507c4cacf17b42e9aff88, type: 3}
+  Horse_2_sprite: {fileID: 21300000, guid: 2a3e090304ee7a2469b55ab9856df700, type: 3}
+  Horse_3_sprite: {fileID: 21300000, guid: 1883bfd3a1f1d4d43b73b8e11c1a0950, type: 3}
+  Horse_4_sprite: {fileID: 21300000, guid: b479913de64bb344e887af323356b221, type: 3}

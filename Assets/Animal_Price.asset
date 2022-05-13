@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Animal_Price
   m_EditorClassIdentifier: 
   Goose: 20
-  Goat: 75
+  Goat: 50
   Ostrich: 100
   Pig: 200
   Cow: 500

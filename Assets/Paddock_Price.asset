@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Paddock_Price
   m_EditorClassIdentifier: 
   Goose: 100
-  Goat: 200
+  Goat: 250
   Ostrich: 500
-  Pig: 1000
+  Pig: 1250
   Cow: 1750
   Horse: 2500
   Sheep: 750
