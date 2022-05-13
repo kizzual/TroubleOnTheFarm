@@ -125,6 +125,50 @@ public class Save : MonoBehaviour
         return Chicken_paddock;
     }
 
+
+    // resources
+    private static int Goose_res;
+    public static int Goose_res_Get()
+    {
+        return Goose_res;
+    }
+    private static int Goat_res;
+    public static int Goat_res_Get()
+    {
+        return Goat_res;
+    }
+    private static int Ostrich_res;
+    public static int Ostrich_res_Get()
+    {
+        return Ostrich_res;
+    }
+    private static int Pig_res;
+    public static int Pig_res_Get()
+    {
+        return Pig_res;
+    }
+    private static int Cow_res;
+    public static int Cow_res_Get()
+    {
+        return Cow_res;
+    }
+    private static int Horse_res;
+    public static int Horse_res_Get()
+    {
+        return Horse_res;
+    }
+    private static int Sheep_res;
+    public static int Sheep_res_Get()
+    {
+        return Sheep_res;
+    }
+    private static int Chicken_res;
+    public static int Chicken_res_Get()
+    {
+        return Chicken_res;
+    }
+
+
     private void Awake()
     {
       
@@ -365,6 +409,73 @@ public class Save : MonoBehaviour
             Chicken_paddock = false;
             Chicken_paddockSave(false);
         }
+
+        // resources
+
+        if (PlayerPrefs.HasKey("Goose_res"))
+        {
+            Goose_res = PlayerPrefs.GetInt("Goose_res");
+        }
+        else
+        {
+            Goose_res = 0;
+        }
+        if (PlayerPrefs.HasKey("Goat_res"))
+        {
+            Goat_res = PlayerPrefs.GetInt("Goat_res");
+        }
+        else
+        {
+            Goat_res = 0;
+        }
+        if (PlayerPrefs.HasKey("Ostrich_res"))
+        {
+            Ostrich_res = PlayerPrefs.GetInt("Ostrich_res");
+        }
+        else
+        {
+            Ostrich_res = 0;
+        }
+        if (PlayerPrefs.HasKey("Pig_res"))
+        {
+            Pig_res = PlayerPrefs.GetInt("Pig_res");
+        }
+        else
+        {
+            Pig_res = 0;
+        }
+        if (PlayerPrefs.HasKey("Cow_res"))
+        {
+            Cow_res = PlayerPrefs.GetInt("Cow_res");
+        }
+        else
+        {
+            Cow_res = 0;
+        }
+        if (PlayerPrefs.HasKey("Horse_res"))
+        {
+            Horse_res = PlayerPrefs.GetInt("Horse_res");
+        }
+        else
+        {
+            Horse_res = 0;
+        }
+        if (PlayerPrefs.HasKey("Sheep_res"))
+        {
+            Sheep_res = PlayerPrefs.GetInt("Sheep_res");
+        }
+        else
+        {
+            Sheep_res = 0;
+        }
+        if (PlayerPrefs.HasKey("Chicken_res"))
+        {
+            Chicken_res = PlayerPrefs.GetInt("Chicken_res");
+        }
+        else
+        {
+            Chicken_res = 0;
+        }
     }
     public static void SaveStats()
     {
@@ -381,6 +492,15 @@ public class Save : MonoBehaviour
         PlayerPrefs.SetInt("Horse_count", Horse_count);
         PlayerPrefs.SetInt("Sheep_count", Sheep_count);
         PlayerPrefs.SetInt("Chicken_count", Chicken_count);
+        //resources
+        PlayerPrefs.SetInt("Goose_res", Goose_res);
+        PlayerPrefs.SetInt("Goat_res", Goat_res);
+        PlayerPrefs.SetInt("Ostrich_res", Ostrich_res);
+        PlayerPrefs.SetInt("Pig_res", Pig_res);
+        PlayerPrefs.SetInt("Cow_res", Cow_res);
+        PlayerPrefs.SetInt("Horse_res", Horse_res);
+        PlayerPrefs.SetInt("Sheep_res", Sheep_res);
+        PlayerPrefs.SetInt("Chicken_res", Chicken_res);
     }
     public static void Save_Gold(int value)
     {
@@ -562,4 +682,39 @@ public class Save : MonoBehaviour
         }
     }
 
+
+    // resources
+
+    public static void Save_Goose_res(int value)
+    {
+        Goose_res = value;
+    }
+    public static void Save_Goat_res(int value)
+    {
+        Goat_res = value;
+    }
+    public static void Save_Ostrich_rest(int value)
+    {
+        Ostrich_res = value;
+    }
+    public static void Save_Pig_res(int value)
+    {
+        Pig_res = value;
+    }
+    public static void Save_Cow_res(int value)
+    {
+        Cow_res = value;
+    }
+    public static void Save_Chicken_res(int value)
+    {
+        Chicken_res = value;
+    }
+    public static void Save_Sheep_res(int value)
+    {
+        Sheep_res = value;
+    }
+    public static void Save_Horse_res(int value)
+    {
+        Horse_res = value;
+    }
 }

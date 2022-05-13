@@ -63,10 +63,7 @@ public class Manager_UI : MonoBehaviour
 
 
 
-    public void Display_Gold_earned(int value)
-    {
-        gold_earned_text.text = value.ToString();
-    }
+
 
     
   

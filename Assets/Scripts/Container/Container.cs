@@ -29,8 +29,9 @@ public class Container : MonoBehaviour
     public Finish_Ui Finish_ui;
     public InGame_Ui InGame_ui;
     public Manager_UI Manager_ui;
+    public MergeUI merge_ui;
     public Inventory_container Inventory_ui;
-    
+    public SwitchButton switchButton_ui;
 
     public StartDayAnimPanel startDayAnim;
 
@@ -55,4 +56,5 @@ public class Container : MonoBehaviour
     [Header("ScriptableObjects")]
     public SoundController _soundController;
 
+    public CreateObject create_object;
 }

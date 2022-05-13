@@ -21,6 +21,15 @@ public class Game_controller : MonoBehaviour
     private int Sheep_count;
     private int Chicken_count;
 
+    private int Goose_res;
+    private int Goat_res;
+    private int Ostrich_res;
+    private int Pig_res;
+    private int Cow_res;
+    private int Horse_res;
+    private int Sheep_res;
+    private int Chicken_res;
+
     private int feed_Bust_count;
      private int time_Bust_count;
     public static int gold;  //вынести в сейвы
@@ -29,16 +38,10 @@ public class Game_controller : MonoBehaviour
      public int Day_length; //   брать из скриптаблобж
     public int startLength;
     public int stepPerAnimal;
-
-
-
-
-
     public bool DayIsActive = false;  //поменять на приват
 
     public float timer;
     private float deadCount;
-
     public enum State
     {
         InMenu,
@@ -48,8 +51,6 @@ public class Game_controller : MonoBehaviour
 
     }
     public State state;
-
-
 
     private int Goose_died;
     private int Goat_died;
@@ -114,7 +115,7 @@ public class Game_controller : MonoBehaviour
         container.Manager_panel.AnimalsCount(Goose_count, Goat_count, Ostrich_count, Pig_count, Cow_count, Horse_count, Sheep_count, Chicken_count);
     }
 
-    private void CheckSave() 
+    public void CheckSave() 
     {
         Goose_count = Save.Goose_count_Get();
         Goat_count = Save.Goat_count_Get();
@@ -125,10 +126,20 @@ public class Game_controller : MonoBehaviour
         Sheep_count = Save.Sheep_count_Get();
         Chicken_count = Save.Chicken_count_Get();
 
+        Goose_res = Save.Goose_res_Get();
+        Goat_res = Save.Goat_res_Get();
+        Ostrich_count = Save.Ostrich_count_Get();
+        Pig_res = Save.Pig_res_Get();
+        Cow_res = Save.Cow_res_Get();
+        Horse_res = Save.Horse_res_Get();
+        Chicken_res = Save.Chicken_res_Get();
+        Sheep_res = Save.Sheep_res_Get();
+
         feed_Bust_count = Save.Feed_bust_count_Get();
         time_Bust_count = Save.Time_bust_count_Get();
         Day = Save.Day_Get();
         gold = Save.Gold_Get();
+
     }
 
     private void SaveAll()
@@ -141,6 +152,15 @@ public class Game_controller : MonoBehaviour
         Save.Save_Horse_count(Horse_count);
         Save.Save_Sheep_count(Sheep_count);
         Save.Save_Chicken_count(Chicken_count);
+
+        Save.Save_Goose_res(Goose_res);
+        Save.Save_Goat_res(Goat_res);
+        Save.Save_Ostrich_rest(Ostrich_res);
+        Save.Save_Pig_res(Pig_res);
+        Save.Save_Cow_res(Cow_res);
+        Save.Save_Horse_res(Horse_res);
+        Save.Save_Chicken_res(Chicken_res);
+        Save.Save_Sheep_res(Sheep_res);
 
         Save.Save_Feed_bust(feed_Bust_count);
         Save.Save_Time_bust(time_Bust_count);
@@ -306,6 +326,7 @@ public class Game_controller : MonoBehaviour
     {
         if(state == State.InMenu)
         {
+            container.switchButton_ui.gameObject.SetActive(false);
             //    Sun.DayLengh = Day_length;
             DayLenghCalculating(startLength, stepPerAnimal);
 
@@ -366,6 +387,7 @@ public class Game_controller : MonoBehaviour
         }
         else if (state == State.Result)
         {
+            container.switchButton_ui.gameObject.SetActive(true);
             Music._instance.NightIsOn();
 
             container.Result_ui.gameObject.SetActive(false);
@@ -783,7 +805,7 @@ public class Game_controller : MonoBehaviour
     }
     private void DisplayGold()
     {
-            container.Manager_ui.Display_Gold_earned(gold);
+            container.switchButton_ui.Display_Gold_earned(gold);
     }
     private void Display_Gold_Earned() // вывод заработанного количества денег на экран
     {
@@ -813,7 +835,7 @@ public class Game_controller : MonoBehaviour
     {
         container.Manager_ui.DisplayBusters_price(container.busters_price.Feed_bust_price, container.busters_price.Time_bust_price);
     }
-
+    
     #endregion
 
     #region Buy Bust 
@@ -857,6 +879,13 @@ public class Game_controller : MonoBehaviour
         }
     }
     #endregion  
+    public void GoldForSellRessources(int value)
+    {
+        gold += value;
+        container.switchButton_ui.Display_Gold_earned(gold);
+        Save.Save_Gold(gold);
+        Save.SaveStats();
+    }
     IEnumerator HideManagerUI()
     {
         yield return new WaitForSeconds(1f);
@@ -895,5 +924,16 @@ public class Game_controller : MonoBehaviour
         {
             finger_tutorial.SetActive(true);
         }
+    }
+    public void GetResources(int Goose, int Goat, int Ostrich, int Pig, int Cow, int Horse, int Sheep, int Chicken)
+    {
+        Goose_res += Goose;
+        Goat_res += Goat;
+        Ostrich_res += Ostrich;
+        Pig_res += Pig;
+        Cow_res += Cow;
+        Horse_res += Horse;
+        Sheep_res += Sheep;
+        Chicken_res += Chicken;
     }
 }
