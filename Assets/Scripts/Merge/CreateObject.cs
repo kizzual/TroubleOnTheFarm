@@ -20,7 +20,7 @@ public class CreateObject : MonoBehaviour
     {
         LoadObjects();
     }
-    public void CreateObjectInPanel(int value)
+    public bool CreateObjectInPanel(int value)
     {
         if (value == 1)
         {
@@ -30,10 +30,12 @@ public class CreateObject : MonoBehaviour
                 var go = Instantiate(prefab, freeCell.position, parentWhenMoving.rotation, freeCell.transform).GetComponent<Object>();
                 go._parentWhenMoving = parentWhenMoving;
                 go.Initialize(objectType.Goose_1_name, objectType.Goose_1_price, objectType.Goose_1_sprite);
+                return true;
             }
             else
             {
                 Debug.Log("Not Enough free cells");
+                return false;
             }
         }
         else if (value == 2)
@@ -44,10 +46,13 @@ public class CreateObject : MonoBehaviour
                 var go = Instantiate(prefab, freeCell.position, parentWhenMoving.rotation, freeCell.transform).GetComponent<Object>();
                 go.GetComponent<Image>().SetNativeSize();
                 go._parentWhenMoving = parentWhenMoving;
-                go.Initialize(objectType.Goat_1_name, objectType.Goat_1_price, objectType.Goat_1_sprite);
+                go.Initialize(objectType.Goat_1_name, objectType.Goat_1_price, objectType.Goat_1_sprite); 
+                return true;
+
             }
             else
             {
+                return false;
                 Debug.Log("Not Enough free cells");
             }
         }
@@ -59,10 +64,12 @@ public class CreateObject : MonoBehaviour
                 var go = Instantiate(prefab, freeCell.position, parentWhenMoving.rotation, freeCell.transform).GetComponent<Object>();
                 go.GetComponent<Image>().SetNativeSize();
                 go._parentWhenMoving = parentWhenMoving;
-                go.Initialize(objectType.Ostrich_1_name, objectType.Ostrich_1_price, objectType.Ostrich_1_sprite);
+                go.Initialize(objectType.Ostrich_1_name, objectType.Ostrich_1_price, objectType.Ostrich_1_sprite); 
+                return true;
             }
             else
             {
+                return false;
                 Debug.Log("Not Enough free cells");
             }
         }
@@ -75,9 +82,11 @@ public class CreateObject : MonoBehaviour
                 go.GetComponent<Image>().SetNativeSize();
                 go._parentWhenMoving = parentWhenMoving;
                 go.Initialize(objectType.Pig_1_name, objectType.Pig_1_price, objectType.Pig_1_sprite);
+                return true;
             }
             else
             {
+                return false;
                 Debug.Log("Not Enough free cells");
             }
         }
@@ -90,9 +99,11 @@ public class CreateObject : MonoBehaviour
                 go.GetComponent<Image>().SetNativeSize();
                 go._parentWhenMoving = parentWhenMoving;
                 go.Initialize(objectType.Cow_1_name, objectType.Cow_1_price, objectType.Cow_1_sprite);
+                return true;
             }
             else
             {
+                return false;
                 Debug.Log("Not Enough free cells");
             }
         }
@@ -105,9 +116,11 @@ public class CreateObject : MonoBehaviour
                 go.GetComponent<Image>().SetNativeSize();
                 go._parentWhenMoving = parentWhenMoving;
                 go.Initialize(objectType.Horse_1_name, objectType.Horse_1_price, objectType.Horse_1_sprite);
+                return true;
             }
             else
             {
+                return false;
                 Debug.Log("Not Enough free cells");
             }
         }
@@ -120,9 +133,11 @@ public class CreateObject : MonoBehaviour
                 go.GetComponent<Image>().SetNativeSize();
                 go._parentWhenMoving = parentWhenMoving;
                 go.Initialize(objectType.Sheep_1_name, objectType.Sheep_1_price, objectType.Sheep_1_sprite);
+                return true;
             }
             else
             {
+                return false;
                 Debug.Log("Not Enough free cells");
             }
         }
@@ -135,12 +150,16 @@ public class CreateObject : MonoBehaviour
                 go.GetComponent<Image>().SetNativeSize();
                 go._parentWhenMoving = parentWhenMoving;
                 go.Initialize(objectType.Chicken_1_name, objectType.Chicken_1_price, objectType.Chicken_1_sprite);
+                return true;
             }
             else
             {
+                return false;
                 Debug.Log("Not Enough free cells");
+
             }
         }
+        return false;
     }
     private Transform FindFreeCells()
     {
@@ -285,6 +304,21 @@ public class CreateObject : MonoBehaviour
         }
         return null;
     }
+    public bool CheckParticleOnGameObject(Object obj)
+    {
+        if(obj.name == objectType.Chicken_4_name ||
+            obj.name == objectType.Cow_4_name ||
+            obj.name == objectType.Goat_4_name ||
+            obj.name == objectType.Goose_4_name ||
+            obj.name == objectType.Horse_4_name ||
+            obj.name == objectType.Ostrich_4_name ||
+            obj.name == objectType.Pig_4_name ||
+            obj.name == objectType.Sheep_4_name )
+        {
+            return true;
+        }
+        return false;
+    }
     #region SAVE / LOAD / DELETE
     public void SaveObjects()
     {
@@ -315,6 +349,9 @@ public class CreateObject : MonoBehaviour
             go.GetComponent<RectTransform>().transform.localScale = new Vector3(1, 1, 1);
             go.GetComponent<RectTransform>().transform.rotation = cells[entries[i].parrentIndex].transform.rotation;
             go.Initialize(entries[i].name, entries[i].price, CheckingObjectSprite(entries[i].name));
+            if (CheckParticleOnGameObject(go))
+                go.TurnOnParticles();
+
         }
     }
 

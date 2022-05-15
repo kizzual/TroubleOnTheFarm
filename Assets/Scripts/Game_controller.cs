@@ -13,7 +13,7 @@ public class Game_controller : MonoBehaviour
     [SerializeField] private GameObject fingerStartDay_tutorial;
 
     [SerializeField] private float radius_walk_zone;  //скриптабл
-
+    [SerializeField] private GameObject MergeAnim;
     private int Goose_count;
     private int Goat_count;
     private int Ostrich_count;
@@ -75,7 +75,7 @@ public class Game_controller : MonoBehaviour
         container.Manager_panel.gameObject.SetActive(true);
         SpawnAnimals();
         DayLenghCalculating(startLength, stepPerAnimal);
-        
+        CheckActiveRessources();
    //     EndDay();
     }
     public void REsetSaves()
@@ -134,14 +134,13 @@ public class Game_controller : MonoBehaviour
         Pig_res = Save.Pig_res_Get();
         Cow_res = Save.Cow_res_Get();
         Horse_res = Save.Horse_res_Get();
-        Chicken_res = Save.Chicken_res_Get();
+        Chicken_res =  Save.Chicken_res_Get();
         Sheep_res = Save.Sheep_res_Get();
 
         feed_Bust_count = Save.Feed_bust_count_Get();
         time_Bust_count = Save.Time_bust_count_Get();
         Day = Save.Day_Get();
         gold = Save.Gold_Get();
-
     }
 
     public void SaveAll()
@@ -330,7 +329,6 @@ public class Game_controller : MonoBehaviour
         {
             fingerStartDay_tutorial.SetActive(false);
             container.switchButton_ui.gameObject.SetActive(false);
-            //    Sun.DayLengh = Day_length;
             DayLenghCalculating(startLength, stepPerAnimal);
 
             container.startDayAnim.StartDayAnimation();
@@ -345,7 +343,6 @@ public class Game_controller : MonoBehaviour
         }
         else if(state == State.Ingame)
         {
-            //        Sun._instance.DayEnded();
             Day++;
             Music._instance.Wolf();
             Display_Scoring();
@@ -376,7 +373,6 @@ public class Game_controller : MonoBehaviour
         }
         else if (state == State.Finish)
         {
-       //     Sun._instance.StartNight();
             container.Finish_ui.gameObject.SetActive(false);
             container.Result_ui.gameObject.SetActive(true);
             container.Result_ui.DisplayCurrentDay(Day);
@@ -395,6 +391,9 @@ public class Game_controller : MonoBehaviour
         else if (state == State.Result)
         {
             container.switchButton_ui.gameObject.SetActive(true);
+            if( Day == 1)
+                TutorialAnimation(true);
+
             Music._instance.NightIsOn();
 
             container.Result_ui.gameObject.SetActive(false);
@@ -405,6 +404,7 @@ public class Game_controller : MonoBehaviour
             EndDay();
             //вывод экрана меню (смещение камеру UI)
             state = State.InMenu;
+            container.AlertImage.ShowAlertImage(true);
         }
     }
     #endregion
@@ -947,5 +947,28 @@ public class Game_controller : MonoBehaviour
         Horse_res += Horse;
         Sheep_res += Sheep;
         Chicken_res += Chicken;
+    }
+    public void CheckActiveRessources()
+    {
+        var tmp = Goose_res +
+            Goat_res +
+            Ostrich_res +
+            Pig_res +
+            Cow_res +
+            Horse_res +
+            Sheep_res +
+            Chicken_res;
+        if (tmp < 1)
+        {
+            container.AlertImage.ShowAlertImage(false);
+        }
+    }
+
+    public void TutorialAnimation(bool isActive)
+    {
+        if (isActive)
+            MergeAnim.SetActive(true);
+        else
+            MergeAnim.SetActive(false);
     }
 }

@@ -8,13 +8,15 @@ public class Object : MonoBehaviour
 {
     [HideInInspector] public Transform _parentWhenMoving;
     private Transform _startPosition;
-    private Transform _lastPosition;
-    private Object _objectToMerge;
+    public Transform _lastPosition;
+    public Object _objectToMerge;
     private string _name;
     private int _price;
     private Sprite _sprite;
     private SellButton _selling;
     [HideInInspector] public int parrentIndex;
+    private ParticleSystem particle;
+    private bool isDraging;
     public void Initialize(string Name, int Price, Sprite Img )
     {
         _name = Name;
@@ -23,12 +25,17 @@ public class Object : MonoBehaviour
         name = _name;
         GetComponent<Image>().sprite = _sprite;
         GetComponent<Image>().SetNativeSize();
-
+    }
+    public void TurnOnParticles()
+    {
+        particle.Play();
     }
     private void OnEnable()
     {
         GetComponent<MoveObject>().onStartDrag += SetStartetPosition;
         GetComponent<MoveObject>().onEndDrag += MoveObject;
+        particle = GetComponentInChildren<ParticleSystem>();
+        particle.Stop();
     }
     private void OnDestroy()
     {
@@ -38,9 +45,11 @@ public class Object : MonoBehaviour
     }
     private void SetStartetPosition()
     {
+        isDraging = true;
         _startPosition = transform.parent;
         _lastPosition = _startPosition;
         transform.SetParent(_parentWhenMoving);
+
     }
     private void MoveObject()
     {
@@ -52,12 +61,12 @@ public class Object : MonoBehaviour
             if (merging)
             {
                 SoundController._instance.Merging();
-                transform.position = _lastPosition.position;
-
+                transform.position = transform.parent.position;
+                
                 return;
             }
             else if (!merging)
-            {
+            { 
                 _lastPosition = _startPosition;
             }
         }
@@ -69,17 +78,30 @@ public class Object : MonoBehaviour
         }
         transform.SetParent(_lastPosition);
         transform.position = _lastPosition.position;
+        isDraging = false;
+
     }
     private void OnTriggerEnter(Collider other)
     {
-        _lastPosition = other.transform;
-        if(other.TryGetComponent(out Object obj))
+        if (isDraging)
         {
-            _objectToMerge = obj;
-        }
-        if(other.TryGetComponent(out SellButton sellButton))
-        {
-            _selling = sellButton;
+            if (other.TryGetComponent(out Object obj))
+            {
+                if (name == obj.name)
+                {
+                    _objectToMerge = obj;
+                }
+            }
+            if (other.TryGetComponent(out ParentGrid par))
+            {
+
+                _lastPosition = other.transform;
+            }
+
+            if (other.TryGetComponent(out SellButton sellButton))
+            {
+                _selling = sellButton;
+            }
         }
     }
     private void OnTriggerExit(Collider other)
@@ -101,4 +123,5 @@ public class Object : MonoBehaviour
         parent = transform.parent.GetSiblingIndex();
     }
 
+    
 }

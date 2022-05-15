@@ -7,7 +7,7 @@ public class SwitchButton : MonoBehaviour
 {
     [SerializeField] private Text gold_earned_text;
     [SerializeField] private GameObject MergePanel;
-
+    [SerializeField] Game_controller _controller;
     void Start()
     {
         
@@ -29,6 +29,7 @@ public class SwitchButton : MonoBehaviour
         }
         else
         {
+            _controller.TutorialAnimation(false);
             MergePanel.SetActive(true);
         }
     }

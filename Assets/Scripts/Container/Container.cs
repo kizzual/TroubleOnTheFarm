@@ -32,7 +32,7 @@ public class Container : MonoBehaviour
     public MergeUI merge_ui;
     public Inventory_container Inventory_ui;
     public SwitchButton switchButton_ui;
-
+    public AllertShowButton AlertImage;
     public StartDayAnimPanel startDayAnim;
 
     [Header("Panel")]

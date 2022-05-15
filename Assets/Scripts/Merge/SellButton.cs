@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class SellButton : MonoBehaviour
 {
-    [SerializeField] private Game_controller _Controller;
+    [SerializeField] private MergeTimeAnimation _Controller;
    
     public void Selling(int value)
     {
-        _Controller.GoldForSellRessources(value);
+        _Controller.TurnOnParticle(value);
     }
 }
