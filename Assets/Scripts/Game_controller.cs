@@ -10,6 +10,8 @@ public class Game_controller : MonoBehaviour
     [SerializeField] private Button StartDayButton;
     [SerializeField] private Text StartDayText;
     [SerializeField] private GameObject finger_tutorial;
+    [SerializeField] private GameObject fingerStartDay_tutorial;
+
     [SerializeField] private float radius_walk_zone;  //скриптабл
 
     private int Goose_count;
@@ -26,9 +28,9 @@ public class Game_controller : MonoBehaviour
     private int Ostrich_res;
     private int Pig_res;
     private int Cow_res;
-    private int Horse_res;
+    private int Horse_res; 
     private int Sheep_res;
-    private int Chicken_res;
+    public  int Chicken_res;
 
     private int feed_Bust_count;
      private int time_Bust_count;
@@ -61,7 +63,7 @@ public class Game_controller : MonoBehaviour
     private int Sheep_died;
     private int Chicken_died;
 
-    void Awake()
+    void Awake() 
     {
         CheckSave();
         state = State.InMenu;
@@ -142,7 +144,7 @@ public class Game_controller : MonoBehaviour
 
     }
 
-    private void SaveAll()
+    public void SaveAll()
     {
         Save.Save_Goose_count(Goose_count);
         Save.Save_Goat_count(Goat_count);
@@ -326,6 +328,7 @@ public class Game_controller : MonoBehaviour
     {
         if(state == State.InMenu)
         {
+            fingerStartDay_tutorial.SetActive(false);
             container.switchButton_ui.gameObject.SetActive(false);
             //    Sun.DayLengh = Day_length;
             DayLenghCalculating(startLength, stepPerAnimal);
@@ -343,12 +346,14 @@ public class Game_controller : MonoBehaviour
         else if(state == State.Ingame)
         {
             //        Sun._instance.DayEnded();
+            Day++;
             Music._instance.Wolf();
             Display_Scoring();
             DisplayScoreDay();
             container.InGame_ui.gameObject.SetActive(false);
             container.Finish_ui.gameObject.SetActive(true);
-            if(deadCount > 0)
+            container.Finish_ui.DisplaDayFinished(Day);
+            if (deadCount > 0)
             {
                 container.Finish_ui.LoseDay(Goose_died, Goat_died, Ostrich_died, Pig_died, Cow_died, Horse_died, Sheep_died, Chicken_died);
             }
@@ -374,6 +379,7 @@ public class Game_controller : MonoBehaviour
        //     Sun._instance.StartNight();
             container.Finish_ui.gameObject.SetActive(false);
             container.Result_ui.gameObject.SetActive(true);
+            container.Result_ui.DisplayCurrentDay(Day);
             Display_Gold_Earned();
             DisplayGold();
             DisplayAnimalsCountInManagerPanel();
@@ -382,6 +388,7 @@ public class Game_controller : MonoBehaviour
             feed_Bust_count = container.Inventory_ui.feed_buster_count;
             time_Bust_count = container.Inventory_ui.time_buster_count;
             DisplayBusters_count();
+           
             SaveAll();
             state = State.Result;
         }
@@ -631,6 +638,10 @@ public class Game_controller : MonoBehaviour
         if(Chicken_count >= 2)
         {
             finger_tutorial.SetActive(false);
+        }
+        if(Chicken_count == 2)
+        {
+            fingerStartDay_tutorial.SetActive(true);
         }
         DisplayGold();
         SaveAll();
@@ -920,10 +931,11 @@ public class Game_controller : MonoBehaviour
     }
     public void AcivateFingerTutorial()
     {
-        if (Chicken_count < 2)
+        if (Chicken_count < 2 && Day  == 0)
         {
             finger_tutorial.SetActive(true);
         }
+        
     }
     public void GetResources(int Goose, int Goat, int Ostrich, int Pig, int Cow, int Horse, int Sheep, int Chicken)
     {

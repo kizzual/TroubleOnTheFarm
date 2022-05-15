@@ -17,6 +17,7 @@ public class SoundController : MonoBehaviour
     [SerializeField] private AudioClip Buy;
     [SerializeField] private AudioClip MoneyEnded;
     [SerializeField] private AudioClip Fear;
+    [SerializeField] private AudioClip Merge;
 
     void Awake()
     {
@@ -38,7 +39,10 @@ public class SoundController : MonoBehaviour
         }
     }
 
-
+    public void Merging()
+    {
+        _audioSource.PlayOneShot(Merge);
+    }
     public void ClickButton()
     {   
         _audioSource.PlayOneShot(buttonClick);

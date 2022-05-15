@@ -17,7 +17,7 @@ public class Finish_Ui : MonoBehaviour
     [SerializeField] private Text Die_Ostrich_text;
     [SerializeField] private Text Die_Horse_text;
 
-    [SerializeField] private Text DayFinished;
+    [SerializeField] private List<Text> DayFinished;
 
 
     void Start()
@@ -59,7 +59,10 @@ public class Finish_Ui : MonoBehaviour
     }
     public void DisplaDayFinished(int value)
     {
-        DayFinished.text = value.ToString();
+        foreach (var item in DayFinished)
+        {
+            item.text = value.ToString();
+        }
     }
 }
 

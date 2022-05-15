@@ -15,7 +15,7 @@ public class SaveObjectPosition
 
     public SaveObjectPosition(Object go)
     {
-        go.GetObjectInfo(out parentPosition, out name, out price, out sprite);
+   //     go.GetObjectInfo(out parentPosition, out name, out price, out sprite);
     }
 }
 

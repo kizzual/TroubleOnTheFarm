@@ -9,11 +9,12 @@ public class Object : MonoBehaviour
     [HideInInspector] public Transform _parentWhenMoving;
     private Transform _startPosition;
     private Transform _lastPosition;
-    public Object _objectToMerge;
+    private Object _objectToMerge;
     private string _name;
     private int _price;
     private Sprite _sprite;
     private SellButton _selling;
+    [HideInInspector] public int parrentIndex;
     public void Initialize(string Name, int Price, Sprite Img )
     {
         _name = Name;
@@ -21,6 +22,8 @@ public class Object : MonoBehaviour
         _sprite = Img;
         name = _name;
         GetComponent<Image>().sprite = _sprite;
+        GetComponent<Image>().SetNativeSize();
+
     }
     private void OnEnable()
     {
@@ -48,7 +51,9 @@ public class Object : MonoBehaviour
 
             if (merging)
             {
+                SoundController._instance.Merging();
                 transform.position = _lastPosition.position;
+
                 return;
             }
             else if (!merging)
@@ -59,6 +64,7 @@ public class Object : MonoBehaviour
         if(_selling != null)
         {
             _selling.Selling(_price);
+            SoundController._instance.BuySometing();
             Destroy(gameObject);
         }
         transform.SetParent(_lastPosition);
@@ -66,6 +72,7 @@ public class Object : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
+        _lastPosition = other.transform;
         if(other.TryGetComponent(out Object obj))
         {
             _objectToMerge = obj;
@@ -74,7 +81,6 @@ public class Object : MonoBehaviour
         {
             _selling = sellButton;
         }
-        _lastPosition = other.transform;
     }
     private void OnTriggerExit(Collider other)
     {
@@ -88,11 +94,11 @@ public class Object : MonoBehaviour
         }
         _lastPosition = _startPosition;
     }
-    public void GetObjectInfo(out Transform pos, out string name, out int price, out Sprite sprite)
+    public void GetObjectInfo( out string name, out int price, out int parent)
     {
-        pos = _lastPosition;
         name = _name;
         price = _price;
-        sprite = _sprite;
+        parent = transform.parent.GetSiblingIndex();
     }
+
 }

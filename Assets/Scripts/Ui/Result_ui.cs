@@ -17,6 +17,7 @@ public class Result_ui : MonoBehaviour
 
     [SerializeField] private Game_controller _game_Controller;
 
+    [SerializeField] private Text dayText;
     void Start()
     {
 
@@ -24,6 +25,8 @@ public class Result_ui : MonoBehaviour
 
      public void Gold_earned(int Goose, int Goat, int Ostrich, int Pig, int Cow, int Horse, int Sheep, int Chicken)
     {
+
+
         income_Goose_text.text = Goose.ToString();
 
         income_Goat_text.text = Goat.ToString();
@@ -43,6 +46,10 @@ public class Result_ui : MonoBehaviour
         _game_Controller.GetResources(Goose, Goat, Ostrich, Pig, Cow, Horse, Sheep, Chicken);
     }
 
+    public void DisplayCurrentDay(int value)
+    {
+        dayText.text = "Day " + value.ToString() + " Results";
+    }
 
 
 }

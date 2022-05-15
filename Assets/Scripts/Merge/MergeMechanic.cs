@@ -8,13 +8,15 @@ public class MergeMechanic : MonoBehaviour
     // scriptableObject and path
     private static string Path => "Assets/Merge.asset";
     private static TypeOfObjects _objectType;
+    [SerializeField] private TypeOfObjects DB;
     // --------------------------
     private void Awake()
     {
-        _objectType = AssetDatabase.LoadAssetAtPath<TypeOfObjects>(Path);
+        _objectType = DB;
     }
     public static bool MergeObjects(Object obj_1, Object obj_2)
     {
+        Debug.Log("ASD");
         if (obj_1.name == obj_2.name)
         {
             if (obj_1.name == _objectType.Chicken_1_name)
@@ -210,7 +212,6 @@ public class MergeMechanic : MonoBehaviour
                 return true;
             }
         }
-        Debug.Log("asd");
         return false;
     }
 

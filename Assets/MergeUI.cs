@@ -66,48 +66,47 @@ public class MergeUI : MonoBehaviour
         if(value == 1 && Goose_res_count > 0)
         {
             _createObject.CreateObjectInPanel(value);
-            Goose_res_count++;
+            Goose_res_count--;
         }
         else if (value == 2 && Goat_res_count > 0)
         {
             _createObject.CreateObjectInPanel(value);
-            Goat_res_count++;
+            Goat_res_count--;
         }
         else if (value == 3 && Ostrich_res_count > 0)
         {
             _createObject.CreateObjectInPanel(value);
-            Ostrich_res_count++;
+            Ostrich_res_count--;
         }
         else if (value == 4 && Pig_res_count > 0)
         {
             _createObject.CreateObjectInPanel(value);
-            Pig_res_count++;
+            Pig_res_count--;
         }
         else if (value == 5 && Cow_res_count > 0)
         {
             _createObject.CreateObjectInPanel(value);
-            Cow_res_count++;
+            Cow_res_count--;
         }
         else if (value == 6 && Horse_res_count > 0)
         {
             _createObject.CreateObjectInPanel(value);
-            Horse_res_count++;
+            Horse_res_count--;
         }
         else if (value == 7 && Sheep_res_count > 0)
         {
             _createObject.CreateObjectInPanel(value);
-            Sheep_res_count++;
+            Sheep_res_count--;
         }
         else if (value == 8 && Chicken_res_count > 0)
         {
             _createObject.CreateObjectInPanel(value);
-            Chicken_res_count++;
+            Chicken_res_count--;
         }
         DisplayRessources();
     }
     public void CloseMergePanel()
     {
-        _createObject.DeleteSave();
         _createObject.SaveObjects();
         Save.Save_Goose_res(Goose_res_count);
         Save.Save_Goat_res(Goat_res_count);
@@ -118,6 +117,7 @@ public class MergeUI : MonoBehaviour
         Save.Save_Chicken_res(Chicken_res_count);
         Save.Save_Sheep_res(Sheep_res_count);
         _gameController.CheckSave();
+        _gameController.SaveAll();
     }
 
 }
