@@ -5,6 +5,7 @@ using UnityEngine;
 public class ParentGrid : MonoBehaviour
 {
     public BoxCollider box;
+    public bool IsActive = true;
     void Start()
     {
         box = GetComponent<BoxCollider>();
@@ -12,13 +13,16 @@ public class ParentGrid : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetMouseButtonDown(0))
+        if (IsActive)
         {
-            CheckChild();
-        }
-        if (Input.GetMouseButtonUp(0))
-        {
-            BoxOn();
+            if (Input.GetMouseButtonDown(0))
+            {
+                CheckChild();
+            }
+            if (Input.GetMouseButtonUp(0))
+            {
+                BoxOn();
+            }
         }
 
     }
@@ -34,8 +38,12 @@ public class ParentGrid : MonoBehaviour
             box.enabled = true;
         }
     }
-    private void BoxOn()
+    public void BoxOn()
     {
         box.enabled = true;
+    }
+    public void BoxOff()
+    {
+        box.enabled = false;
     }
 }

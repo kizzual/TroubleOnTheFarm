@@ -13,6 +13,7 @@ public class MoveObject : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
     public delegate void EndDrag();
     public event EndDrag onEndDrag;
     // ---------
+    public bool CanMove = true;
 
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -21,7 +22,10 @@ public class MoveObject : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
     public void OnDrag(PointerEventData eventData)
     {
-        SetDraggedPosition(eventData);
+        if (CanMove)
+        {
+            SetDraggedPosition(eventData);
+        }
     }
 
     public void OnEndDrag(PointerEventData eventData)

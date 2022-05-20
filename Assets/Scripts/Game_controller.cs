@@ -35,7 +35,7 @@ public class Game_controller : MonoBehaviour
     private int feed_Bust_count;
      private int time_Bust_count;
     public static int gold;  //вынести в сейвы
-    private int Day;
+    public int Day;
 
      public int Day_length; //   брать из скриптаблобж
     public int startLength;
@@ -76,18 +76,14 @@ public class Game_controller : MonoBehaviour
         SpawnAnimals();
         DayLenghCalculating(startLength, stepPerAnimal);
         CheckActiveRessources();
-   //     EndDay();
+        if (Day == 1&& Chicken_res == 2)
+        {
+            container.Merge_tutorial.SetActive(true);
+        }
+        //     EndDay();
     }
     public void REsetSaves()
     {
-        PlayerPrefs.SetInt("Goose_paddock", 0);
-        PlayerPrefs.SetInt("Goat_paddock", 0);
-        PlayerPrefs.SetInt("Ostrich_paddock", 0);
-        PlayerPrefs.SetInt("Pig_paddock", 0);
-        PlayerPrefs.SetInt("Cow_paddock", 0);
-        PlayerPrefs.SetInt("Horse_paddock", 0);
-        PlayerPrefs.SetInt("Sheep_paddock", 0);
-        PlayerPrefs.SetInt("Chicken_paddock", 0);
         PlayerPrefs.DeleteAll();
 
     }
@@ -391,9 +387,14 @@ public class Game_controller : MonoBehaviour
         else if (state == State.Result)
         {
             container.switchButton_ui.gameObject.SetActive(true);
-            if( Day == 1)
+            if( Day == 1 )
+            {
                 TutorialAnimation(true);
-
+            }
+            if (Day == 1 && Chicken_res == 2)
+            {
+                container.Merge_tutorial.SetActive(true);
+            }
             Music._instance.NightIsOn();
 
             container.Result_ui.gameObject.SetActive(false);

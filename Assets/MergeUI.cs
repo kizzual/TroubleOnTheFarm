@@ -27,6 +27,7 @@ public class MergeUI : MonoBehaviour
     [SerializeField] private int Sheep_res_count;
     [SerializeField] private int Chicken_res_count;
 
+    [SerializeField] private GameObject Merge_tutorial;
 
     void Start()
     {
@@ -159,6 +160,11 @@ public class MergeUI : MonoBehaviour
         if(tmp < 1)
         {
             _container.AlertImage.ShowAlertImage(false);
+            if(Merge_tutorial.activeSelf)
+            {
+            Merge_Tutorial._instanse.SwitchAnimation();
+
+            }
         }
     }
 

@@ -34,6 +34,7 @@ public class Container : MonoBehaviour
     public SwitchButton switchButton_ui;
     public AllertShowButton AlertImage;
     public StartDayAnimPanel startDayAnim;
+    public GameObject Merge_tutorial;
 
     [Header("Panel")]
     public GameObject Ingame_panel;    

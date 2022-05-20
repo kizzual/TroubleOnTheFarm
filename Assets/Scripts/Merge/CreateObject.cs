@@ -10,7 +10,7 @@ public class CreateObject : MonoBehaviour
     const string filename = "SavedObjects";
 
     [SerializeField] private TypeOfObjects objectType;
-    [SerializeField] private List<Transform> cells;
+    public List<Transform> cells;
     [SerializeField] private Transform parentWhenMoving;
     [SerializeField] private GameObject prefab;
 
