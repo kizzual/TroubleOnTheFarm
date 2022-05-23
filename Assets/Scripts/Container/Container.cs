@@ -36,6 +36,8 @@ public class Container : MonoBehaviour
     public StartDayAnimPanel startDayAnim;
     public GameObject Merge_tutorial;
 
+    public InGameTutorial inGameTutorial;
+    public Bust_tutorial busters_toturial;
     [Header("Panel")]
     public GameObject Ingame_panel;    
     public Manager_panel Manager_panel;

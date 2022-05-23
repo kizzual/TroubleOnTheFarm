@@ -11,7 +11,8 @@ public class AnimalPaddock : MonoBehaviour
 //  [SerializeField] private Vector3 spawnRaduisCube;
 
     [SerializeField] TextMeshPro animals_count;
-    private int animal_max_count;
+    public int animal_max_count;
+    public int MaxAnimalsToDisplay;
     bool dayIsActive = false;
     public enum Type
     {
@@ -150,6 +151,7 @@ public class AnimalPaddock : MonoBehaviour
     {
         if (isActive)
         {
+            MaxAnimalsToDisplay = In_Side_animals.Count;
             IsClosed = false;
             door.Open_door();
         }
@@ -240,7 +242,7 @@ public class AnimalPaddock : MonoBehaviour
     public void BuyAnimal(Player prefab, int maxCount,Transform zoneToWalk, float walkRadius, Transform parrent, int Weight, List<RandomPoint> randomPoints)
     {
         animal_max_count = maxCount;
-
+        MaxAnimalsToDisplay = maxCount;
         Player go = Instantiate(prefab, SpawnPos(), Quaternion.identity, parrent);
         In_Side_animals.Add(go);
         go.inSide = true;
@@ -254,6 +256,7 @@ public class AnimalPaddock : MonoBehaviour
     {
 
         animal_max_count = maxCount;
+        MaxAnimalsToDisplay = maxCount;
         if (!firstSpawn)
         {
             for (int i = In_Side_animals.Count; i < maxCount; i++)
@@ -315,42 +318,85 @@ public class AnimalPaddock : MonoBehaviour
         }
         door.gameObject.layer = 3;
     }
-    public int Day_result()
+    public int Day_result(bool isFirstDay)
     {
-        diedAnimals = 0;
-        if (isActive)
+        if (!isFirstDay)
         {
-            door.Close_door();
-        }
-        float rng = Random.Range(30, 60);
-        float tmp = (float)Out_Side_animals.Count / 100;
-        float deadAnimals = tmp * rng;
-
-        deadAnimals = Mathf.RoundToInt(deadAnimals);
-        
-        for (int i = Out_Side_animals.Count; i > 0; i--)
-        {
-            if (deadAnimals > 0)
+            diedAnimals = 0;
+            if (isActive)
             {
-                diedAnimals++;
-                Destroy(Out_Side_animals[i - 1].gameObject);
-                Out_Side_animals.RemoveAt(i - 1);
-                deadAnimals--;
+                door.Close_door();
             }
-            else
-            {
-                In_Side_animals.Add(Out_Side_animals[i - 1]);
-                Out_Side_animals.RemoveAt(Out_Side_animals.Count - 1);
-            }
-        }
-        foreach (var item in In_Side_animals)
-        {
-            item.ResetAnimal();
-        }
-        animal_max_count = In_Side_animals.Count;
-        animals_count.text = In_Side_animals.Count.ToString() + "/" + animal_max_count.ToString();
+            float rng = Random.Range(30, 60);
+            float tmp = (float)Out_Side_animals.Count / 100;
+            float deadAnimals = tmp * rng;
 
-        return diedAnimals;
+            deadAnimals = Mathf.RoundToInt(deadAnimals);
+
+            for (int i = Out_Side_animals.Count; i > 0; i--)
+            {
+                if (deadAnimals > 0)
+                {
+                    diedAnimals++;
+                    Debug.Log(Out_Side_animals[i - 1].gameObject.name);
+                    Destroy(Out_Side_animals[i - 1].gameObject);
+                    Out_Side_animals.RemoveAt(i - 1);
+                    deadAnimals--;
+
+                }
+                else
+                {
+                    In_Side_animals.Add(Out_Side_animals[i - 1]);
+                    Out_Side_animals.RemoveAt(Out_Side_animals.Count - 1);
+                }
+            }
+            foreach (var item in In_Side_animals)
+            {
+                item.ResetAnimal();
+            }
+            animal_max_count = In_Side_animals.Count;
+            animals_count.text = In_Side_animals.Count.ToString() + "/" + animal_max_count.ToString();
+
+        }
+        else
+        {
+            diedAnimals = 0;
+            if (isActive)
+            {
+                door.Close_door();
+            }
+            float rng = Random.Range(0, 0);
+            float tmp = (float)Out_Side_animals.Count / 100;
+            float deadAnimals = tmp * rng;
+
+            deadAnimals = Mathf.RoundToInt(deadAnimals);
+
+            for (int i = Out_Side_animals.Count; i > 0; i--)
+            {
+                if (deadAnimals > 0)
+                {
+                    diedAnimals++;
+                    Debug.Log(Out_Side_animals[i - 1].gameObject.name);
+                    Destroy(Out_Side_animals[i - 1].gameObject);
+                    Out_Side_animals.RemoveAt(i - 1);
+                    deadAnimals--;
+
+                }
+                else
+                {
+                    In_Side_animals.Add(Out_Side_animals[i - 1]);
+                    Out_Side_animals.RemoveAt(Out_Side_animals.Count - 1);
+                }
+            }
+            foreach (var item in In_Side_animals)
+            {
+                item.ResetAnimal();
+            }
+            animal_max_count = In_Side_animals.Count;
+            animals_count.text = In_Side_animals.Count.ToString() + "/" + animal_max_count.ToString();
+        }
+
+            return diedAnimals;
     }
     private void DisplayAnimal_count()
     {

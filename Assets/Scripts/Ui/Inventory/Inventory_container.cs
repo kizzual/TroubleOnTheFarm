@@ -120,18 +120,31 @@ public class Inventory_container : MonoBehaviour
         {
             time_buster_count--;
             Display_Busters_Count(feed_buster_count, time_buster_count);
+            if(Game_controller.Day == 1)
+            {
+                Game_controller.DayIsActive = true;
+                Bust_tutorial._instance.NextStepBustTutor();
+            }
             Game_controller.Day_length += 30;
+
         }
     }
     public void DisplayBustPanel()
     {
         if(feedBusterIsHide)
         {
+            Debug.Log("1");
+
             feedAnimation.SetBool("ShowBuster", true);
             feedBusterIsHide = false;
             foreach (var item in FeedMasks)
             {
                 item.raycastTarget = true;
+            }
+            if(Game_controller.Day == 1)
+            {
+                Debug.Log("2");
+                Bust_tutorial._instance.NextStepBustTutor();
             }
         }
         else

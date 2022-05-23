@@ -135,6 +135,10 @@ public class MergeUI : MonoBehaviour
     }
     public void CloseMergePanel()
     {
+        if(_gameController.Day == 1)
+        {
+            Bust_tutorial._instance.StarTutorBUST();
+        }
         _createObject.SaveObjects();
         Save.Save_Goose_res(Goose_res_count);
         Save.Save_Goat_res(Goat_res_count);
@@ -146,6 +150,10 @@ public class MergeUI : MonoBehaviour
         Save.Save_Sheep_res(Sheep_res_count);
         _gameController.CheckSave();
         _gameController.SaveAll();
+        if(Merge_tutorial.activeSelf)
+        {
+            Merge_Tutorial._instanse.CloseTutorial();
+        }
     }
     public void CheckActiveRessources()
     {
@@ -162,7 +170,7 @@ public class MergeUI : MonoBehaviour
             _container.AlertImage.ShowAlertImage(false);
             if(Merge_tutorial.activeSelf)
             {
-            Merge_Tutorial._instanse.SwitchAnimation();
+                Merge_Tutorial._instanse.SwitchAnimation();
 
             }
         }

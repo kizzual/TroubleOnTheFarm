@@ -9,6 +9,7 @@ public class SwitchButton : MonoBehaviour
     [SerializeField] private GameObject MergePanel;
     [SerializeField] Game_controller _controller;
     [SerializeField] GameObject merge_tutorial;
+    [SerializeField] private Container container;
     void Start()
     {
         
@@ -27,15 +28,23 @@ public class SwitchButton : MonoBehaviour
         if (MergePanel.activeSelf)
         {
             MergePanel.SetActive(false);
+          /*  if(_controller.Day == 1)
+            {
+                Bust_tutorial._instance.SwitchTutorial();
+            }*/
         }
         else
         {
             _controller.TutorialAnimation(false);
-            MergePanel.SetActive(true);
-           /* if (_controller.Day == 1)
+          
+            if (_controller.Day == 1)
             {
-                merge_tutorial.SetActive(true);
-            }*/
+                container.inGameTutorial.StartMergeTutor(true);
+            }
+            else
+            {
+                MergePanel.SetActive(true);
+            }
         }
     }
 }

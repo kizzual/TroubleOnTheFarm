@@ -326,11 +326,16 @@ public class Game_controller : MonoBehaviour
             fingerStartDay_tutorial.SetActive(false);
             container.switchButton_ui.gameObject.SetActive(false);
             DayLenghCalculating(startLength, stepPerAnimal);
+            container.InGame_ui.Display_Day_timer(Day_length - timer, Day_length);
 
             container.startDayAnim.StartDayAnimation();
             //начинаем игру
             StartgDay();
             StartCoroutine(HideManagerUI());
+            if(Day==1)
+            {
+                Bust_tutorial._instance.SwitchTutorial();
+            }
             
 
             //движением камеры и задержку пока не выйдут животные
@@ -339,12 +344,21 @@ public class Game_controller : MonoBehaviour
         }
         else if(state == State.Ingame)
         {
+           
             Day++;
             Music._instance.Wolf();
             Display_Scoring();
             DisplayScoreDay();
-            container.InGame_ui.gameObject.SetActive(false);
-            container.Finish_ui.gameObject.SetActive(true);
+                container.InGame_ui.gameObject.SetActive(false);
+            if(Day != 1)
+            {
+                container.Finish_ui.gameObject.SetActive(true);
+            }
+            else if( Day == 1)
+            {
+                container.inGameTutorial.EndFirstDayTutor(true);
+            }
+            
             container.Finish_ui.DisplaDayFinished(Day);
             if (deadCount > 0)
             {
@@ -827,15 +841,31 @@ public class Game_controller : MonoBehaviour
     {
         deadCount = 0;
         ResetDieAnimals();
-        Goose_died = container.Goose_paddock.Day_result();
-        Goat_died = container.Goat_paddock.Day_result();
-        Ostrich_died = container.Ostrich_paddock.Day_result();
-        Pig_died = container.Pig_paddock.Day_result();
-        Cow_died = container.Cow_paddock.Day_result();
-        Horse_died = container.Horse_paddock.Day_result();
-        Sheep_died = container.Sheep_paddock.Day_result();
-        Chicken_died = container.Chicken_paddock.Day_result();
-        deadCount = (Goose_died + Goat_died + Ostrich_died + Pig_died + Cow_died + Horse_died + Sheep_died + Chicken_died);
+        if(Day == 1)
+        {
+            Goose_died = container.Goose_paddock.Day_result(true);
+            Goat_died = container.Goat_paddock.Day_result(true);
+            Ostrich_died = container.Ostrich_paddock.Day_result(true);
+            Pig_died = container.Pig_paddock.Day_result(true);
+            Cow_died = container.Cow_paddock.Day_result(true);
+            Horse_died = container.Horse_paddock.Day_result(true);
+            Sheep_died = container.Sheep_paddock.Day_result(true);
+            Chicken_died = container.Chicken_paddock.Day_result(true);
+            deadCount = (Goose_died + Goat_died + Ostrich_died + Pig_died + Cow_died + Horse_died + Sheep_died + Chicken_died);
+        }
+        else
+        {
+            Goose_died = container.Goose_paddock.Day_result(false);
+            Goat_died = container.Goat_paddock.Day_result(false);
+            Ostrich_died = container.Ostrich_paddock.Day_result(false);
+            Pig_died = container.Pig_paddock.Day_result(false);
+            Cow_died = container.Cow_paddock.Day_result(false);
+            Horse_died = container.Horse_paddock.Day_result(false);
+            Sheep_died = container.Sheep_paddock.Day_result(false);
+            Chicken_died = container.Chicken_paddock.Day_result(false);
+            deadCount = (Goose_died + Goat_died + Ostrich_died + Pig_died + Cow_died + Horse_died + Sheep_died + Chicken_died);
+
+        }
     }
     private void DisplayBusters_count()
     {
@@ -853,41 +883,91 @@ public class Game_controller : MonoBehaviour
     #region Buy Bust 
     public void BuyFeedBust()
     {
-        if (gold >= container.busters_price.Feed_bust_price)
+        if (Day != 1)
         {
-            container._soundController.BuySometing();
-            feed_Bust_count += 5;
-            gold -= container.busters_price.Feed_bust_price;
-            DisplayGold();
-            DisplayBusters_count();
+            if (gold >= container.busters_price.Feed_bust_price)
+            {
+               
+                container._soundController.BuySometing();
+                feed_Bust_count += 5;
+                gold -= container.busters_price.Feed_bust_price;
+                DisplayGold();
+                DisplayBusters_count();
+            }
+            else
+            {
+                container._soundController.NotEnoughMoney();
 
+                Debug.Log("Not enough gold to buy Feed_Buster");
+            }
         }
-        else
+        else if( Day == 1 && Bust_tutorial._instance.tutorials[3].activeSelf)
         {
-            container._soundController.NotEnoughMoney();
+            if (gold >= container.busters_price.Feed_bust_price)
+            {
+                if (feed_Bust_count == 0)
+                {
+                    Bust_tutorial._instance.SwitchTutorial();
+                }
+                container._soundController.BuySometing();
+                feed_Bust_count += 5;
+                gold -= container.busters_price.Feed_bust_price;
+                DisplayGold();
+                DisplayBusters_count();
+            }
+            else
+            {
+                container._soundController.NotEnoughMoney();
 
-            Debug.Log("Not enough gold to buy Feed_Buster");
+                Debug.Log("Not enough gold to buy Feed_Buster");
+            }
         }
     }
     public void BuyTimeBust()
     {
-        Debug.Log(time_Bust_count  + " =  TIME BEFORE");
-
-        if (gold >= container.busters_price.Time_bust_price)
+        if (Day != 1)
         {
-            container._soundController.BuySometing();
-            Debug.Log(time_Bust_count + " =  TIME AFTER");
+            if (gold >= container.busters_price.Time_bust_price)
+            {
+             
+                container._soundController.BuySometing();
+                Debug.Log(time_Bust_count + " =  TIME AFTER");
 
-            time_Bust_count++;
-            gold -= container.busters_price.Time_bust_price;
-            DisplayGold();
-            DisplayBusters_count();
+                time_Bust_count++;
+                gold -= container.busters_price.Time_bust_price;
+                DisplayGold();
+                DisplayBusters_count();
+            }
+            else
+            {
+                container._soundController.NotEnoughMoney();
+
+                Debug.Log("Not enough gold to buy Time_Buster");
+            }
         }
-        else
+        else if (Day == 1 && Bust_tutorial._instance.tutorials[4].activeSelf)
         {
-            container._soundController.NotEnoughMoney();
+            if (gold >= container.busters_price.Time_bust_price)
+            {
+                if (time_Bust_count == 0)
+                {
+                    Bust_tutorial._instance.SwitchTutorial();
+                }
+                container._soundController.BuySometing();
+                Debug.Log(time_Bust_count + " =  TIME AFTER");
 
-            Debug.Log("Not enough gold to buy Time_Buster");
+                time_Bust_count++;
+                gold -= container.busters_price.Time_bust_price;
+                DisplayGold();
+                DisplayBusters_count();
+            }
+            else
+            {
+                container._soundController.NotEnoughMoney();
+
+                Debug.Log("Not enough gold to buy Time_Buster");
+            }
+
         }
     }
     #endregion  

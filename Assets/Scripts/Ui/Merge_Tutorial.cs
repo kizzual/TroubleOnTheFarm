@@ -11,7 +11,7 @@ public class Merge_Tutorial : MonoBehaviour
     public CreateObject _createObject;
     public static Merge_Tutorial _instanse;
     public BoxCollider col;
-    void Start()
+    void Awake()
     {
         _instanse = this;
            tutorials[0].SetActive(true);
@@ -30,14 +30,25 @@ public class Merge_Tutorial : MonoBehaviour
         {
             tutorials[1].SetActive(false);
             tutorials[2].SetActive(true);
+            _createObject.cells[0].GetComponent<ParentGrid>().IsActive = false;
+            _createObject.cells[0].GetComponent<ParentGrid>().BoxOff();
         }
        else if(tutorials[2].activeSelf)
         {
             SwitchMoveGrid(true);
-            gameObject.SetActive(false);
-        }
-    } 
+            _createObject.cells[0].GetComponent<ParentGrid>().IsActive = true;
+            _createObject.cells[0].GetComponent<ParentGrid>().BoxOn();
 
+            tutorials[2].SetActive(false);
+            tutorials[3].SetActive(true);
+        }
+
+    } 
+    public void CloseTutorial()
+    {
+ 
+        gameObject.SetActive(false);
+    }
     public void OffRaycastImage()
     {
         img = parentImage.transform.GetChild(0).GetComponent<MoveObject>();

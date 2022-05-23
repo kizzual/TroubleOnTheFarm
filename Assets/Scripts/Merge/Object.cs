@@ -18,6 +18,7 @@ public class Object : MonoBehaviour
     private ParticleSystem particle;
     private bool isDraging;
     public bool CanMove = true;
+    public ParticleSystem MergeParticle;
     public void Initialize(string Name, int Price, Sprite Img )
     {
         _name = Name;
@@ -64,6 +65,7 @@ public class Object : MonoBehaviour
             {
                 SoundController._instance.Merging();
                 transform.position = transform.parent.position;
+                MergeParticle.Play();
                 Merge_Tutorial._instanse.SwitchAnimation();
 
                 return;

@@ -9,16 +9,19 @@ public class Manager_UI : MonoBehaviour
     [SerializeField] private Text feedCount_text;
     [SerializeField] private Text time_text;
     [SerializeField] private GameObject Shop;
-
+    [SerializeField] private Game_controller _gameController;
     [SerializeField] private Text FeedBust_price;
     [SerializeField] private Text TimeBust_price;
     public Button startDayButton;
-
+    public Container container;
     [SerializeField] private List<Animator> ShowUI;
-
+    private int goldClickCount;
+    private int FeedClickCount;
+    private int TimeClickCount;
     void Start()
     {
         StartCoroutine(ShowUIStart());
+
     }
     IEnumerator ShowUIStart()
     {
@@ -38,6 +41,7 @@ public class Manager_UI : MonoBehaviour
     {
         FeedBust_price.text = FeedPirce.ToString();
         TimeBust_price.text = TimePrice.ToString();
+
     }
 
     public void Display_Bust_counts (int feedCount, int timeCount)
@@ -53,13 +57,32 @@ public class Manager_UI : MonoBehaviour
         if (Shop.activeSelf)
         {
             Shop.SetActive(false);
+            if (_gameController.Day == 1)
+            {
+                container.busters_toturial.SwitchTutorial();
+            }
         }
         else
         {
             Shop.SetActive(true);
+            if (_gameController.Day == 1 )
+            {
+                container.busters_toturial.SwitchTutorial();
+            }
         }
     }
 
+    public void Test()
+    {
+        if (_gameController.Day == 1 && goldClickCount <2)
+        {
+            goldClickCount++;
+            _gameController.GoldForSellRessources(50);
+            container.busters_toturial.SwitchTutorial();
+        }
+
+
+    }
 
 
 

@@ -9,16 +9,16 @@ public class Tutorial : MonoBehaviour
     [SerializeField] private GameObject LeftButton;
     [SerializeField] private GameObject RightButton;
     [SerializeField] private GameObject pausePanel;
+
     [SerializeField] private InputDetect input;
     [SerializeField] private CameraMove cam;
-
     public bool firstTime;
     public int pageIndex;
     void Awake()
     {
-        if(PlayerPrefs.HasKey("TutorialEnded"))
+        if (PlayerPrefs.HasKey("TutorialEnded"))
         {
-            
+
             firstTime = false;
         }
         else
@@ -27,6 +27,8 @@ public class Tutorial : MonoBehaviour
         }
         pageIndex = 0;
     }
+
+
 
     public void LeftPage()
     {
@@ -42,17 +44,18 @@ public class Tutorial : MonoBehaviour
             LeftButton.SetActive(false);
         }
     }
+
     public void RightPage()
     {
         LeftButton.SetActive(true);
 
-        if (pageIndex + 1 <= Pages.Count-1)
+        if (pageIndex + 1 <= Pages.Count - 1)
         {
             Pages[pageIndex].SetActive(false);
             pageIndex++;
             Pages[pageIndex].SetActive(true);
         }
-        if (pageIndex == Pages.Count-1)
+        if (pageIndex == Pages.Count - 1)
         {
             RightButton.SetActive(false);
             PlayerPrefs.SetInt("TutorialEnded", 1);
@@ -69,7 +72,6 @@ public class Tutorial : MonoBehaviour
 
         if (!firstTime)
         {
-
             pausePanel.SetActive(true);
         }
     }
@@ -96,7 +98,7 @@ public class Tutorial : MonoBehaviour
             pageIndex++;
             Pages[pageIndex].SetActive(true);
         }
-        if (pageIndex + 1  == Pages.Count )
+        if (pageIndex + 1 == Pages.Count)
         {
             RightButton.SetActive(false);
         }
@@ -107,7 +109,7 @@ public class Tutorial : MonoBehaviour
         RightButton.SetActive(true);
         cam.IsStoped = true;
         input.TutorialIsActive = true;
-          pageIndex = 0;
+        pageIndex = 0;
         foreach (var item in Pages)
         {
             item.SetActive(false);
@@ -115,9 +117,10 @@ public class Tutorial : MonoBehaviour
         Pages[pageIndex].SetActive(true);
         LeftButton.SetActive(false);
         TutorialPanel.SetActive(true);
-        if(!firstTime)
+        if (!firstTime)
         {
             pausePanel.SetActive(false);
         }
     }
 }
+

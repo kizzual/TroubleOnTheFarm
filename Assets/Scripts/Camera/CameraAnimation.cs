@@ -9,21 +9,14 @@ public class CameraAnimation : MonoBehaviour
     [SerializeField] private new Animator animation;
     [SerializeField] private List<Animator> UiAnimation;
     [SerializeField] private Game_controller game_controller;
-    [SerializeField] private Tutorial tutorial;
+    [SerializeField] private InGameTutorial tutorial;
     void Start()
     {
         animation.enabled = true;
         animation.SetTrigger("StartGame");
         StartCoroutine(ShowStartUI());
     }
-
-
-    void Update()
-    {
-        
-    }
-
-   
+ 
     public void AnimationEded()
     {
         container.Goose_paddock.EnableColision(true);
@@ -59,13 +52,16 @@ public class CameraAnimation : MonoBehaviour
         {
             item.SetBool("ShowUi", true);
         }
-        StartCoroutine(startDay());
+        if(game_controller.Day == 0)
+        {
+            tutorial.StartFirstDayTutor(true);
+        }
+        if (game_controller.Day == 1)
+        {
+            tutorial.StartSecondDayTutor_1(true);
+        }
     }
-    IEnumerator startDay()
-    {
-        yield return new WaitForSeconds(.3f);
-        game_controller.DayIsActive = true;
-    }
+
     public void EndStartGameAnimation()
     {
         animation.enabled = false;
@@ -79,9 +75,9 @@ public class CameraAnimation : MonoBehaviour
         {
             item.SetBool("ShowUi", true);
         }
-        if(tutorial.firstTime)
+        if(game_controller.Day == 0)
         {
-            tutorial.OpenTutorial();
+            tutorial.StartGameTutor(true);
         }
         game_controller.AcivateFingerTutorial();
     }

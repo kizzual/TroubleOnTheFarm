@@ -12,7 +12,7 @@ public class InputDetect : MonoBehaviour
     public GameObject target;
     public SoundController _soundController;
     public static GameObject currentFeedPrefab;
-
+    public Game_controller _gameController;
     public  bool InGame = false;
     public static bool FeedBusterIsActive = false;
     private bool feedIsHiding = true;
@@ -172,7 +172,10 @@ public class InputDetect : MonoBehaviour
                     if (!IsMouseOverUiWithIgnores())
                     {
                         inventory.AddingFeedBusterToList();
-
+                        if(_gameController.Day == 1)
+                        {
+                            Bust_tutorial._instance.NextStepBustTutor();
+                        }
                     }
                     else if (IsMouseOverUiWithIgnores())
                     {
@@ -284,7 +287,10 @@ public class InputDetect : MonoBehaviour
                     if (!IsMouseOverUiWithIgnores())
                     {
                         inventory.AddingFeedBusterToList();
-
+                        if (_gameController.Day == 1)
+                        {
+                            Bust_tutorial._instance.NextStepBustTutor();
+                        }
                     }
                     else if (IsMouseOverUiWithIgnores())
                     {
