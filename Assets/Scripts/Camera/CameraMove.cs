@@ -15,6 +15,8 @@ public class CameraMove : MonoBehaviour
     Vector3 startClickPosition;
     Vector3 startPos;
     [SerializeField] private GameObject AudioListener;
+    [SerializeField] private GameObject fingerSwipe_tutorial;
+    [SerializeField] private GameObject finger_tutorial;
     public bool IsStoped = false;
     private void Start()
     {
@@ -39,6 +41,11 @@ public class CameraMove : MonoBehaviour
                     transform.position += f * transZ;
                     transform.position += transform.right * transX;
                     transform.position = new Vector3(Mathf.Clamp(transform.position.x, minX, maxX), transform.position.y, Mathf.Clamp(transform.position.z, minZ, maxZ));
+                    if(fingerSwipe_tutorial.activeSelf)
+                    {
+                        fingerSwipe_tutorial.SetActive(false);
+                         finger_tutorial.SetActive(true);
+                    }
                 }
 
                 if (Input.GetAxis("Mouse ScrollWheel") != 0)
@@ -54,7 +61,7 @@ public class CameraMove : MonoBehaviour
                             Mathf.Clamp(AudioListener.transform.position.y, 15f, 30f),
                             posListener.z);
 
-                        cinemachine.m_Lens.FieldOfView -= Input.GetAxis("Mouse ScrollWheel") * 20;
+                        cinemachine.m_Lens.FieldOfView -= Input.GetAxis("Mouse ScrollWheel") * 5;
                     }
                 }
 

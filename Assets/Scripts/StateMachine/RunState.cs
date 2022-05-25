@@ -67,7 +67,6 @@ public class RunState : State
                 {
                     if (CheckDistance(fearPos) < 0.1f)
                     {
-                        Debug.Log("sdsadsadsadsadsa");
                         Player.IsFearing = false;
                         Player.SwitchState(this);
                     }

@@ -79,10 +79,8 @@ public class CameraAnimation : MonoBehaviour
         {
             item.SetBool("ShowUi", true);
         }
-        if(game_controller.Day == 0)
-        {
-            tutorial.StartGameTutor(true);
-        }
+        yield return new WaitForSeconds(.5f);
+
         game_controller.AcivateFingerTutorial();
     }
 }

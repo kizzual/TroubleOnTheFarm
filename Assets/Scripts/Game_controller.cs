@@ -11,6 +11,8 @@ public class Game_controller : MonoBehaviour
     [SerializeField] private Text StartDayText;
     [SerializeField] private GameObject finger_tutorial;
     [SerializeField] private GameObject fingerStartDay_tutorial;
+    public GameObject fingerSwipe_tutorial;
+
 
     [SerializeField] private float radius_walk_zone;  //скриптабл
     [SerializeField] private GameObject MergeAnim;
@@ -102,7 +104,7 @@ public class Game_controller : MonoBehaviour
         container.Horse_paddock.EnableColision(false);
         container.Sheep_paddock.EnableColision(false);
         container.Chicken_paddock.EnableColision(false);
-      
+       
     }
     private void Update()
     {
@@ -919,9 +921,7 @@ public class Game_controller : MonoBehaviour
                 gold -= container.busters_price.Feed_bust_price;
                 DisplayGold();
                 DisplayBusters_count();
-                Save.Save_Feed_bust(feed_Bust_count);
-                Save.Save_Time_bust(time_Bust_count);
-                Save.SaveStats();
+         
             }
             else
             {
@@ -971,9 +971,7 @@ public class Game_controller : MonoBehaviour
                 gold -= container.busters_price.Time_bust_price;
                 DisplayGold();
                 DisplayBusters_count();
-                Save.Save_Feed_bust(feed_Bust_count);
-                Save.Save_Time_bust(time_Bust_count);
-                Save.SaveStats();
+          
             }
             else
             {
@@ -985,12 +983,21 @@ public class Game_controller : MonoBehaviour
         }
     }
     #endregion  
-    public void GoldForSellRessources(int value)
+    public void GoldForSellRessources(int value, bool withSafe = true)
     {
-        gold += value;
-        container.switchButton_ui.Display_Gold_earned(gold);
-        Save.Save_Gold(gold);
-        Save.SaveStats();
+        if(withSafe)
+        {
+            gold += value;
+            container.switchButton_ui.Display_Gold_earned(gold);
+            Save.Save_Gold(gold);
+            Save.SaveStats();
+        }
+        else
+        {
+            gold += value;
+            container.switchButton_ui.Display_Gold_earned(gold);
+        }
+        
     }
     IEnumerator HideManagerUI()
     {
@@ -1026,12 +1033,34 @@ public class Game_controller : MonoBehaviour
     }
     public void AcivateFingerTutorial()
     {
-        if (Chicken_count < 2 && Day  == 0)
+        if((Chicken_count == 0 && Day == 0 && !container.Chicken_paddock.isActive))
+        {
+            container.inGameTutorial.StartGameTutor(true);
+            fingerSwipe_tutorial.SetActive(true);
+        }
+        if (Chicken_count < 2 && Chicken_count > 0 && Day  == 0 || container.Chicken_paddock.isActive && Day == 0)
         {
             finger_tutorial.SetActive(true);
         }
-        
+        else if (Day == 0 && Chicken_count == 2)
+        {
+            finger_tutorial.SetActive(false);
+            fingerStartDay_tutorial.SetActive(true);
+        }
+        if (Day == 1 && Chicken_res == 2)
+        {
+            MergeAnim.SetActive(true);
+        }
+        if(Day == 1 && Chicken_res == 0 && time_Bust_count == 0)
+        {
+            Bust_tutorial._instance.StarTutorBUST();
+        }
+        if (Day == 1 && Chicken_res == 0 && time_Bust_count > 0)
+        {
+            Bust_tutorial._instance.tutorials[6].SetActive(true); 
+        }
     }
+  
     public void GetResources(int Goose, int Goat, int Ostrich, int Pig, int Cow, int Horse, int Sheep, int Chicken)
     {
         Goose_res += Goose;
@@ -1058,7 +1087,7 @@ public class Game_controller : MonoBehaviour
             container.AlertImage.ShowAlertImage(false);
         }
     }
-
+     
     public void TutorialAnimation(bool isActive)
     {
         if (isActive)

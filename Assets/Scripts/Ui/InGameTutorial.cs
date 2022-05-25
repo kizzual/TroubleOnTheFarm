@@ -149,10 +149,7 @@ public class InGameTutorial : MonoBehaviour
         {
             Bust_tutorial._instance.StartBustAnimation();
         }
-        if (StartSecondtDay_Tutorial_panel_2.activeSelf)
-        {
-            Bust_tutorial._instance.NextStepBustTutor();
-        }
+        
         obj.SetActive(false);
     }
     public void StartGameTutor(bool activate)

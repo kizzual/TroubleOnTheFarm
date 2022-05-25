@@ -77,11 +77,9 @@ public class Manager_UI : MonoBehaviour
         if (_gameController.Day == 1 && goldClickCount <2)
         {
             goldClickCount++;
-            _gameController.GoldForSellRessources(50);
+            _gameController.GoldForSellRessources(50, false);
             container.busters_toturial.SwitchTutorial();
         }
-
-
     }
 
 

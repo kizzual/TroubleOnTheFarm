@@ -36,8 +36,7 @@ public class Bust_tutorial : MonoBehaviour
             startButton.enabled = false;
         }
     }
-    public void 
-        SwitchTutorial()
+    public void SwitchTutorial()
     {
         
        
@@ -77,6 +76,8 @@ public class Bust_tutorial : MonoBehaviour
             tutorials[5].SetActive(false);
             tutorials[6].SetActive(true);
             startButton.enabled = true;
+            _gameController.SaveAll();
+
             return;
         }
         if (tutorials[6].activeSelf)
@@ -112,11 +113,12 @@ public class Bust_tutorial : MonoBehaviour
             input.busteTutorIsActive = false;
 
             StartCoroutine(check());
+            Debug.Log("1");
             return;
-
         }
         if (Bust_tutor[2].activeSelf)
         {
+            Debug.Log("3");
             Bust_tutor[2].SetActive(false);
         }
     }
@@ -130,5 +132,6 @@ public class Bust_tutorial : MonoBehaviour
         {
             item.raycastTarget = true;
         }
+        Debug.Log("2");
     }
 }
