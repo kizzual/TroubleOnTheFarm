@@ -61,7 +61,7 @@ MonoBehaviour:
   LifeTime: 15
   isActive: 0
   eatingAnimals: []
-  sphereRadius: 0.9
+  sphereRadius: 1
   feedtype: 4
 --- !u!135 &2590962502917793348
 SphereCollider:
@@ -74,7 +74,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 5
+  m_Radius: 20
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &2590962502917793349
 Rigidbody:
@@ -164,7 +164,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 4b8a4ab419ecd9746b44e9fd9a66a50c, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.19607843}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

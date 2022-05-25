@@ -416,6 +416,8 @@ MonoBehaviour:
   startDestination: {x: 0, y: 0, z: 0}
   _check: 0
   test: {x: 0, y: 0, z: 0}
+  soundIsOn: 1
+  curState: 
 --- !u!82 &489732529190986218
 AudioSource:
   m_ObjectHideFlags: 0
@@ -428,7 +430,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: b23c43e11bb35644fb0c394012c533e3, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.7
   m_Pitch: 1
   Loop: 0
   Mute: 0

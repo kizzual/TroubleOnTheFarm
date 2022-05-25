@@ -17,6 +17,9 @@ namespace UnityEngine.Purchasing
 
         public const string NoADS = "";
 
+        public Container container;
+        public Game_controller _gameController;
+
         /* public const string pMoney80 = "250_coins";
          public const string pNoAds = "no_ads";
 
@@ -151,15 +154,20 @@ namespace UnityEngine.Purchasing
         }
         private void BuyCoins250()
         {
+            _gameController.GoldForSellRessources(250);
+            container._soundController.BuySometing();
             Debug.Log("Buy 250 gold");
         }
         private void BuyCoins1000()
         {
+            _gameController.GoldForSellRessources(1000);
+            container._soundController.BuySometing();
+
             Debug.Log("Buy 1000 gold");
         }
         private void BuyNoADS()
         {
-            Debug.Log("Buy noADS");
+           
         }
     }
     //  Buy Functions

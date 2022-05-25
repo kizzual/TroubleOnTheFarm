@@ -202,6 +202,7 @@ public class Player : MonoBehaviour
         {
             if (IsEating )
             {
+                Debug.Log("ASD");
                 curState = "_RotateState";
                 randomPatrolingDestination = eatPoint;
                 _sm.ChangeState(_RotateState);
@@ -267,10 +268,10 @@ public class Player : MonoBehaviour
     public void StartEating(Vector3 point)
     {
         _agent.ResetPath();
-
         IsEating = true;
         SetEatPoint(point);
-        _sm.ChangeState(_RotateState); 
+        _sm.ChangeState(_RotateState);
+
     }
     public void FinishEating()
     {

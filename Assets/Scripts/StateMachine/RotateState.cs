@@ -50,7 +50,9 @@ public class RotateState : State
             {
                 Player.transform.rotation = Quaternion.Lerp(Player.transform.rotation, Quaternion.LookRotation(Player.eatPoint - Player.transform.position), rotateSpeed);
                 if (timer > 0.3f)
+                {
                     Player.SwitchState(this);
+                }
             }
             else
             {

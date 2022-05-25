@@ -16,11 +16,12 @@ public class Manager_UI : MonoBehaviour
     public Container container;
     [SerializeField] private List<Animator> ShowUI;
     private int goldClickCount;
-    private int FeedClickCount;
-    private int TimeClickCount;
+    public GameObject ADS_Panel;
+    private int RewardGoldCount;
     void Start()
     {
         StartCoroutine(ShowUIStart());
+        RewardGoldCount = PlayerPrefs.GetInt("REWARD");
 
     }
     IEnumerator ShowUIStart()
@@ -74,14 +75,39 @@ public class Manager_UI : MonoBehaviour
 
     public void Test()
     {
-        if (_gameController.Day == 1 && goldClickCount <2)
+        if (_gameController.Day == 1 && goldClickCount < 2)
         {
             goldClickCount++;
             _gameController.GoldForSellRessources(50, false);
             container.busters_toturial.SwitchTutorial();
+            container._soundController.BuySometing();
+            return;
+        }
+        else if(_gameController.Day != 1 && _gameController.Day != 0)
+        {
+            if (PlayerPrefs.HasKey("REWARD"))
+            {
+                RewardGoldCount = PlayerPrefs.GetInt("REWARD");
+            }
+            if (RewardGoldCount < 2)
+            {
+                StartCoroutine(ShowADS());
+                RewardGoldCount++;
+            }
+
         }
     }
+    private IEnumerator ShowADS()
+    {
+        ADS_Panel.SetActive(true);
 
+        yield return new WaitForSeconds(2f);
+
+        ADS_Panel.SetActive(false);
+        _gameController.GoldForSellRessources(50);
+        container._soundController.BuySometing();
+        PlayerPrefs.SetInt("REWARD", RewardGoldCount);
+    }
 
 
 
