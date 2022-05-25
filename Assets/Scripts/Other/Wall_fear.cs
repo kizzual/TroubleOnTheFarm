@@ -19,8 +19,12 @@ public class Wall_fear : MonoBehaviour
         {
             if (!animal.dayIsActive)
             {
-                animal.WrongWay();
-                animal.canFear = false;
+                if(!animal.inSide)
+                {
+                    animal.WrongWay();
+                    animal.canFear = false;
+
+                }
             }
         }
     }
@@ -28,8 +32,11 @@ public class Wall_fear : MonoBehaviour
     {
         if (other.TryGetComponent(out Player animal))
         {
-            
-            animal.canFear = true;
+            if(!animal.inSide)
+            {
+                animal.canFear = true;
+
+            }
 
         }
     }

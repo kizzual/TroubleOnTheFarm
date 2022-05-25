@@ -102,6 +102,7 @@ public class Game_controller : MonoBehaviour
         container.Horse_paddock.EnableColision(false);
         container.Sheep_paddock.EnableColision(false);
         container.Chicken_paddock.EnableColision(false);
+      
     }
     private void Update()
     {
@@ -409,6 +410,7 @@ public class Game_controller : MonoBehaviour
             {
                 container.Merge_tutorial.SetActive(true);
             }
+            
             Music._instance.NightIsOn();
 
             container.Result_ui.gameObject.SetActive(false);
@@ -893,6 +895,9 @@ public class Game_controller : MonoBehaviour
                 gold -= container.busters_price.Feed_bust_price;
                 DisplayGold();
                 DisplayBusters_count();
+                Save.Save_Feed_bust(feed_Bust_count);
+                Save.Save_Time_bust(time_Bust_count);
+                Save.SaveStats();
             }
             else
             {
@@ -914,6 +919,9 @@ public class Game_controller : MonoBehaviour
                 gold -= container.busters_price.Feed_bust_price;
                 DisplayGold();
                 DisplayBusters_count();
+                Save.Save_Feed_bust(feed_Bust_count);
+                Save.Save_Time_bust(time_Bust_count);
+                Save.SaveStats();
             }
             else
             {
@@ -937,6 +945,9 @@ public class Game_controller : MonoBehaviour
                 gold -= container.busters_price.Time_bust_price;
                 DisplayGold();
                 DisplayBusters_count();
+                Save.Save_Feed_bust(feed_Bust_count);
+                Save.Save_Time_bust(time_Bust_count);
+                Save.SaveStats();
             }
             else
             {
@@ -960,6 +971,9 @@ public class Game_controller : MonoBehaviour
                 gold -= container.busters_price.Time_bust_price;
                 DisplayGold();
                 DisplayBusters_count();
+                Save.Save_Feed_bust(feed_Bust_count);
+                Save.Save_Time_bust(time_Bust_count);
+                Save.SaveStats();
             }
             else
             {

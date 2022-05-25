@@ -75,6 +75,7 @@ public class Player : MonoBehaviour
     public bool _check;
     public Vector3 test;
     public bool soundIsOn = true;
+    public string  curState;
     void Start()
     {
         StartInitialise();
@@ -117,6 +118,7 @@ public class Player : MonoBehaviour
         _RotateState = new RotateState(this);
         _WalkingState = new WalkingState(this);
         _RunState = new RunState(this);
+        curState = "_IdleState";
         _sm.Initialize(_IdleState);
 
     }
@@ -156,45 +158,62 @@ public class Player : MonoBehaviour
     {
         if (currentState == _IdleState)
         {
+            curState = "_RotateState";
             FindNewNearZone();
             _sm.ChangeState(_RotateState);
+            return;
         }
         else if (currentState == _RotateState)
         {
-
             if (IsFearing || IsEating && Vector3.Distance(transform.position, eatPoint) > 0.4f )
             {
+                curState = "_RunState";
+
                 _sm.ChangeState(_RunState);
+                return;
             }
             else if(!IsEating && !IsFearing && !EnterinToWrongPaddock)
             {
+                curState = "_WalkingState";
                 _sm.ChangeState(_WalkingState);
+                return;
             }
             else if(EnterinToWrongPaddock)
             {
+                curState = "_RunState";
                 EnterinToWrongPaddock = false;
                 _sm.ChangeState(_RunState);
+                return;
             }
             else
             {
+                curState = "_IdleState";
                 _sm.ChangeState(_IdleState);
+                return;
             }
         }
         else if( currentState == _WalkingState)
         {
+            curState = "_IdleState";
             _sm.ChangeState(_IdleState);
+            return;
         }
         else if(currentState == _RunState)
         {
-            if (IsEating)
+            if (IsEating )
             {
+                curState = "_RotateState";
                 randomPatrolingDestination = eatPoint;
                 _sm.ChangeState(_RotateState);
+                return;
             }
-            else if (!IsEating)
+            else if (!IsEating && !IsFearing)
             {
+                curState = "_IdleState";
                 _sm.ChangeState(_IdleState);
+                return;
             }
+      
         }
 
     }
@@ -202,6 +221,8 @@ public class Player : MonoBehaviour
     {
         if (canFear)
         {
+            //      Debug.Log("FEARING");
+            dayIsActive = false; 
             _agent.ResetPath();
             IsFearing = true;
             pointFromFear = point;
@@ -210,6 +231,7 @@ public class Player : MonoBehaviour
     }
     public void FindNewNearZone()
     {
+     
         if (inSide)
             randomPatrolingDestination = pointToGoInSide[Random.Range(0, pointToGoInSide.Count)].GetRandomPoint();
         else
@@ -230,9 +252,10 @@ public class Player : MonoBehaviour
 
     public void WrongWay()
     {
-        dayIsActive = true;
-        randomPatrolingDestination = pointToGoOutSide[Random.Range(0, pointToGoOutSide.Count)].GetRandomPoint();
+        //  Debug.Log("RUN");
+          dayIsActive = true;
         _agent.ResetPath();
+        randomPatrolingDestination = pointToGoOutSide[Random.Range(0, pointToGoOutSide.Count)].GetRandomPoint();
         _sm.ChangeState(_RotateState);
     }
     public void RunAway()

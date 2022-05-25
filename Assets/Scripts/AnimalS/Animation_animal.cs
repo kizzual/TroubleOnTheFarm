@@ -17,10 +17,10 @@ public class Animation_animal : MonoBehaviour
 
     public void Run_Animation()
     {
-        _animator.SetBool("Run", true);
+       /* _animator.SetBool("Run", true);
         _animator.SetBool("Walk", false);
-        _animator.SetBool("Eating", false);
-        /*if (!isRuning)
+        _animator.SetBool("Eating", false);*/
+        if (!isRuning)
         {
             _animator.SetBool("Run", true);
             _animator.SetBool("Walk", false);
@@ -29,14 +29,14 @@ public class Animation_animal : MonoBehaviour
             isWalking = false;
             isIdle = false;
             isEating = false;
-        }*/
+        }
     }
     public void Walk_Animation()
     {
-        _animator.SetBool("Run", false);
+   /*     _animator.SetBool("Run", false);
         _animator.SetBool("Walk", true);
-        _animator.SetBool("Eating", false);
-       /* if (!isWalking)
+        _animator.SetBool("Eating", false);*/
+        if (!isWalking)
         {
             _animator.SetBool("Run", false);
             _animator.SetBool("Walk", true);
@@ -45,15 +45,15 @@ public class Animation_animal : MonoBehaviour
             isWalking = true;
             isIdle = false;
             isEating = false;
-        }*/
+        }
     }
 
     public void Idle_Animation()
     {
-        _animator.SetBool("Run", false);
+    /*    _animator.SetBool("Run", false);
         _animator.SetBool("Walk", false);
-        _animator.SetBool("Eating", false);
-      /*  if (!isIdle)
+        _animator.SetBool("Eating", false);*/
+        if (!isIdle)
         {
             _animator.SetBool("Run", false);
             _animator.SetBool("Walk", false);
@@ -62,14 +62,14 @@ public class Animation_animal : MonoBehaviour
             isWalking = false;
             isIdle = true;
             isEating = false;
-        }*/
+        }
     }
     public void Eat_Animation()
     {
-        _animator.SetBool("Run", false);
+   /*     _animator.SetBool("Run", false);
         _animator.SetBool("Walk", false);
-        _animator.SetBool("Eating", true);
-      /*  if (!isEating)
+        _animator.SetBool("Eating", true);*/
+        if (!isEating)
         {
             _animator.SetBool("Run", false);
             _animator.SetBool("Walk", false);
@@ -78,7 +78,7 @@ public class Animation_animal : MonoBehaviour
             isWalking = false;
             isIdle = false;
             isEating = true;
-        }*/
+        }
     }
 
 

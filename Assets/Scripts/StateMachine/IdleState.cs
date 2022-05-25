@@ -19,8 +19,9 @@ public class IdleState : State
         base.Enter();
         if (Player.IsEating)
             Player._animation.Eat_Animation();
-        else
+        else if(!Player.IsFearing)
             Player._animation.Idle_Animation();
+
 
 
         timeToStay = Random.Range(2, 5);

@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public class RunState : State
 {
     public float run_speed;
+    private Vector3 fearPos;
     private Player Player { get; }
     public RunState(Player player)
     {
@@ -16,7 +17,9 @@ public class RunState : State
     {
         base.Enter();
         Player._agent.speed = 1.7f;
-   //     Debug.Log("ENTER RUN");
+  //      Debug.Log("ENTER RUN");
+        Player._animation.Run_Animation();
+
         if (!Player.dayIsActive)
         {
             if (!Player.IsFearing && !Player.IsEating)
@@ -28,6 +31,7 @@ public class RunState : State
             {
                 if (Player.IsEating && Player.IsFearing || Player.IsFearing)
                 {
+                    fearPos = Player.fearZoneToRun.position;
                     Player._agent.SetDestination(Player.fearZoneToRun.position);
                 }
                 else if (!Player.IsFearing && Player.IsEating)
@@ -36,7 +40,6 @@ public class RunState : State
                 }
             }
         }
-        Player._animation.Run_Animation();
     }
 
     public override void Exit()
@@ -44,7 +47,7 @@ public class RunState : State
         base.Exit();
    //     Debug.Log("EXIT RUN");
 
-        Player._animation.Idle_Animation();
+     //   Player._animation.Idle_Animation();
     }
     public override void Update()
     {
@@ -62,8 +65,9 @@ public class RunState : State
             {
                 if (Player.IsEating && Player.IsFearing || Player.IsFearing)
                 {
-                    if (CheckDistance(Player._agent.pathEndPosition) < 0.1f)
+                    if (CheckDistance(fearPos) < 0.1f)
                     {
+                        Debug.Log("sdsadsadsadsadsa");
                         Player.IsFearing = false;
                         Player.SwitchState(this);
                     }

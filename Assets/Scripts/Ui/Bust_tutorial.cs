@@ -99,6 +99,8 @@ public class Bust_tutorial : MonoBehaviour
         }
         if(Bust_tutor[1].activeSelf)
         {
+            Bust_tutor[1].SetActive(false);
+
             StartCoroutine(check());
             return;
 
@@ -111,9 +113,8 @@ public class Bust_tutorial : MonoBehaviour
 
     IEnumerator check()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(10f);
         container.inGameTutorial.StartSecondDayTutor_2(true);
-        Bust_tutor[1].SetActive(false);
         Bust_tutor[2].SetActive(true);
         foreach (var item in busters)
         {

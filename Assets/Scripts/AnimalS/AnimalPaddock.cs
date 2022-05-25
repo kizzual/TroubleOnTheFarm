@@ -173,6 +173,8 @@ public class AnimalPaddock : MonoBehaviour
                 {
                     Out_Side_animals.Remove(animal);
                     In_Side_animals.Add(animal);
+                    animal.inSide = true;
+                    animal.canFear = false;
                     DisplayAnimal_count();
                 }
             }
@@ -191,6 +193,8 @@ public class AnimalPaddock : MonoBehaviour
                 animal.inSide = false;
                 In_Side_animals.Remove(animal);
                 Out_Side_animals.Add(animal);
+                animal.inSide = false;
+                animal.canFear = true;
                 DisplayAnimal_count();
             }
         }
@@ -401,18 +405,20 @@ public class AnimalPaddock : MonoBehaviour
     private void DisplayAnimal_count()
     {
         animals_count.text = In_Side_animals.Count.ToString() + "/" + animal_max_count.ToString();
+    //    Debug.Log("count =  " + In_Side_animals.Count + "  " + " Max  =   " + animal_max_count + "    day active is  = " + _gameController.DayIsActive);
         if(dayIsActive && In_Side_animals.Count == animal_max_count && _gameController.DayIsActive)
         {
-            
-            StartCoroutine(close());
+             StartCoroutine(close());
+      
         }
     }
     IEnumerator close()
     {
-        yield return new WaitForSeconds(1f);
+
+        yield return new WaitForSeconds(1f); 
         if (dayIsActive && In_Side_animals.Count == animal_max_count)
         {
-           
+            Debug.Log("3");
             IsClosed = true;
             door.Close_door();
             SwtichGatesLayer(false);
@@ -420,6 +426,7 @@ public class AnimalPaddock : MonoBehaviour
 
         }
     }
+    
     public void SwtichGatesLayer(bool canTouch)
     {
 

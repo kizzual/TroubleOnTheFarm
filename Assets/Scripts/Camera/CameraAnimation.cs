@@ -60,6 +60,10 @@ public class CameraAnimation : MonoBehaviour
         {
             tutorial.StartSecondDayTutor_1(true);
         }
+        if(game_controller.Day != 0 && game_controller.Day != 1)
+        {
+            game_controller.DayIsActive = true;
+        }
     }
 
     public void EndStartGameAnimation()

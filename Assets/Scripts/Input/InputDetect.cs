@@ -59,7 +59,7 @@ public class InputDetect : MonoBehaviour
                                 {
                                     if (hit.collider.TryGetComponent(out Door door))
                                     {
-                                        door.CloseOpenDoore();
+                                      //  door.CloseOpenDoore();
                                     }
                                 }
                             }
@@ -223,7 +223,7 @@ public class InputDetect : MonoBehaviour
                                 {
                                     if (hit.collider.TryGetComponent(out Door door))
                                     {
-                                        door.CloseOpenDoore();
+                                      //  door.CloseOpenDoore();
                                     }
                                 }
                             }
