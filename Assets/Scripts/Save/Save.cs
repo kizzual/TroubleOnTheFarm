@@ -184,7 +184,7 @@ public class Save : MonoBehaviour
         }
         else
         {
-            Gold = 500000;
+            Gold = 99999;
         //    Gold = 5000;
         }
         if (PlayerPrefs.HasKey("Feed_bust_count"))

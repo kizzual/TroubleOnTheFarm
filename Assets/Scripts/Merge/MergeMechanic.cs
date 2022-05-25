@@ -8,17 +8,23 @@ public class MergeMechanic : MonoBehaviour
     // scriptableObject and path
     private static string Path => "Assets/Merge.asset";
     private static TypeOfObjects _objectType;
+    private static Game_controller _gameController;
     [SerializeField] private TypeOfObjects DB;
+    [SerializeField] private Game_controller gameController;
     // --------------------------
     private void Awake()
     {
         _objectType = DB;
+        _gameController = gameController;
     }
     public static bool MergeObjects(Object obj_1, Object obj_2)
     {
-        Debug.Log("ASD");
         if (obj_1.name == obj_2.name)
         {
+            if (_gameController.Day == 1)
+            {
+                Merge_Tutorial._instanse.SwitchAnimation();
+            }
             if (obj_1.name == _objectType.Chicken_1_name)
             {
                 var parent = obj_2.transform.parent;

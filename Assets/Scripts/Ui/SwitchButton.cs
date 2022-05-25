@@ -37,7 +37,7 @@ public class SwitchButton : MonoBehaviour
         {
             _controller.TutorialAnimation(false);
           
-            if (_controller.Day == 1)
+            if (_controller.Day == 1 && _controller.time_Bust_count == 0 )
             {
                 container.inGameTutorial.StartMergeTutor(true);
             }

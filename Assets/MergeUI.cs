@@ -135,7 +135,7 @@ public class MergeUI : MonoBehaviour
     }
     public void CloseMergePanel()
     {
-        if(_gameController.Day == 1)
+        if(_gameController.Day == 1 && _gameController.time_Bust_count == 0)
         {
             Bust_tutorial._instance.StarTutorBUST();
         }

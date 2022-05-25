@@ -66,8 +66,7 @@ public class Object : MonoBehaviour
                 SoundController._instance.Merging();
                 transform.position = transform.parent.position;
                 MergeParticle.Play();
-                Merge_Tutorial._instanse.SwitchAnimation();
-
+            
                 return;
             }
             else if (!merging)
@@ -79,7 +78,6 @@ public class Object : MonoBehaviour
         {
             _selling.Selling(_price);
             SoundController._instance.BuySometing();
-            Merge_Tutorial._instanse.SwitchAnimation();
             Destroy(gameObject);
         }
         transform.SetParent(_lastPosition);

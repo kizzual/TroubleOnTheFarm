@@ -35,7 +35,7 @@ public class Game_controller : MonoBehaviour
     public  int Chicken_res;
 
     private int feed_Bust_count;
-     private int time_Bust_count;
+     public int time_Bust_count;
     public static int gold;  //גûםוסעט ג סויגû
     public int Day;
 
