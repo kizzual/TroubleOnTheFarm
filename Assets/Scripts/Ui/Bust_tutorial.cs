@@ -13,6 +13,9 @@ public class Bust_tutorial : MonoBehaviour
     public Button startButton;
     public Button OkButton;
     public List<GameObject> Bust_tutor;
+
+    [SerializeField] private InputDetect input;
+    [SerializeField] private CameraMove cam;
     void Start()
     {
         _instance = this;
@@ -33,7 +36,8 @@ public class Bust_tutorial : MonoBehaviour
             startButton.enabled = false;
         }
     }
-    public void SwitchTutorial()
+    public void 
+        SwitchTutorial()
     {
         
        
@@ -84,6 +88,9 @@ public class Bust_tutorial : MonoBehaviour
     public void StartBustAnimation()
     {
         Bust_tutor[0].SetActive(true);
+        cam.IsStoped = true;
+        input.busteTutorIsActive = true;
+
     }
     public void NextStepBustTutor()
     {
@@ -100,6 +107,9 @@ public class Bust_tutorial : MonoBehaviour
         if(Bust_tutor[1].activeSelf)
         {
             Bust_tutor[1].SetActive(false);
+            _gameController.DayIsActive = true;
+            cam.IsStoped = false;
+            input.busteTutorIsActive = false;
 
             StartCoroutine(check());
             return;
@@ -113,7 +123,7 @@ public class Bust_tutorial : MonoBehaviour
 
     IEnumerator check()
     {
-        yield return new WaitForSeconds(10f);
+        yield return new WaitForSeconds(5f);
         container.inGameTutorial.StartSecondDayTutor_2(true);
         Bust_tutor[2].SetActive(true);
         foreach (var item in busters)

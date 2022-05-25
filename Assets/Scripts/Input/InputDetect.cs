@@ -23,6 +23,7 @@ public class InputDetect : MonoBehaviour
     public bool IsMoving = false;
     Vector3 startClickPosition;
     public bool TutorialIsActive = false;
+    public bool busteTutorIsActive = false;
     void Update()
     {
         if (!TutorialIsActive)
@@ -43,7 +44,7 @@ public class InputDetect : MonoBehaviour
                             if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerToRay))
                             {
 
-                                if (!hit.collider.CompareTag("Gate"))
+                                if (!hit.collider.CompareTag("Gate") && !busteTutorIsActive)
                                 {
                                     transform.position = new Vector3(hit.point.x, 0, hit.point.z);
 
@@ -207,7 +208,8 @@ public class InputDetect : MonoBehaviour
                             if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerToRay))
                             {
 
-                                if (!hit.collider.CompareTag("Gate"))
+                                if (!hit.collider.CompareTag("Gate") && !busteTutorIsActive)
+                                    
                                 {
                                     transform.position = new Vector3(hit.point.x, 0, hit.point.z);
 
@@ -325,8 +327,9 @@ public class InputDetect : MonoBehaviour
 
     private void CheckAnimals(Vector3 position)
     {
+
         _soundController.Fearing();
-           Collider[] hitColliders = Physics.OverlapSphere(position, sphere_radius , layer);
+        Collider[] hitColliders = Physics.OverlapSphere(position, sphere_radius, layer);
         foreach (var hitCollider in hitColliders)
         {
 
@@ -337,6 +340,7 @@ public class InputDetect : MonoBehaviour
                 animal.PlaySound();
             }
         }
+
     }
 
 
