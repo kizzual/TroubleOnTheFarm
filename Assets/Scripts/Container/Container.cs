@@ -49,6 +49,8 @@ public class Container : MonoBehaviour
 
     [Header("input")]
     public InputDetect inputMouse;
+    public CameraMove cam;
+
 
     [Header("ScriptableObjects")]
     public AnimalPrice animal_price;

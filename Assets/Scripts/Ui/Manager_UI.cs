@@ -37,7 +37,6 @@ public class Manager_UI : MonoBehaviour
             item.SetBool("ShowUI", true);
         }
     }
-
     public void DisplayBusters_price(int FeedPirce, int TimePrice)
     {
         FeedBust_price.text = FeedPirce.ToString();

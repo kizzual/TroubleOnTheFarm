@@ -39,6 +39,19 @@ public class MergeUI : MonoBehaviour
     {
         
     }
+    private void OnDisable()
+    {
+
+        _container.inputMouse.TutorialIsActive = false;
+        _container.cam.IsStoped = false;
+    }
+    private void OnEnable()
+    {
+        Debug.Log("ASD");
+        _container.inputMouse.TutorialIsActive = true;
+        _container.cam.IsStoped = true;
+    }
+
     public void CheckRessourcesCout()
     {
         Goose_res_count = Save.Goose_res_Get();

@@ -149,7 +149,7 @@ public class AnimalPaddock : MonoBehaviour
     }
     public void OpenGate()
     {
-        if (isActive)
+        if (isActive && In_Side_animals.Count> 0)
         {
             MaxAnimalsToDisplay = In_Side_animals.Count;
             IsClosed = false;
