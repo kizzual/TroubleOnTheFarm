@@ -87,6 +87,11 @@ public class CameraMove : MonoBehaviour
                             transform.position += f * transZ;
                             transform.position += transform.right * transX;
                             transform.position = new Vector3(Mathf.Clamp(transform.position.x, minX, maxX), transform.position.y, Mathf.Clamp(transform.position.z, minZ, maxZ));
+                            if (fingerSwipe_tutorial.activeSelf)
+                            {
+                                fingerSwipe_tutorial.SetActive(false);
+                                finger_tutorial.SetActive(true);
+                            }
 
                         }
                     }
